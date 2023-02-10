@@ -24,11 +24,11 @@ void AddSimpleLogging()
         new TransformationStep(id: "my simple log helper", action: (sm) =>
         {
             Regex regex = new(@"(?x) # enables regex verbose mode
-            ^   # start of input
-            \s* # any white space
-            log # 'log'
-            \s* # any white space
-            $   # end of input
+            ^    # start of input
+            \s*  # any white space
+            log  # 'log'
+            \s*  # any white space
+            $    # end of input
             ");
 
             sm.VisitTypeRecursively<NamedVertex>((namedVertex) =>
@@ -62,11 +62,11 @@ void AddRecursiveLogging()
         new TransformationStep(id: "my recursive log helper", action: (sm) =>
         {
             Regex regex = new(@"(?x) # enables regex verbose mode
-            ^   # start of input
-            \s* # any white space
-            log_r # 'log'
-            \s* # any white space
-            $   # end of input
+            ^      # start of input
+            \s*    # any white space
+            log_r  # 'log_r'
+            \s*    # any white space
+            $      # end of input
             ");
 
             sm.VisitTypeRecursively<NamedVertex>((namedVertex) =>

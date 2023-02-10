@@ -1,7 +1,7 @@
 Open this directory with `vscode`.
 
 This example shows how to use prefixing modding.
-https://github.com/StateSmith/StateSmith/issues/65
+https://github.com/StateSmith/StateSmith/wiki/$mod-prefix
 
 Simply run the code generation script and notice the generated state names in `MySm.h`.
 

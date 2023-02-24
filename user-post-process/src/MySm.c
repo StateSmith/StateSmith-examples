@@ -77,17 +77,6 @@ void MySm_dispatch_event(MySm* self, enum MySm_EventId event_id)
     }
 }
 
-const char* MySm_state_id_to_string(const enum MySm_StateId id)
-{
-    switch (id)
-    {
-        case MySm_StateId_ROOT: return "ROOT";
-        case MySm_StateId_STATE_1: return "STATE_1";
-        case MySm_StateId_STATE_2: return "STATE_2";
-        default: return "?";
-    }
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // event handlers for state ROOT
 ////////////////////////////////////////////////////////////////////////////////
@@ -98,12 +87,18 @@ static void ROOT_enter(MySm* self)
     self->current_state_exit_handler = ROOT_exit;
 }
 
+// The root exit function can't actually be called so we add code coverage markers.
+// LCOV_EXCLUDE_START
+// GCOV_EXCLUDE_START
+// GCOVR_EXCLUDE_START
 static void ROOT_exit(MySm* self)
 {
     // State machine root is a special case. It cannot be exited.
     (void)self;  // nothing to see here compiler. move along!
 }
-
+// LCOV_EXCLUDE_STOP
+// GCOV_EXCLUDE_STOP
+// GCOVR_EXCLUDE_STOP
 
 ////////////////////////////////////////////////////////////////////////////////
 // event handlers for state STATE_1
@@ -205,3 +200,14 @@ static void STATE_2_myev1(MySm* self)
 }
 
 
+// Converts an event id to a string. Thread safe.
+const char* MySm_event_id_to_string(const enum MySm_EventId id)
+{
+    switch (id)
+    {
+        case MySm_EventId_DO: return "do";
+        case MySm_EventId_EV2: return "ev2";
+        case MySm_EventId_MYEV1: return "myev1";
+    }
+    return "?";
+}

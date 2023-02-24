@@ -13,8 +13,8 @@ using StateSmith.Runner;
 SmRunner runner = new(diagramPath: "MySm.drawio.svg");
 
 // add our custom functionality to StateSmith
-// runner.GetExperimentalAccess().DiServiceProvider.AddSingletonT<ICodeFileWriter, MyCodeFileWriter>();
-// runner.GetExperimentalAccess().DiServiceProvider.AddSingletonT<MyEventIdToStringCreator, MyEventIdToStringCreator>();
+runner.GetExperimentalAccess().DiServiceProvider.AddSingletonT<ICodeFileWriter, MyCodeFileWriter>();
+runner.GetExperimentalAccess().DiServiceProvider.AddSingletonT<MyEventIdToStringCreator, MyEventIdToStringCreator>();
 
 // run StateSmith
 runner.Run();

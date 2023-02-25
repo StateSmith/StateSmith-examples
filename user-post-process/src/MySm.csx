@@ -68,19 +68,19 @@ public class MyRegexPostProcessor
 {
     public static string RemoveStateIdToStringFunction(string code)
     {
-        // See https://www.debuggex.com/r/FiMETjYifnxL-sxh
+        // See https://www.debuggex.com/r/gXfQMzS0tRShoWTp
         Regex regex = new(@"(?xm)
-            # matches any leading comments that are attached
+
+            # optional leading blank line
+            ^ [\t ]* (?: \r\n | \r | \n )?
+
+            # matches any leading single line comments that are attached
             (?:
-                (?: 
-                    //.* 
-                    |
-                    /[*] [\s\S]*? [*]/
-                )
+                // .*                # single line comment
                 (?: \r\n | \r | \n ) # a line ending
             )*
 
-            ^ [\w*\s]+ state_id_to_string \s* [(]
+            ^ [\w* \t]+ state_id_to_string \s* [(]
 
             # matches function prototype or body
             (?:

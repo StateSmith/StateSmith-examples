@@ -53,6 +53,5 @@ void MySm_start(MySm* self);
 // Dispatches an event to the state machine. Not thread safe.
 void MySm_dispatch_event(MySm* self, enum MySm_EventId event_id);
 
-
 // Converts an event id to a string. Thread safe.
 const char* MySm_event_id_to_string(const enum MySm_EventId id);

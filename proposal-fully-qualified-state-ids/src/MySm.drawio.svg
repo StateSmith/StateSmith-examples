@@ -1,0 +1,109 @@
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="522px" height="521px" viewBox="-0.5 -0.5 522 521" content="&lt;mxfile&gt;&lt;diagram id=&quot;Tqm6eFcu1KHT34LG2WWE&quot; name=&quot;Page-1&quot;&gt;7Vlbb9owGP01eZ1yBfqYUlgntdOkTrs8VS4xwZoTI8e0sF8/O/mSONhp2biok1IeGh9f43PO58/gBNNs+5Gj9eqeJZg6vptsneDG8X3PD8byn0J2FTL2gwpIOUmgUQs8kN8YQBfQDUlw0WkoGKOCrLvgguU5XogOhjhnL91mS0a7s65Rig3gYYGoiX4niVhV6CRyW/wWk3RVz+y5UJOhujEAxQol7EWDgpkTTDljonrKtlNM1ebV+1L1m/fUNgvjOBeHdIiqDs+IbuDdHD98+Bp/nd3H09tPn2ey0gliZ+o7sXu/e8hg2WJX74V8g7V6LF5IRlEuH685E0igp7KF7H2NKElz+UzxUi7q+hlzQeRmxgALtpbokuVijjJClSbuNguSIDnRlOUFUwNdFwJxAVIIXOgAZS+sy7AuT3WABc0JpVNGGZd4gpdoQ0W5xk2e4ATaIr6oh4pU8UlOuhE4bmE1gTaQ4wfeE/KwDxNr+LL8K1fM2S+s1bjuaBbPVc0aLUie3pX7ceONJGQSB1yq3cJbDQIiP2KWYcF3sgnUhqCpXbf40io0qmW30tTZgAhckTYjt8KRD6Adu45GFh3tCeUtgg9TicZBzkq1pRwlBLcUANzdfQBb1l2DBqUhjgvyW1Nuxp61kgxjWNe1ofONYEWrF5PSqIfSJlLBYJ1g0KEauA0s3FqoDU/ArFcPrFGJExkOoQg7uxIZhfeWr8t3P9SefIjq4k/YorJws+2UdlDq3a+CbfgCpp5AuEc8xbVRQgDVsl41CscUCfLcjeLHbM7EFj5JTgRB9FFGLIF746UcSB5XpfCLdXVILclWaXM/0Ljln0Wd+/rL2R16wg0NCdErD1djb4DxRt6H6K0YUw+r67DGjtJhaG52eVA9esecSQu5HZhf7lTaOyzmsfqYnEeh+pzjFDuFDtyrjgqa9EaTgRdY4tH4FPEovBrOmgPOmtYv/9dp4xnsVi43SR5cflaX76WTzZVFN7ktnzyJySPfYnIzERl8rjnmHD63RfFT3Be8yLx5zr6ZJ/kbmeaWiCrR9CMo/tSq2jxTFeo086zpaRN1OwlqTdHlE1QvCnriaTDE08vGU9/dC6i25PnK5rfoJIYLh4h6aEQNerh91xF1Yh6ZldPDwel/7XQL9RaJ9Ho96F6QIovTXc/UgXeS3GlihvzB6a8xazf1HuOVvd6H081vWyunRwbJg9OPdXof79suySCD0SW/CZmMLUYfXH6Uy0d/6/LzfRNiunz2zSRYvyExLlYsZTmisxa1X5jG/3Rh8i91Y6pD3OluTGXXmHO00xqsGclFoY38RQF6zj7q2LvO4ec97QPXf629fKhW0CqgeRWbKGSx/Sm4at7+oB7M/gA=&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs/>
+    <g>
+        <path d="M 520 30 L 520 7.5 Q 520 0 512.5 0 L 7.5 0 Q 0 0 0 7.5 L 0 30" fill="#1ba1e2" stroke="#006eaf" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 0 30 L 0 512.5 Q 0 520 7.5 520 L 512.5 520 Q 520 520 520 512.5 L 520 30" fill="rgb(255, 255, 255)" stroke="#006eaf" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 0 30 L 520 30" fill="none" stroke="#006eaf" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#ffffff" font-family="Lucida Console" font-weight="bold" font-size="14px">
+            <text x="17.5" y="19.5">
+                $STATEMACHINE : MySm
+            </text>
+        </g>
+        <rect x="0" y="30" width="50" height="40" fill="none" stroke="none" pointer-events="all"/>
+        <path d="M 174 65 L 174 93.63" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 174 98.88 L 170.5 91.88 L 174 93.63 L 177.5 91.88 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <ellipse cx="174" cy="52.5" rx="12.5" ry="12.5" fill="#000000" stroke="rgb(0, 0, 0)" pointer-events="all"/>
+        <path d="M 239 130 L 239 107.5 Q 239 100 231.5 100 L 116.5 100 Q 109 100 109 107.5 L 109 130" fill="#545454" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 109 130 L 109 162.5 Q 109 170 116.5 170 L 231.5 170 Q 239 170 239 162.5 L 239 130" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 109 130 L 239 130" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#FAFAFA" font-family="Lucida Console" font-weight="bold" text-anchor="middle" font-size="14px">
+            <text x="173.5" y="119.5">
+                STATE_1
+            </text>
+        </g>
+        <rect x="109" y="130" width="50" height="40" fill="none" stroke="none" pointer-events="all"/>
+        <path d="M 160 250 L 160 227.5 Q 160 220 152.5 220 L 47.5 220 Q 40 220 40 227.5 L 40 250" fill="#545454" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 40 250 L 40 282.5 Q 40 290 47.5 290 L 152.5 290 Q 160 290 160 282.5 L 160 250" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 40 250 L 160 250" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#FAFAFA" font-family="Lucida Console" font-weight="bold" text-anchor="middle" font-size="14px">
+            <text x="99.5" y="239.5">
+                STATE_2
+            </text>
+        </g>
+        <rect x="40" y="250" width="30" height="20" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Lucida Console" font-size="12px"/>
+        <path d="M 141.5 170 L 104.07 215.1" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 100.71 219.14 L 102.49 211.52 L 104.07 215.1 L 107.88 215.99 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 195px; margin-left: 121px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 11px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; background-color: rgb(255, 255, 255); white-space: nowrap;">
+                                EV1
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="121" y="198" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="11px" text-anchor="middle">
+                    EV1
+                </text>
+            </switch>
+        </g>
+        <path d="M 490 270 L 490 247.5 Q 490 240 482.5 240 L 207.5 240 Q 200 240 200 247.5 L 200 270" fill="#545454" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 200 270 L 200 482.5 Q 200 490 207.5 490 L 482.5 490 Q 490 490 490 482.5 L 490 270" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 200 270 L 490 270" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#FAFAFA" font-family="Lucida Console" font-weight="bold" text-anchor="middle" font-size="14px">
+            <text x="344.5" y="259.5">
+                STATE_3
+            </text>
+        </g>
+        <rect x="200" y="270" width="30" height="20" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Lucida Console" font-size="12px"/>
+        <path d="M 440 320 L 440 297.5 Q 440 290 432.5 290 L 246.5 290 Q 239 290 239 297.5 L 239 320" fill="#545454" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 239 320 L 239 452.5 Q 239 460 246.5 460 L 432.5 460 Q 440 460 440 452.5 L 440 320" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 239 320 L 440 320" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#FAFAFA" font-family="Lucida Console" font-weight="bold" text-anchor="middle" font-size="14px">
+            <text x="339" y="309.5">
+                STATE_4
+            </text>
+        </g>
+        <rect x="239" y="320" width="30" height="20" fill="none" stroke="none" pointer-events="all"/>
+        <g fill="rgb(0, 0, 0)" font-family="Lucida Console" font-size="12px"/>
+        <path d="M 399 380 L 399 357.5 Q 399 350 391.5 350 L 276.5 350 Q 269 350 269 357.5 L 269 380" fill="#545454" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 269 380 L 269 412.5 Q 269 420 276.5 420 L 391.5 420 Q 399 420 399 412.5 L 399 380" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 269 380 L 399 380" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <g fill="#FAFAFA" font-family="Lucida Console" font-weight="bold" text-anchor="middle" font-size="14px">
+            <text x="333.5" y="369.5">
+                STATE_5
+            </text>
+        </g>
+        <rect x="269" y="380" width="50" height="40" fill="none" stroke="none" pointer-events="all"/>
+        <path d="M 206.5 170 L 206.49 189.96 Q 206.48 199.96 216.48 199.96 L 291.52 199.96 Q 301.52 199.96 301.52 209.96 L 301.5 343.63" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 301.5 348.88 L 298 341.88 L 301.5 343.63 L 305 341.88 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <g transform="translate(-0.5 -0.5)">
+            <switch>
+                <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 212px; margin-left: 302px;">
+                        <div data-drawio-colors="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
+                            <div style="display: inline-block; font-size: 11px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; background-color: rgb(255, 255, 255); white-space: nowrap;">
+                                EV2
+                            </div>
+                        </div>
+                    </div>
+                </foreignObject>
+                <text x="302" y="216" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="11px" text-anchor="middle">
+                    EV2
+                </text>
+            </switch>
+        </g>
+    </g>
+    <switch>
+        <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
+        <a transform="translate(0,-5)" xlink:href="https://www.diagrams.net/doc/faq/svg-export-text-problems" target="_blank">
+            <text text-anchor="middle" font-size="10px" x="50%" y="100%">
+                Text is not SVG - cannot display
+            </text>
+        </a>
+    </switch>
+</svg>

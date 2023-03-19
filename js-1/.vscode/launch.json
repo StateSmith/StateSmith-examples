@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "debug dotnet script",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${env:HOME}/.dotnet/tools/dotnet-script",
+            "args": [
+                "${workspaceFolder}/OnOffSm.csx"
+            ],
+            "windows": {
+                "program": "${env:USERPROFILE}/.dotnet/tools/dotnet-script.exe",
+            },
+            "logging": {
+                "moduleLoad": false
+            },
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false
+        },        
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}

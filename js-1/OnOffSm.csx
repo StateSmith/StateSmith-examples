@@ -11,7 +11,10 @@ using StateSmith.Output.UserConfig;
 using StateSmith.Runner;
 using StateSmith.Common;
 
+TracingModder tm = new TracingModder();
+
 SmRunner runner = new(diagramPath: "OnOffSm.drawio", new MyGlueLogic(), transpilerId: TranspilerId.JavaScript);
+runner.SmTransformer.InsertAfterFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, new TransformationStep(id: nameof(TracingModder), action: (sm) => new TracingModder().AddTracingBehaviors(sm)));
 runner.Run();
 
 //-------------------------------------------------------

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2017",
+    "checkJs": true
+  },
+  "include": [
+    ".",
+  ],
+  "exclude": [
+    "dist/*",
+  ]
+}

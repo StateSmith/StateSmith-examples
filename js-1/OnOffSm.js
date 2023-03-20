@@ -49,11 +49,12 @@ class OnOffSm
             // ROOT.InitialState is a pseudo state and cannot have an `enter` trigger.
             
             // ROOT.InitialState behavior
-            // uml: TransitionTo(OFF)
+            // uml: / { trace("Transition action `` for ROOT.InitialState to OFF."); } TransitionTo(OFF)
             {
                 // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
-                // Step 2: Transition action: ``.
+                // Step 2: Transition action: `trace("Transition action `` for ROOT.InitialState to OFF.");`.
+                trace("Transition action `` for ROOT.InitialState to OFF.");
                 
                 // Step 3: Enter/move towards transition target `OFF`.
                 this.#OFF_enter();
@@ -67,7 +68,7 @@ class OnOffSm
     }
     
     // Dispatches an event to the state machine. Not thread safe.
-    dispatchEvent(/** @type {OnOffSm.EventId} */ eventId)
+    dispatchEvent(/** @type {number} */ eventId)
     {
         let behaviorFunc = this.#currentEventHandlers[eventId];
         
@@ -81,7 +82,7 @@ class OnOffSm
     
     // This function is used when StateSmith doesn't know what the active leaf state is at
     // compile time due to sub states or when multiple states need to be exited.
-    #exitUpToStateHandler(/** @type {OnOffSm.Func} */ desiredStateExitHandler)
+    #exitUpToStateHandler(/** @type {function} */ desiredStateExitHandler)
     {
         while (this.#currentStateExitHandler != desiredStateExitHandler)
         {
@@ -98,10 +99,23 @@ class OnOffSm
     {
         // setup trigger/event handlers
         this.#currentStateExitHandler = this.#ROOT_exit;
+        
+        // ROOT behavior
+        // uml: enter / { trace("Enter OnOffSm."); }
+        {
+            // Step 1: execute action `trace("Enter OnOffSm.");`
+            trace("Enter OnOffSm.");
+        } // end of behavior for ROOT
     }
     
     #ROOT_exit()
     {
+        // ROOT behavior
+        // uml: exit / { trace("Exit OnOffSm."); }
+        {
+            // Step 1: execute action `trace("Exit OnOffSm.");`
+            trace("Exit OnOffSm.");
+        } // end of behavior for ROOT
 ;
     }
     
@@ -117,7 +131,15 @@ class OnOffSm
         this.#currentEventHandlers[OnOffSm.EventId.INCREASE] = this.#OFF_increase;
         
         // OFF behavior
-        // uml: enter / { light_off(); }
+        // uml: enter / { trace("Enter OFF."); }
+        {
+            // Step 1: execute action `trace("Enter OFF.");`
+            trace("Enter OFF.");
+        } // end of behavior for OFF
+        
+        // OFF behavior
+        // uml: enter [trace_guard("State OFF: check behavior `enter / { light_off(); }`.", true)] / { light_off(); }
+        if (trace_guard("State OFF: check behavior `enter / { light_off(); }`.", true))
         {
             // Step 1: execute action `light_off();`
             console.log('light is off');
@@ -126,6 +148,13 @@ class OnOffSm
     
     #OFF_exit()
     {
+        // OFF behavior
+        // uml: exit / { trace("Exit OFF."); }
+        {
+            // Step 1: execute action `trace("Exit OFF.");`
+            trace("Exit OFF.");
+        } // end of behavior for OFF
+        
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#ROOT_exit;
         this.#currentEventHandlers[OnOffSm.EventId.INCREASE] = null;  // no ancestor listens to this event
@@ -136,12 +165,14 @@ class OnOffSm
         // No ancestor state handles `increase` event.
         
         // OFF behavior
-        // uml: INCREASE TransitionTo(ON1)
+        // uml: INCREASE [trace_guard("State OFF: check behavior `INCREASE TransitionTo(ON1)`.", true)] / { trace("Transition action `` for OFF to ON1."); } TransitionTo(ON1)
+        if (trace_guard("State OFF: check behavior `INCREASE TransitionTo(ON1)`.", true))
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#OFF_exit();
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `trace("Transition action `` for OFF to ON1.");`.
+            trace("Transition action `` for OFF to ON1.");
             
             // Step 3: Enter/move towards transition target `ON1`.
             this.#ON1_enter();
@@ -165,7 +196,15 @@ class OnOffSm
         this.#currentEventHandlers[OnOffSm.EventId.DIM] = this.#ON1_dim;
         
         // ON1 behavior
-        // uml: enter / { light_blue(); }
+        // uml: enter / { trace("Enter ON1."); }
+        {
+            // Step 1: execute action `trace("Enter ON1.");`
+            trace("Enter ON1.");
+        } // end of behavior for ON1
+        
+        // ON1 behavior
+        // uml: enter [trace_guard("State ON1: check behavior `enter / { light_blue(); }`.", true)] / { light_blue(); }
+        if (trace_guard("State ON1: check behavior `enter / { light_blue(); }`.", true))
         {
             // Step 1: execute action `light_blue();`
             console.log('light is blue');
@@ -174,6 +213,13 @@ class OnOffSm
     
     #ON1_exit()
     {
+        // ON1 behavior
+        // uml: exit / { trace("Exit ON1."); }
+        {
+            // Step 1: execute action `trace("Exit ON1.");`
+            trace("Exit ON1.");
+        } // end of behavior for ON1
+        
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#ROOT_exit;
         this.#currentEventHandlers[OnOffSm.EventId.DIM] = null;  // no ancestor listens to this event
@@ -184,12 +230,14 @@ class OnOffSm
         // No ancestor state handles `dim` event.
         
         // ON1 behavior
-        // uml: DIM TransitionTo(OFF)
+        // uml: DIM [trace_guard("State ON1: check behavior `DIM TransitionTo(OFF)`.", true)] / { trace("Transition action `` for ON1 to OFF."); } TransitionTo(OFF)
+        if (trace_guard("State ON1: check behavior `DIM TransitionTo(OFF)`.", true))
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#ON1_exit();
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `trace("Transition action `` for ON1 to OFF.");`.
+            trace("Transition action `` for ON1 to OFF.");
             
             // Step 3: Enter/move towards transition target `OFF`.
             this.#OFF_enter();
@@ -202,7 +250,7 @@ class OnOffSm
     }
     
     // Thread safe.
-    stateIdToString(/** @type {OnOffSm.StateId} */ id)
+    stateIdToString(/** @type {number} */ id)
     {
         switch (id)
         {
@@ -214,7 +262,7 @@ class OnOffSm
     }
     
     // Thread safe.
-    eventIdToString(/** @type {OnOffSm.EventId} */ id)
+    eventIdToString(/** @type {number} */ id)
     {
         switch (id)
         {

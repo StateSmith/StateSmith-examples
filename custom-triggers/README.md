@@ -1,6 +1,12 @@
 # Assumptions
-Assumes that you have gone through the [example-drawio-1](https://github.com/StateSmith/example-drawio-1) walk through already.
+Assumes that you have gone through basic StateSmith tutorials already.
 
+# TriggerMap is a better solution
+See `trigger-map` example or https://github.com/StateSmith/StateSmith/issues/161
+
+This example still has some interesting stuff in it if you want to explore how you can extend StateSmith functionality.
+
+---
 
 # Custom Triggers
 This example shows how you can write user code to support custom triggers.

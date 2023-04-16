@@ -2,7 +2,7 @@
 "use strict";
 class StateSmithUiVersion {
     static MAJOR = () => 0;
-    static MINOR = () => 5;
+    static MINOR = () => 6;
     static PATCH = () => 0;
 
     /** may be 'release' or 'wip' for work-in-progress  */
@@ -37,7 +37,11 @@ class StateSmithUi {
         this.graph = graph;
         this.ssModel = new StateSmithModel(graph);
 
+        this.findByIdModule = new StateSmithFindById(app, graph);
+
         this._registerDependencyInjection();
+
+        this.#overrideVscodeDarkStyles();
     }
 
     addToolbarButtons()
@@ -56,16 +60,18 @@ class StateSmithUi {
         elements[1].setAttribute('title', mxResources.get('enterGroup') + ' (' + actions.get('enterGroup').shortcut + ')');
         elements[2].setAttribute('title', mxResources.get('exitGroup') + ' (' + actions.get('exitGroup').shortcut + ')');
 	
-        this._setToolbarElementImage(elements[0], StateSmithImages.home())
-        this._setToolbarElementImage(elements[1], StateSmithImages.enter())
-        this._setToolbarElementImage(elements[2], StateSmithImages.exit())
+        StateSmithUi.setToolbarElementImage(elements[0], StateSmithImages.home());
+        StateSmithUi.setToolbarElementImage(elements[1], StateSmithImages.enter());
+        StateSmithUi.setToolbarElementImage(elements[2], StateSmithImages.exit());
+
+        this.findByIdModule.addToolbarButtons();
     }
 
     /**
      * @param {HTMLAnchorElement | HTMLDivElement} element
      * @param {string} imageStr
      */
-    _setToolbarElementImage(element, imageStr)
+    static setToolbarElementImage(element, imageStr)
     {
         let div = element.getElementsByTagName("div")[0];
         div.style.backgroundImage = imageStr;
@@ -354,15 +360,23 @@ class StateSmithUi {
         </mxfile>
         `;
 
-        // let x =  mxUtils.parseXml(xml);
         return xml;
     }
 
+    // This isn't actual dependency injection. More like service locator pattern.
     _registerDependencyInjection() {
         let di = StateSmithDi.di;
 
         di.getApp = () => this.app;
         di.getEditorUi = () => StateSmithModel.getEditorUi(this.app);
+    }
+
+    // https://github.com/StateSmith/StateSmith-drawio-plugin/issues/34
+    #overrideVscodeDarkStyles() {
+        var style = document.createElement("style");
+        var css = "body.geEditor.vscode-dark { color: #CCC; }";
+        style.appendChild(document.createTextNode(css));
+        document.head.appendChild(style);
     }
 
 }
@@ -754,7 +768,7 @@ class StateSmithCustomUnGroup {
 
 /**
  * This class is meant to act like some very simple Dependency Injection to help
- * reduce the burden of wiring things up.
+ * reduce the burden of wiring things up. More like service locator pattern.
  */
 class StateSmithDi {
 
@@ -1034,11 +1048,75 @@ class StateSmithExpandingSave {
 }
 
 
+// StateSmithFindById.js
+"use strict";
+
+class StateSmithFindById {
+
+    /**
+     * @param {mxGraph} graph
+     * @param {App} app
+     */
+    constructor(app, graph) {
+        this.app = app;
+        this.graph = graph;
+    }
+
+    addToolbarButtons() {
+        let toolbar = StateSmithModel.getToolbar(this.app);
+
+        const findByIdButton = toolbar.addButton("someClassName", "Find by diagram ID", () => {
+            this.showDialog();
+        });
+
+        StateSmithUi.setToolbarElementImage(findByIdButton, StateSmithImages.findById());
+    }
+
+    showDialog() {
+        /** @type {any} */
+        const editorUi = this.app;
+        const graph = this.graph;
+        const buttonText = "Find";
+        const initialValue = "";
+
+        // Why FilenameDialog? Because it is the simplest way to do what we want.
+        // It is also used internally by draw.io for things like setting custom zoom so it seems OK.
+        var dialog = new FilenameDialog(editorUi, initialValue, buttonText, mxUtils.bind(this, function(/** @type {string} */ targetId)
+        {
+            targetId = targetId.trim();
+            const model = StateSmithModel.getModelFromGraph(graph);
+
+            /** @type {mxCell} */
+            const targetCell = model.getCell(targetId);
+            if (!targetCell)
+            {
+                StateSmithDi.di.showErrorModal("No cell found", `Check the target cell ID '${targetId}'.`);
+                return;
+            }
+
+            if (targetCell == model.getRoot() || targetCell.parent == model.getRoot())
+            {
+                StateSmithDi.di.showErrorModal("Special draw.io node", `We can't view this special draw.io node.`);
+                return;
+            }
+
+            graph.view.setCurrentRoot(targetCell.parent);
+            // this.graph.zoomTo(1.0); // might want to consider
+            graph.scrollCellToVisible(targetCell, true);
+            graph.setSelectionCell(targetCell);  // clears existing selection
+        }), "ID to find");
+
+        editorUi.showDialog(dialog.container, 300, 80, true, true);
+        dialog.init();
+    }
+}
+
+
 // StateSmithImages.js
 class StateSmithImages
 {
     // icons should be 21 x 21 pixels
-    // generate to url base64 with https://base64.guru/converter/encode/image/svg
+    // generate to url base64 with https://base64.guru/converter/encode/image/svg . Select "Output Format" as "Data URI".
     
     // https://icons.getbootstrap.com/icons/house/
     static home = () => 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDIxIDIxIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zOnNlcmlmPSJodHRwOi8vd3d3LnNlcmlmLmNvbS8iIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLW1pdGVybGltaXQ6MjsiPgogICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS4zMzM4OSwwLDAsMS4zMzM4OSwtMC4xNzEwOTcsLTAuMjA2MDE4KSI+CiAgICAgICAgPHBhdGggZD0iTTguNzA3LDEuNUM4LjMxOSwxLjExMiA3LjY4MSwxLjExMiA3LjI5MywxLjVMMC42NDYsOC4xNDZDMC41NTIsOC4yNCAwLjQ5OSw4LjM2NyAwLjQ5OSw4LjVDMC40OTksOC43NzUgMC43MjUsOS4wMDEgMSw5LjAwMUMxLjEzMyw5LjAwMSAxLjI2LDguOTQ4IDEuMzU0LDguODU0TDIsOC4yMDdMMiwxMy41QzIsMTQuMzIzIDIuNjc3LDE1IDMuNSwxNUwxMi41LDE1QzEzLjMyMywxNSAxNCwxNC4zMjMgMTQsMTMuNUwxNCw4LjIwN0wxNC42NDYsOC44NTRDMTQuNzQsOC45NDggMTQuODY3LDkuMDAxIDE1LDkuMDAxQzE1LjI3NSw5LjAwMSAxNS41MDEsOC43NzUgMTUuNTAxLDguNUMxNS41MDEsOC4zNjcgMTUuNDQ4LDguMjQgMTUuMzU0LDguMTQ2TDEzLDUuNzkzTDEzLDIuNUMxMywyLjIyNiAxMi43NzQsMiAxMi41LDJMMTEuNSwyQzExLjIyNiwyIDExLDIuMjI2IDExLDIuNUwxMSwzLjc5M0w4LjcwNywxLjVaTTEzLDcuMjA3TDEzLDEzLjVDMTMsMTMuNzc0IDEyLjc3NCwxNCAxMi41LDE0TDMuNSwxNEMzLjIyNiwxNCAzLDEzLjc3NCAzLDEzLjVMMyw3LjIwN0w4LDIuMjA3TDEzLDcuMjA3WiIgc3R5bGU9ImZpbGwtcnVsZTpub256ZXJvOyIvPgogICAgPC9nPgo8L3N2Zz4K)';
@@ -1048,6 +1126,9 @@ class StateSmithImages
 
     // https://icons.getbootstrap.com/icons/box-arrow-left/
     static exit = () => 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDIxIDIxIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zOnNlcmlmPSJodHRwOi8vd3d3LnNlcmlmLmNvbS8iIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLW1pdGVybGltaXQ6MjsiPgogICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS4yNTI5NSwwLDAsMS4yNTI5NSwwLjQ3NjUwNywwLjQ3NjM5NCkiPgogICAgICAgIDxwYXRoIGQ9Ik02LDEyLjVDNiwxMi43NzQgNi4yMjYsMTMgNi41LDEzTDE0LjUsMTNDMTQuNzc0LDEzIDE1LDEyLjc3NCAxNSwxMi41TDE1LDMuNUMxNSwzLjIyNiAxNC43NzQsMyAxNC41LDNMNi41LDNDNi4yMjYsMyA2LDMuMjI2IDYsMy41TDYsNS41QzYsNS43NzQgNS43NzQsNiA1LjUsNkM1LjIyNiw2IDUsNS43NzQgNSw1LjVMNSwzLjVDNSwyLjY3NyA1LjY3NywyIDYuNSwyTDE0LjUsMkMxNS4zMjMsMiAxNiwyLjY3NyAxNiwzLjVMMTYsMTIuNUMxNiwxMy4zMjMgMTUuMzIzLDE0IDE0LjUsMTRMNi41LDE0QzUuNjc3LDE0IDUsMTMuMzIzIDUsMTIuNUw1LDEwLjVDNSwxMC4yMjYgNS4yMjYsMTAgNS41LDEwQzUuNzc0LDEwIDYsMTAuMjI2IDYsMTAuNUw2LDEyLjVaIi8+CiAgICA8L2c+CiAgICA8ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLjI1Mjk1LDAsMCwxLjI1Mjk1LDAuNDc2NTA3LDAuNDc2Mzk0KSI+CiAgICAgICAgPHBhdGggZD0iTTAuMTQ2LDguMzU0QzAuMDUyLDguMjYgLTAuMDAxLDguMTMzIC0wLjAwMSw4Qy0wLjAwMSw3Ljg2NyAwLjA1Miw3Ljc0IDAuMTQ2LDcuNjQ2TDMuMTQ2LDQuNjQ2QzMuMjQsNC41NTIgMy4zNjcsNC40OTkgMy41LDQuNDk5QzMuNzc1LDQuNDk5IDQuMDAxLDQuNzI1IDQuMDAxLDVDNC4wMDEsNS4xMzMgMy45NDgsNS4yNiAzLjg1NCw1LjM1NEwxLjcwNyw3LjVMMTAuNSw3LjVDMTAuNzc0LDcuNSAxMSw3LjcyNiAxMSw4QzExLDguMjc0IDEwLjc3NCw4LjUgMTAuNSw4LjVMMS43MDcsOC41TDMuODU0LDEwLjY0NkMzLjk0OCwxMC43NCA0LjAwMSwxMC44NjcgNC4wMDEsMTFDNC4wMDEsMTEuMjc1IDMuNzc1LDExLjUwMSAzLjUsMTEuNTAxQzMuMzY3LDExLjUwMSAzLjI0LDExLjQ0OCAzLjE0NiwxMS4zNTRMMC4xNDYsOC4zNTRaIi8+CiAgICA8L2c+Cjwvc3ZnPgo=)';
+
+    // see svg in templates dir
+    static findById = () => 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDIxIDIxIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zOnNlcmlmPSJodHRwOi8vd3d3LnNlcmlmLmNvbS8iIHN0eWxlPSJmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtzdHJva2UtbGluZWpvaW46cm91bmQ7c3Ryb2tlLW1pdGVybGltaXQ6MjsiPgogICAgPGcgdHJhbnNmb3JtPSJtYXRyaXgoMS4wMDYwNywwLDAsMS4wMDYwNywwLjEwMDAwNiwxLjc5NjE4KSI+CiAgICAgICAgPHRleHQgeD0iMi4xMzVweCIgeT0iMTQuMzYxcHgiIHN0eWxlPSJmb250LWZhbWlseTonRnJhbmtsaW5Hb3RoaWMtSGVhdnknLCAnRnJhbmtsaW4gR290aGljIEhlYXZ5Jywgc2Fucy1zZXJpZjtmb250LXNpemU6MTUuOTAzcHg7Ij5JRDwvdGV4dD4KICAgIDwvZz4KPC9zdmc+Cg==)';
 }
 
 
@@ -1230,6 +1311,38 @@ class StateSmithModel {
     }
 
     /**
+     * @param {mxGraph} graph
+     * @param {mxCell} cell
+     * @returns {any}
+     */
+    static getCellStyle(graph, cell) {
+        return graph.getCellStyle(cell);
+    }
+
+    /**
+     * @param {mxGraph} graph
+     * @param {mxCell} cell
+     */
+    static isNestedBehaviorTextNode(graph, cell) {
+        if (!cell.isVertex())
+            return false;
+
+        // See https://github.com/StateSmith/StateSmith/issues/111#issuecomment-1442266311
+        const style = this.getCellStyle(graph, cell);
+
+        const fillColor = style[mxConstants.STYLE_FILLCOLOR] || "none";
+        if (fillColor != "none") return false;
+
+        const gradientColor = style[mxConstants.STYLE_GRADIENTCOLOR] || "none";
+        if (gradientColor != "none") return false;
+
+        const strokeColor = style[mxConstants.STYLE_STROKECOLOR] || "none";
+        if (strokeColor != "none") return false;
+
+        return true;
+    }
+
+    /**
      * Will ignore collapsed groups.
      * @param {mxGraph} graph
      * @param {mxCell} group
@@ -1397,22 +1510,19 @@ class StateSmithNewStateNamer {
      * @param {mxCell[]} cells
      */
     newCellsAreBeingAdded(cells) {
-        if (this.importActive)
-            return true;
-
         let isNewlyAdded = false;
-        cells.forEach(cell => {
-            isNewlyAdded = cell.parent == null;
-            if (isNewlyAdded)
-                return; // from forEach function
-        });
+
+        for (let i = 0; !isNewlyAdded && i < cells.length; i++) {
+            const cell = cells[i];
+            isNewlyAdded = this.#cellIsBeingAdded(cell);
+        }
 
         return isNewlyAdded
     }
 
     /**
      * Note! Draw.io calls this function even when moving existing cells,
-     * not just when added which is un-intuitive.
+     * not just when new cells are added (which is un-intuitive).
      * @param {mxCell[]} cells
      * @param {mxCell} parent
      */
@@ -1420,17 +1530,34 @@ class StateSmithNewStateNamer {
         if (!this.newCellsAreBeingAdded(cells))
             return;
 
-        let existingNames = [""];
-        let smRoot = StateSmithModel.findStateMachineAncestor(parent);
-        StateSmithModel.visitVertices(smRoot, vertex => existingNames.push(vertex.value));
+        if (!StateSmithModel.isPartOfStateSmith(parent))
+            return;
+
+        let existingNames = [];
+        parent.children.forEach((/** @type {mxCell} */ kidCell) => {
+            // In StateSmith v0.8.11, auto name conflict resolution is enabled by default. https://github.com/StateSmith/StateSmith/issues/138
+            // We only need to look for conflicts within the parent's immediate children :)
+            const isNestedBehaviorTextNode = StateSmithModel.isNestedBehaviorTextNode(this.graph, kidCell);
+
+            if (kidCell.isVertex() && !isNestedBehaviorTextNode) {
+                existingNames.push(kidCell.value);
+            }
+        });
 
         cells.forEach(cell => {
-            let isNewlyAdded = cell.parent == null || this.importActive;
+            const isNewlyAdded = this.#cellIsBeingAdded(cell);
 
-            if (isNewlyAdded && cell.isVertex() && StateSmithModel.isPartOfStateSmith(parent)) {
+            if (cell.isVertex() && isNewlyAdded) {
                 this.renameCellBeingAdded(cell, existingNames);
             }
         });
+    }
+
+    /**
+     * @param {mxCell} cell
+     */
+    #cellIsBeingAdded(cell) {
+        return cell.parent == null || this.importActive;
     }
 
     /**
@@ -1446,15 +1573,19 @@ class StateSmithNewStateNamer {
             return;
         }
 
-        let match = label.match(/^\s*(\w+?)(\d+)\s*$/) || [label, label, "1"];
+        let match = label.match(/^\s*(\w+?)(\d+)\s*$/) || [label, label, ""];
 
         let nameStart = match[1];
-        let postfixNumber = parseInt(match[2]);
-        let newLabel = nameStart + postfixNumber;
+        let postfixNumber = parseInt(match[2]); // can be NaN
+        let newLabel = nameStart + (postfixNumber || ""); // || to handle NaN
 
         while (existingNames.includes(newLabel))
         {
-            postfixNumber++;
+            if (Number.isInteger(postfixNumber))
+                postfixNumber++;
+            else
+                postfixNumber = 1;
+
             newLabel = nameStart + postfixNumber;
         }
 

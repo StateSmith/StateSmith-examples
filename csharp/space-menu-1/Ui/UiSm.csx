@@ -1,5 +1,5 @@
 #!/usr/bin/env dotnet-script
-#r "nuget: StateSmith, 0.8.6-alpha"
+#r "nuget: StateSmith, 0.8.15-alpha"
 
 // This is a C# script file. Very useful for running StateSmith.
 // https://github.com/StateSmith/StateSmith/wiki/Using-c%23-script-files-(.CSX)-instead-of-solutions-and-projects

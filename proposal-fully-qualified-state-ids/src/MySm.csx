@@ -1,5 +1,5 @@
 #!/usr/bin/env dotnet-script
-#r "nuget: StateSmith, 0.7.15-alpha" // this line specifies which version of StateSmith to use and download from c# nuget web service.
+#r "nuget: StateSmith, 0.8.15-alpha" // this line specifies which version of StateSmith to use and download from c# nuget web service.
 
 // spell-checker: ignore drawio
 

@@ -2,7 +2,7 @@
 "use strict";
 class StateSmithUiVersion {
     static MAJOR = () => 0;
-    static MINOR = () => 4;
+    static MINOR = () => 5;
     static PATCH = () => 0;
 
     /** may be 'release' or 'wip' for work-in-progress  */
@@ -75,6 +75,12 @@ class StateSmithUi {
     {
         let enterExitHandler = new StateSmithEnterExitHandler(this, this.graph);
         enterExitHandler.addIntercepts();
+    }
+
+    addCustomOnSave()
+    {
+        let saver = new StateSmithExpandingSave(this);
+        saver.overrideDrawioFunctions();
     }
 
     addCustomGroupingBehavior() {
@@ -375,7 +381,7 @@ class StateSmithUiStyles {
         style[mxConstants.STYLE_RESIZABLE] = 0;
         style[mxConstants.STYLE_ROTATABLE] = 0;
         style[mxConstants.STYLE_NOLABEL] = 1;
-        style[mxConstants.STYLE_EDITABLE] = 0; // can be unlocked in draw.io, but not the vscode extension.
+        // style[mxConstants.STYLE_EDITABLE] = 0; // don't do. Prevents shape from being deleted. https://github.com/StateSmith/StateSmith-drawio-plugin/issues/27
 
         return this;
     }
@@ -416,7 +422,7 @@ class StateSmithUiStyles {
         style[mxConstants.STYLE_ASPECT] = "fixed";
         style[mxConstants.STYLE_RESIZABLE] = 0;
         style[mxConstants.STYLE_ROTATABLE] = 0;
-        style[mxConstants.STYLE_EDITABLE] = 0; // can be unlocked in draw.io, but not the vscode extension.
+        // style[mxConstants.STYLE_EDITABLE] = 0; // don't do. Prevents shape from being deleted. https://github.com/StateSmith/StateSmith-drawio-plugin/issues/27
 
         style[mxConstants.STYLE_LABEL_POSITION] = mxConstants.ALIGN_CENTER;
         style[mxConstants.STYLE_VERTICAL_LABEL_POSITION] = mxConstants.ALIGN_MIDDLE;
@@ -958,6 +964,71 @@ class StateSmithEnterExitHandler {
 
         if (rectangle.y != null) {
             this.graph.container.scrollTop = rectangle.y - 80;
+        }
+    }
+}
+
+
+// StateSmithExpandingSave.js
+"use strict";
+
+/**
+ * https://github.com/StateSmith/StateSmith-drawio-plugin/issues/28
+ */
+class StateSmithExpandingSave {
+
+    /** @type {StateSmithUi} */
+    ssUi = null;
+
+    /**
+     * @param {StateSmithUi} ssUi
+     */
+    constructor(ssUi) {
+        this.ssUi = ssUi;
+    }
+
+    overrideDrawioFunctions() {
+        let graph = this.ssUi.graph;
+
+        /** @type {any} */
+        let app = this.ssUi.app;
+
+        overrideSaveAction("save"); // this is for CTRL+S
+
+        window.setTimeout(() => {
+            overrideSaveAction("vscode.save");  // This is for vscode-draw.io custom save menu entry. action doesn't exist when StateSmith plugin loads so we wait a bit first
+        }, 250);
+
+
+        /**
+         * @param {string} actionName
+         */
+        function overrideSaveAction(actionName) {
+            let saveAction = app.actions.get(actionName); //"vscode.save", "save"
+
+            if (!saveAction) {
+                console.log(`StateSmith - couldn't get save action "${actionName}"`);
+            }
+            else {
+                console.log(`StateSmith - overriding save action "${actionName}"`);
+
+                let originalSaveFunc = saveAction.funct;
+                saveAction.funct = function () {
+                    let currentRoot = graph.view.currentRoot;
+
+                    while (currentRoot != null) {
+                        StateSmithModel.fitExpandedGroupToChildren(graph, currentRoot);
+                        currentRoot = currentRoot.parent;
+                    }
+
+                    // Delay original save action because our change above needs a bit of time to take effect.
+                    // Not sure how to make it take effect right away. Any ideas?
+                    let funcOwner = this;
+                    window.setTimeout(() => {
+                        originalSaveFunc.apply(funcOwner, arguments);
+                    }, 250);
+                };
+            }
         }
     }
 }
@@ -1620,6 +1691,7 @@ function StateSmith_drawio_plugin(app) {
     ssUi.addNewStateNamer();
     ssUi.addSmartDelete();
     ssUi.addUnGroupProtection();
+    ssUi.addCustomOnSave();
 }
 
 window["Draw"].loadPlugin(StateSmith_drawio_plugin);

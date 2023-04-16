@@ -1,3 +1,0 @@
-# Welcome!
-
-Example in progress.

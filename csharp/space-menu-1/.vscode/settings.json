@@ -1,0 +1,7 @@
+{
+    "hediet.vscode-drawio.plugins": [
+        {
+            "file": "${workspaceFolder}/.vscode/StateSmith-drawio-plugin-v0.5.0.js"
+        }
+    ],
+}

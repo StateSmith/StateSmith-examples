@@ -14,11 +14,6 @@ public class MyRenderConfig : IRenderConfigJavaScript
 {
     public class MyExpansions : UserExpansionScriptBase
     {
-        public string log_unhandled_event()
-        {
-            return $"""
-            log_unhandled_event("{CurrentTrigger}")
-            """;
-        }
+        public string log_unhandled_event() => $"""log_unhandled_event("{CurrentTrigger}")""";
     }
 }

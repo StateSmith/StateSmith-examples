@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+    <title>example - TriggerMap</title>
+    <script src="MySm.js"></script>
+</head>
+
+<body>
+    <button>INC1</button>
+    <button>INC2</button>
+    <button>DIM1</button>
+    <button>DIM2</button>
+    <button>ERR</button>
+    <button>INCITE_RESET</button>
+
+    <h2 style="font-family: monospace;">
+        State:
+        <span id="current-state">?</span>
+    </h2>
+
+    <p>
+        Unhandled Event Log:
+        <pre id="log-output" style="width: 500px; padding:5px; border:1px solid black;"></pre>
+    </p>
+</body>
+
+<!-- script below html <body> so that we can modify output HTML element -->
+<script src="index.js"></script>
+
+</html>

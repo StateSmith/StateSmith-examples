@@ -21,11 +21,11 @@ class MySm
     static StateId = 
     {
         ROOT : 0,
-        ERR : 1,
-        NORMAL : 2,
+        NORMAL : 1,
+        BLUE : 2,
         OFF : 3,
-        ON1 : 4,
-        ON2 : 5,
+        YELLOW : 4,
+        RED : 5,
     }
     static { Object.freeze(this.StateId); }
     
@@ -211,126 +211,6 @@ class MySm
     
     
     ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state ERR
-    ////////////////////////////////////////////////////////////////////////////////
-    
-    #ERR_enter()
-    {
-        // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#ERR_exit;
-        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#ERR_dim1;
-        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#ERR_dim2;
-        this.#currentEventHandlers[MySm.EventId.INC1] = this.#ERR_inc1;
-        this.#currentEventHandlers[MySm.EventId.INC2] = this.#ERR_inc2;
-        this.#currentEventHandlers[MySm.EventId.INCITE_RESET] = this.#ERR_incite_reset;
-        
-        // ERR behavior
-        // uml: enter / { set_state("ERR"); }
-        {
-            // Step 1: execute action `set_state("ERR");`
-            set_state("ERR");
-        } // end of behavior for ERR
-    }
-    
-    #ERR_exit()
-    {
-        // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#ROOT_exit;
-        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#ROOT_dim1;  // the next ancestor that handles this event is ROOT
-        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#ROOT_dim2;  // the next ancestor that handles this event is ROOT
-        this.#currentEventHandlers[MySm.EventId.INC1] = this.#ROOT_inc1;  // the next ancestor that handles this event is ROOT
-        this.#currentEventHandlers[MySm.EventId.INC2] = this.#ROOT_inc2;  // the next ancestor that handles this event is ROOT
-        this.#currentEventHandlers[MySm.EventId.INCITE_RESET] = this.#ROOT_incite_reset;  // the next ancestor that handles this event is ROOT
-    }
-    
-    #ERR_dim1()
-    {
-        // Setup handler for next ancestor that listens to `dim1` event.
-        this.#ancestorEventHandler = this.#ROOT_dim1;
-        
-        // ERR behavior
-        // uml: (DIM1, INC1, DIM2, INC2) / { beep(); }
-        {
-            // Step 1: execute action `beep();`
-            beep();
-            
-            // Step 2: determine if ancestor gets to handle event next.
-            this.#ancestorEventHandler = null;  // consume event
-        } // end of behavior for ERR
-    }
-    
-    #ERR_dim2()
-    {
-        // Setup handler for next ancestor that listens to `dim2` event.
-        this.#ancestorEventHandler = this.#ROOT_dim2;
-        
-        // ERR behavior
-        // uml: (DIM1, INC1, DIM2, INC2) / { beep(); }
-        {
-            // Step 1: execute action `beep();`
-            beep();
-            
-            // Step 2: determine if ancestor gets to handle event next.
-            this.#ancestorEventHandler = null;  // consume event
-        } // end of behavior for ERR
-    }
-    
-    #ERR_inc1()
-    {
-        // Setup handler for next ancestor that listens to `inc1` event.
-        this.#ancestorEventHandler = this.#ROOT_inc1;
-        
-        // ERR behavior
-        // uml: (DIM1, INC1, DIM2, INC2) / { beep(); }
-        {
-            // Step 1: execute action `beep();`
-            beep();
-            
-            // Step 2: determine if ancestor gets to handle event next.
-            this.#ancestorEventHandler = null;  // consume event
-        } // end of behavior for ERR
-    }
-    
-    #ERR_inc2()
-    {
-        // Setup handler for next ancestor that listens to `inc2` event.
-        this.#ancestorEventHandler = this.#ROOT_inc2;
-        
-        // ERR behavior
-        // uml: (DIM1, INC1, DIM2, INC2) / { beep(); }
-        {
-            // Step 1: execute action `beep();`
-            beep();
-            
-            // Step 2: determine if ancestor gets to handle event next.
-            this.#ancestorEventHandler = null;  // consume event
-        } // end of behavior for ERR
-    }
-    
-    #ERR_incite_reset()
-    {
-        // Setup handler for next ancestor that listens to `incite_reset` event.
-        this.#ancestorEventHandler = this.#ROOT_incite_reset;
-        
-        // ERR behavior
-        // uml: INCITE_RESET TransitionTo(NORMAL)
-        {
-            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-            this.#ERR_exit();
-            
-            // Step 2: Transition action: ``.
-            
-            // Step 3: Enter/move towards transition target `NORMAL`.
-            this.#NORMAL_enter();
-            
-            // Finish transition by calling pseudo state transition function.
-            this.#NORMAL_InitialState_transition();
-            return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
-        } // end of behavior for ERR
-    }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////
     // event handlers for state NORMAL
     ////////////////////////////////////////////////////////////////////////////////
     
@@ -354,18 +234,18 @@ class MySm
         this.#ancestorEventHandler = this.#ROOT_err;
         
         // NORMAL behavior
-        // uml: ERR TransitionTo(ERR)
+        // uml: ERR TransitionTo(RED)
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ROOT_exit);
             
             // Step 2: Transition action: ``.
             
-            // Step 3: Enter/move towards transition target `ERR`.
-            this.#ERR_enter();
+            // Step 3: Enter/move towards transition target `RED`.
+            this.#RED_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.ERR;
+            this.stateId = MySm.StateId.RED;
             this.#ancestorEventHandler = null;
             return;
         } // end of behavior for NORMAL
@@ -392,6 +272,130 @@ class MySm
     
     
     ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state BLUE
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #BLUE_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#BLUE_exit;
+        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#BLUE_dim1;
+        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#BLUE_dim2;
+        this.#currentEventHandlers[MySm.EventId.INC1] = this.#BLUE_inc1;
+        this.#currentEventHandlers[MySm.EventId.INC2] = this.#BLUE_inc2;
+        
+        // BLUE behavior
+        // uml: enter / { set_color("#a2f2ff"); }
+        {
+            // Step 1: execute action `set_color("#a2f2ff");`
+            set_color("#a2f2ff");
+        } // end of behavior for BLUE
+    }
+    
+    #BLUE_exit()
+    {
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#NORMAL_exit;
+        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#ROOT_dim1;  // the next ancestor that handles this event is ROOT
+        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#ROOT_dim2;  // the next ancestor that handles this event is ROOT
+        this.#currentEventHandlers[MySm.EventId.INC1] = this.#ROOT_inc1;  // the next ancestor that handles this event is ROOT
+        this.#currentEventHandlers[MySm.EventId.INC2] = this.#ROOT_inc2;  // the next ancestor that handles this event is ROOT
+    }
+    
+    #BLUE_dim1()
+    {
+        // Setup handler for next ancestor that listens to `dim1` event.
+        this.#ancestorEventHandler = this.#ROOT_dim1;
+        
+        // BLUE behavior
+        // uml: (DIM1, DIM2) TransitionTo(OFF)
+        {
+            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
+            this.#BLUE_exit();
+            
+            // Step 2: Transition action: ``.
+            
+            // Step 3: Enter/move towards transition target `OFF`.
+            this.#OFF_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = MySm.StateId.OFF;
+            this.#ancestorEventHandler = null;
+            return;
+        } // end of behavior for BLUE
+    }
+    
+    #BLUE_dim2()
+    {
+        // Setup handler for next ancestor that listens to `dim2` event.
+        this.#ancestorEventHandler = this.#ROOT_dim2;
+        
+        // BLUE behavior
+        // uml: (DIM1, DIM2) TransitionTo(OFF)
+        {
+            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
+            this.#BLUE_exit();
+            
+            // Step 2: Transition action: ``.
+            
+            // Step 3: Enter/move towards transition target `OFF`.
+            this.#OFF_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = MySm.StateId.OFF;
+            this.#ancestorEventHandler = null;
+            return;
+        } // end of behavior for BLUE
+    }
+    
+    #BLUE_inc1()
+    {
+        // Setup handler for next ancestor that listens to `inc1` event.
+        this.#ancestorEventHandler = this.#ROOT_inc1;
+        
+        // BLUE behavior
+        // uml: (INC1, INC2) TransitionTo(YELLOW)
+        {
+            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
+            this.#BLUE_exit();
+            
+            // Step 2: Transition action: ``.
+            
+            // Step 3: Enter/move towards transition target `YELLOW`.
+            this.#YELLOW_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = MySm.StateId.YELLOW;
+            this.#ancestorEventHandler = null;
+            return;
+        } // end of behavior for BLUE
+    }
+    
+    #BLUE_inc2()
+    {
+        // Setup handler for next ancestor that listens to `inc2` event.
+        this.#ancestorEventHandler = this.#ROOT_inc2;
+        
+        // BLUE behavior
+        // uml: (INC1, INC2) TransitionTo(YELLOW)
+        {
+            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
+            this.#BLUE_exit();
+            
+            // Step 2: Transition action: ``.
+            
+            // Step 3: Enter/move towards transition target `YELLOW`.
+            this.#YELLOW_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = MySm.StateId.YELLOW;
+            this.#ancestorEventHandler = null;
+            return;
+        } // end of behavior for BLUE
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
     // event handlers for state OFF
     ////////////////////////////////////////////////////////////////////////////////
     
@@ -403,10 +407,10 @@ class MySm
         this.#currentEventHandlers[MySm.EventId.INC2] = this.#OFF_inc2;
         
         // OFF behavior
-        // uml: enter / { set_state("OFF"); }
+        // uml: enter / { set_color("#CCC"); }
         {
-            // Step 1: execute action `set_state("OFF");`
-            set_state("OFF");
+            // Step 1: execute action `set_color("#CCC");`
+            set_color("#CCC");
         } // end of behavior for OFF
     }
     
@@ -424,18 +428,18 @@ class MySm
         this.#ancestorEventHandler = this.#ROOT_inc1;
         
         // OFF behavior
-        // uml: INC1 TransitionTo(ON1)
+        // uml: INC1 TransitionTo(BLUE)
         {
             // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
             this.#OFF_exit();
             
             // Step 2: Transition action: ``.
             
-            // Step 3: Enter/move towards transition target `ON1`.
-            this.#ON1_enter();
+            // Step 3: Enter/move towards transition target `BLUE`.
+            this.#BLUE_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.ON1;
+            this.stateId = MySm.StateId.BLUE;
             this.#ancestorEventHandler = null;
             return;
         } // end of behavior for OFF
@@ -447,18 +451,18 @@ class MySm
         this.#ancestorEventHandler = this.#ROOT_inc2;
         
         // OFF behavior
-        // uml: INC2 TransitionTo(ON2)
+        // uml: INC2 TransitionTo(YELLOW)
         {
             // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
             this.#OFF_exit();
             
             // Step 2: Transition action: ``.
             
-            // Step 3: Enter/move towards transition target `ON2`.
-            this.#ON2_enter();
+            // Step 3: Enter/move towards transition target `YELLOW`.
+            this.#YELLOW_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.ON2;
+            this.stateId = MySm.StateId.YELLOW;
             this.#ancestorEventHandler = null;
             return;
         } // end of behavior for OFF
@@ -466,200 +470,196 @@ class MySm
     
     
     ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state ON1
+    // event handlers for state YELLOW
     ////////////////////////////////////////////////////////////////////////////////
     
-    #ON1_enter()
+    #YELLOW_enter()
     {
         // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#ON1_exit;
-        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#ON1_dim1;
-        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#ON1_dim2;
-        this.#currentEventHandlers[MySm.EventId.INC1] = this.#ON1_inc1;
-        this.#currentEventHandlers[MySm.EventId.INC2] = this.#ON1_inc2;
+        this.#currentStateExitHandler = this.#YELLOW_exit;
+        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#YELLOW_dim1;
+        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#YELLOW_dim2;
         
-        // ON1 behavior
-        // uml: enter / { set_state("ON1"); }
+        // YELLOW behavior
+        // uml: enter / { set_color("#fdff71"); }
         {
-            // Step 1: execute action `set_state("ON1");`
-            set_state("ON1");
-        } // end of behavior for ON1
+            // Step 1: execute action `set_color("#fdff71");`
+            set_color("#fdff71");
+        } // end of behavior for YELLOW
     }
     
-    #ON1_exit()
+    #YELLOW_exit()
     {
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#NORMAL_exit;
+        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#ROOT_dim1;  // the next ancestor that handles this event is ROOT
+        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#ROOT_dim2;  // the next ancestor that handles this event is ROOT
+    }
+    
+    #YELLOW_dim1()
+    {
+        // Setup handler for next ancestor that listens to `dim1` event.
+        this.#ancestorEventHandler = this.#ROOT_dim1;
+        
+        // YELLOW behavior
+        // uml: DIM1 TransitionTo(BLUE)
+        {
+            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
+            this.#YELLOW_exit();
+            
+            // Step 2: Transition action: ``.
+            
+            // Step 3: Enter/move towards transition target `BLUE`.
+            this.#BLUE_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = MySm.StateId.BLUE;
+            this.#ancestorEventHandler = null;
+            return;
+        } // end of behavior for YELLOW
+    }
+    
+    #YELLOW_dim2()
+    {
+        // Setup handler for next ancestor that listens to `dim2` event.
+        this.#ancestorEventHandler = this.#ROOT_dim2;
+        
+        // YELLOW behavior
+        // uml: DIM2 TransitionTo(OFF)
+        {
+            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
+            this.#YELLOW_exit();
+            
+            // Step 2: Transition action: ``.
+            
+            // Step 3: Enter/move towards transition target `OFF`.
+            this.#OFF_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = MySm.StateId.OFF;
+            this.#ancestorEventHandler = null;
+            return;
+        } // end of behavior for YELLOW
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state RED
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #RED_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#RED_exit;
+        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#RED_dim1;
+        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#RED_dim2;
+        this.#currentEventHandlers[MySm.EventId.INC1] = this.#RED_inc1;
+        this.#currentEventHandlers[MySm.EventId.INC2] = this.#RED_inc2;
+        this.#currentEventHandlers[MySm.EventId.INCITE_RESET] = this.#RED_incite_reset;
+        
+        // RED behavior
+        // uml: enter / { set_color("#ff4f4f"); }
+        {
+            // Step 1: execute action `set_color("#ff4f4f");`
+            set_color("#ff4f4f");
+        } // end of behavior for RED
+    }
+    
+    #RED_exit()
+    {
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#ROOT_exit;
         this.#currentEventHandlers[MySm.EventId.DIM1] = this.#ROOT_dim1;  // the next ancestor that handles this event is ROOT
         this.#currentEventHandlers[MySm.EventId.DIM2] = this.#ROOT_dim2;  // the next ancestor that handles this event is ROOT
         this.#currentEventHandlers[MySm.EventId.INC1] = this.#ROOT_inc1;  // the next ancestor that handles this event is ROOT
         this.#currentEventHandlers[MySm.EventId.INC2] = this.#ROOT_inc2;  // the next ancestor that handles this event is ROOT
+        this.#currentEventHandlers[MySm.EventId.INCITE_RESET] = this.#ROOT_incite_reset;  // the next ancestor that handles this event is ROOT
     }
     
-    #ON1_dim1()
+    #RED_dim1()
     {
         // Setup handler for next ancestor that listens to `dim1` event.
         this.#ancestorEventHandler = this.#ROOT_dim1;
         
-        // ON1 behavior
-        // uml: (DIM1, DIM2) TransitionTo(OFF)
+        // RED behavior
+        // uml: (DIM1, INC1, DIM2, INC2) / { beep(); }
         {
-            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
-            this.#ON1_exit();
+            // Step 1: execute action `beep();`
+            beep();
             
-            // Step 2: Transition action: ``.
-            
-            // Step 3: Enter/move towards transition target `OFF`.
-            this.#OFF_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.OFF;
-            this.#ancestorEventHandler = null;
-            return;
-        } // end of behavior for ON1
+            // Step 2: determine if ancestor gets to handle event next.
+            this.#ancestorEventHandler = null;  // consume event
+        } // end of behavior for RED
     }
     
-    #ON1_dim2()
+    #RED_dim2()
     {
         // Setup handler for next ancestor that listens to `dim2` event.
         this.#ancestorEventHandler = this.#ROOT_dim2;
         
-        // ON1 behavior
-        // uml: (DIM1, DIM2) TransitionTo(OFF)
+        // RED behavior
+        // uml: (DIM1, INC1, DIM2, INC2) / { beep(); }
         {
-            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
-            this.#ON1_exit();
+            // Step 1: execute action `beep();`
+            beep();
             
-            // Step 2: Transition action: ``.
-            
-            // Step 3: Enter/move towards transition target `OFF`.
-            this.#OFF_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.OFF;
-            this.#ancestorEventHandler = null;
-            return;
-        } // end of behavior for ON1
+            // Step 2: determine if ancestor gets to handle event next.
+            this.#ancestorEventHandler = null;  // consume event
+        } // end of behavior for RED
     }
     
-    #ON1_inc1()
+    #RED_inc1()
     {
         // Setup handler for next ancestor that listens to `inc1` event.
         this.#ancestorEventHandler = this.#ROOT_inc1;
         
-        // ON1 behavior
-        // uml: (INC1, INC2) TransitionTo(ON2)
+        // RED behavior
+        // uml: (DIM1, INC1, DIM2, INC2) / { beep(); }
         {
-            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
-            this.#ON1_exit();
+            // Step 1: execute action `beep();`
+            beep();
             
-            // Step 2: Transition action: ``.
-            
-            // Step 3: Enter/move towards transition target `ON2`.
-            this.#ON2_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.ON2;
-            this.#ancestorEventHandler = null;
-            return;
-        } // end of behavior for ON1
+            // Step 2: determine if ancestor gets to handle event next.
+            this.#ancestorEventHandler = null;  // consume event
+        } // end of behavior for RED
     }
     
-    #ON1_inc2()
+    #RED_inc2()
     {
         // Setup handler for next ancestor that listens to `inc2` event.
         this.#ancestorEventHandler = this.#ROOT_inc2;
         
-        // ON1 behavior
-        // uml: (INC1, INC2) TransitionTo(ON2)
+        // RED behavior
+        // uml: (DIM1, INC1, DIM2, INC2) / { beep(); }
         {
-            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
-            this.#ON1_exit();
+            // Step 1: execute action `beep();`
+            beep();
+            
+            // Step 2: determine if ancestor gets to handle event next.
+            this.#ancestorEventHandler = null;  // consume event
+        } // end of behavior for RED
+    }
+    
+    #RED_incite_reset()
+    {
+        // Setup handler for next ancestor that listens to `incite_reset` event.
+        this.#ancestorEventHandler = this.#ROOT_incite_reset;
+        
+        // RED behavior
+        // uml: INCITE_RESET TransitionTo(NORMAL)
+        {
+            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
+            this.#RED_exit();
             
             // Step 2: Transition action: ``.
             
-            // Step 3: Enter/move towards transition target `ON2`.
-            this.#ON2_enter();
+            // Step 3: Enter/move towards transition target `NORMAL`.
+            this.#NORMAL_enter();
             
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.ON2;
-            this.#ancestorEventHandler = null;
-            return;
-        } // end of behavior for ON1
-    }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state ON2
-    ////////////////////////////////////////////////////////////////////////////////
-    
-    #ON2_enter()
-    {
-        // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#ON2_exit;
-        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#ON2_dim1;
-        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#ON2_dim2;
-        
-        // ON2 behavior
-        // uml: enter / { set_state("ON2"); }
-        {
-            // Step 1: execute action `set_state("ON2");`
-            set_state("ON2");
-        } // end of behavior for ON2
-    }
-    
-    #ON2_exit()
-    {
-        // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#NORMAL_exit;
-        this.#currentEventHandlers[MySm.EventId.DIM1] = this.#ROOT_dim1;  // the next ancestor that handles this event is ROOT
-        this.#currentEventHandlers[MySm.EventId.DIM2] = this.#ROOT_dim2;  // the next ancestor that handles this event is ROOT
-    }
-    
-    #ON2_dim1()
-    {
-        // Setup handler for next ancestor that listens to `dim1` event.
-        this.#ancestorEventHandler = this.#ROOT_dim1;
-        
-        // ON2 behavior
-        // uml: DIM1 TransitionTo(ON1)
-        {
-            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
-            this.#ON2_exit();
-            
-            // Step 2: Transition action: ``.
-            
-            // Step 3: Enter/move towards transition target `ON1`.
-            this.#ON1_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.ON1;
-            this.#ancestorEventHandler = null;
-            return;
-        } // end of behavior for ON2
-    }
-    
-    #ON2_dim2()
-    {
-        // Setup handler for next ancestor that listens to `dim2` event.
-        this.#ancestorEventHandler = this.#ROOT_dim2;
-        
-        // ON2 behavior
-        // uml: DIM2 TransitionTo(OFF)
-        {
-            // Step 1: Exit states until we reach `NORMAL` state (Least Common Ancestor for transition).
-            this.#ON2_exit();
-            
-            // Step 2: Transition action: ``.
-            
-            // Step 3: Enter/move towards transition target `OFF`.
-            this.#OFF_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = MySm.StateId.OFF;
-            this.#ancestorEventHandler = null;
-            return;
-        } // end of behavior for ON2
+            // Finish transition by calling pseudo state transition function.
+            this.#NORMAL_InitialState_transition();
+            return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
+        } // end of behavior for RED
     }
     
     // Thread safe.
@@ -668,11 +668,11 @@ class MySm
         switch (id)
         {
             case MySm.StateId.ROOT: return "ROOT";
-            case MySm.StateId.ERR: return "ERR";
             case MySm.StateId.NORMAL: return "NORMAL";
+            case MySm.StateId.BLUE: return "BLUE";
             case MySm.StateId.OFF: return "OFF";
-            case MySm.StateId.ON1: return "ON1";
-            case MySm.StateId.ON2: return "ON2";
+            case MySm.StateId.YELLOW: return "YELLOW";
+            case MySm.StateId.RED: return "RED";
             default: return "?";
         }
     }

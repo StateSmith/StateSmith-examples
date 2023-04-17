@@ -1,12 +1,17 @@
 let logCount = 0;
 let sm = new MySm();
 sm.start();
+update_state_text();
 
 /**
- * @param {string} stateText
+ * @param {string} colorText
  */
-function set_state(stateText) {
-    document.getElementById("current-state").innerText = stateText;
+function set_color(colorText) {
+    document.getElementById("current-state").parentElement.style.backgroundColor = colorText;
+}
+
+function update_state_text() {
+    document.getElementById("current-state").innerText = MySm.stateIdToString(sm.stateId);
 }
 
 /**
@@ -14,14 +19,17 @@ function set_state(stateText) {
  */
 function log_unhandled_event(eventName) {
     logCount++;
-    let message = `Log ${logCount}: State '${MySm.stateIdToString(sm.stateId)}' did not handle/consume event '${eventName}'`;
+    let message = `Log ${logCount}: State '${MySm.stateIdToString(sm.stateId)}' or ancestor did not handle/consume event '${eventName}'`;
     document.getElementById("log-output").prepend(message + "\n");
 }
 
 var buttons = document.getElementsByTagName("button");
 
 for (const button of buttons) {
-    button.onclick = () => sm.dispatchEvent(MySm.EventId[button.textContent.trim()]);
+    button.onclick = () => {
+        sm.dispatchEvent(MySm.EventId[button.textContent.trim()]);
+        update_state_text();
+    }
 }
 
 // from: https://stackoverflow.com/questions/879152/how-do-i-make-javascript-beep

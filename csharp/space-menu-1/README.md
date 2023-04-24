@@ -93,7 +93,7 @@ In this example, we have a `SYSTEM_INFO_MENU` behavior that will transition to s
 While the `SELF_DESTRUCT` state prevents you from exiting it via the LEFT key (AKA go back), it doesn't override ancestor behaviors for `ESC`, `PG_UP` or `PG_DOWN` so those
 will still allow you to prevent the self destruction.
 
-If you really wanted to prevent any event from exiting the `SELF_DESTRUCT` state, you could have it override/eat all events. StateSmith doesn't have convenient syntax for that yet, but we will in the future (needs user feedback). [This example](https://github.com/StateSmith/StateSmith-examples/tree/main/custom-triggers) shows how you can easily implement it in the meantime though.
+If you really wanted to prevent any event from exiting the `SELF_DESTRUCT` state, you could have it [override/eat all events](https://github.com/StateSmith/StateSmith/issues/161).
 
 In the future, I would like be able to click on a state and see all the behaviors it "inherits" from ancestor states.
 

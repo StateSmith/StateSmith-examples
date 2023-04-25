@@ -28,8 +28,10 @@ Assumes you have already completed [tutorial-2](https://github.com/StateSmith/tu
 
 <br>
 
-# Open This Directory With vscode
+# vscode
 This directory has a .vscode directory that will load the StateSmith plugin when you open the [./Ui/UiSm.drawio](./Ui/UiSm.drawio) draw.io file.
+
+You can also use the draw.io offline application.
 
 
 <br>

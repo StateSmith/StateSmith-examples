@@ -60,5 +60,5 @@ A number of the projects in here are straight up experimental. See each project'
 
 ---
 
-# 🏎️ User Examples
+# 🏘️ Community Examples 🎁
 * Be the first to create an example and send us the link! It can be as simple or complicated as you like.

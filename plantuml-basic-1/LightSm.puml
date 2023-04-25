@@ -1,0 +1,35 @@
+@startuml LightSm
+skinparam state {
+ BorderColor<<on_style>> #AA0000
+ BackgroundColor<<on_style>> #ffcccc
+ FontColor<<on_style>> darkred
+
+ BorderColor Black
+}
+
+state OFF {
+  OFF : enter / outputText("OFF");
+}
+
+state ON_GROUP<<on_style>> {
+  ON1 : enter / lightBlue();
+
+  ON2 : enter / lightYellow();
+  ON2 : enter / count = 0;
+  ON2 : 1. INCREASE / count++;
+
+  ON_HOT : enter / {\n  lightRed();\n}
+}
+
+[*] -> OFF
+OFF --> ON1 : INCREASE
+ON1 --> ON2 : INCREASE
+ON2 --> ON_HOT : 2. INCREASE [ count >= 3 ]
+
+ON_HOT --> ON2 : DIM
+ON2 --> ON1 : DIM
+ON1 --> OFF : DIM
+
+ON_GROUP --> OFF : OFF
+
+@enduml

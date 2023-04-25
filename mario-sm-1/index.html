@@ -1,0 +1,34 @@
+<html>
+    <style>
+        button img {
+            padding: 10px;
+            width: 20vw;
+            max-width: 100px;
+            /* max-height: 10vh; */
+        }
+
+        #mario img {
+            height: 60vh;
+            padding-bottom: 5vh;
+        }
+    </style>
+
+    <body>
+        <div id="mario">
+            <img src="">
+        </div>
+        <button onclick="stateMachine.dispatchEvent(MarioSm.EventId.HIT)"><img src="img/goomba.webp"></button>
+        <button onclick="stateMachine.dispatchEvent(MarioSm.EventId.MUSHROOM)"><img src="img/mushroom.webp"></button>
+        <button onclick="stateMachine.dispatchEvent(MarioSm.EventId.FIRE_FLOWER)"><img src="img/fire-flower.png"></button>
+        <button onclick="stateMachine.dispatchEvent(MarioSm.EventId.FEATHER)"><img src="img/feather.webp"></button>
+    </body>
+
+    <!-- scripts at bottom so we can modify web page simply -->
+    <script src="index.js"></script>
+    <script src="MarioSm.js"></script> <!-- generated state machine file -->
+    <script>
+        let stateMachine = new MarioSm();
+        stateMachine.start();
+    </script>
+
+</html>

@@ -58,7 +58,7 @@ A number of the projects in here are straight up experimental. See each project'
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
 
----
+<br>
 
 # 🏘️ Community Examples 🎁
 * Be the first to create an example and send us the link! It can be as simple or complicated as you like.

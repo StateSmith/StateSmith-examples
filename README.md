@@ -35,7 +35,7 @@ A number of the projects in here are straight up experimental. See each project'
 
 ## 🕹️ Buttons/Input
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
-* TODO: migrate laser tag example
+* TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
 
 
@@ -54,5 +54,4 @@ A number of the projects in here are straight up experimental. See each project'
 
 ## Arduino
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
-* TODO: migrate laser tag example
-
+* TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).

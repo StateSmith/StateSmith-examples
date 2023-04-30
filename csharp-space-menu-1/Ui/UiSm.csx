@@ -4,9 +4,7 @@
 // This is a C# script file. Very useful for running StateSmith.
 // https://github.com/StateSmith/StateSmith/wiki/Using-c%23-script-files-(.CSX)-instead-of-solutions-and-projects
 
-using System.Text.RegularExpressions;
 using StateSmith.Input.Expansions;
-using StateSmith.Output;
 using StateSmith.Output.UserConfig;
 using StateSmith.Runner;
 using StateSmith.Common;

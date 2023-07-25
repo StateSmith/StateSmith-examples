@@ -24,8 +24,9 @@ Not recommended for beginners.
 # By Topic
 
 ## 📝 Logging
-* [logging-simple-1](./logging-simple-1/README.md)
-* [modding-logging](./modding-logging/README.md)
+* [logging-simple-1](./logging-simple-1/README.md). Basic user runtime logging.
+* [logging-simple-script-2](./logging-simple-script-2/README.md). Easy logging added at code generation phase.
+* [modding-logging](./modding-logging/README.md). Advanced code gen logging visible in diagram.
 
 ## 👾 Video Game
 * [mario-sm-1](./mario-sm-1/README.md)

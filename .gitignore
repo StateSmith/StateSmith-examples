@@ -1,2 +1,4 @@
 # ignore user machine specific file
 **/omnisharp.json
+
+**/a.out

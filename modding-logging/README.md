@@ -2,6 +2,8 @@
 Assumes that you have gone through basic StateSmith tutorials already.
 
 # User Custom Logging
+This is an advanced and powerful example. If you just want basic logging, see the other simple logging example.
+
 Open this directory with `vscode`.
 
 This example shows how to use a custom user script to modify the state machine before code generation runs to add custom logging.

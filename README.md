@@ -10,9 +10,9 @@ A number of the projects in here are straight up experimental. See each project'
 # StateSmith
 ## 🌟 Features
 * [trigger-map](./trigger-map/README.md)
-* [modding-prefix](./modding-prefix/README.md)
 
 ## ✨ Advanced Features
+Not recommended for beginners.
 * [modding-logging](./modding-logging/README.md)
 * [custom-triggers](./custom-triggers/README.md)
 * [user-post-process](./user-post-process/README.md)
@@ -22,6 +22,10 @@ A number of the projects in here are straight up experimental. See each project'
 <br>
 
 # By Topic
+
+## 📝 Logging
+* [logging-simple-1](./logging-simple-1/README.md)
+* [modding-logging](./modding-logging/README.md)
 
 ## 👾 Video Game
 * [mario-sm-1](./mario-sm-1/README.md)
@@ -46,6 +50,7 @@ A number of the projects in here are straight up experimental. See each project'
 
 ## C
 * [example-drawio-1 repo](https://github.com/StateSmith/example-drawio-1)
+* [logging-simple-1](./logging-simple-1/README.md)
 
 ## C#
 * [csharp-space-menu-1](csharp-space-menu-1/README.md)

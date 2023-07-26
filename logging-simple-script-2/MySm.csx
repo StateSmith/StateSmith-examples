@@ -31,5 +31,17 @@ void LoggingTransformationStep(StateMachine sm)
         // state.AddBehavior(index:0, behavior: Behavior.NewEnterBehavior($"printf(\"--> Entered {state.Name}.\\n\");"));
 
         state.AddExitAction($"printf(\"<-- Exited {state.Name}.\\n\");"); // behavior added to end
+
+        // NOTE! to save on code size, it would be better to do one of the options below.
+        /*
+            // This option saves space because the same strings can be re-used as most compilers use a string table.
+            // Instead of having strings like "--> Entered OFF.", "--> Entered ON.", "--> Entered ON1."...
+            // The program will have strings like "--> Entered %s.", "OFF", "ON", "ON1".
+            state.AddEnterAction($"printf(\"--> Entered %s.\\n\", "{state.Name}");", index:0);
+        */
+        /*
+            // You can also choose to call your own custom callback function like below
+            state.AddEnterAction($"my_custom_state_entered_callback("{state.Name}");", index:0);
+        */
     });
 }

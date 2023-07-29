@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "author": "Adam Fraser-Kruck",
+    "editor": "wokwi",
+    "parts": [
+      { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+      {
+        "type": "wokwi-led",
+        "id": "led-red",
+        "top": -3.6,
+        "left": 120,
+        "attrs": { "color": "red" }
+      },
+      {
+        "type": "wokwi-led",
+        "id": "led-green",
+        "top": -4.89,
+        "left": 182.17,
+        "attrs": { "color": "green" }
+      },
+      {
+        "type": "wokwi-led",
+        "id": "led-blue",
+        "top": -3.6,
+        "left": 148.8,
+        "attrs": { "color": "blue" }
+      }
+    ],
+    "connections": [
+      [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+      [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+      [ "esp:GND.1", "led-red:C", "black", [] ],
+      [ "esp:GND.1", "led-green:C", "black", [] ],
+      [ "esp:GND.1", "led-blue:C", "black", [] ],
+      [ "esp:D5", "led-red:A", "#ff4500", [] ],
+      [ "esp:D2", "led-green:A", "green", [] ],
+      [ "esp:D4", "led-blue:A", "blue", [ "v0.2", "h72.5" ] ]
+    ],
+    "dependencies": {}
+  }

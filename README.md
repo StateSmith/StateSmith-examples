@@ -28,6 +28,10 @@ Not recommended for beginners.
 * [logging-simple-script-2](./logging-simple-script-2/README.md). Easy logging added at code generation phase.
 * [modding-logging](./modding-logging/README.md). Advanced code gen logging visible in diagram.
 
+## 🔀 Concurrency
+* [rtos-event-queue-c](./rtos-event-queue-c/README.md)
+* [csharp-space-menu-1](csharp-space-menu-1/README.md)
+
 ## 👾 Video Game
 * [mario-sm-1](./mario-sm-1/README.md)
 
@@ -43,15 +47,15 @@ Not recommended for beginners.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
-
-
 <br>
 
 # By Language
 
 ## C
+* [rtos-event-queue-c](./rtos-event-queue-c/README.md)
 * [example-drawio-1 repo](https://github.com/StateSmith/example-drawio-1)
 * [logging-simple-1](./logging-simple-1/README.md)
+* [logging-simple-script-2](./logging-simple-script-2/README.md)
 
 ## C#
 * [csharp-space-menu-1](csharp-space-menu-1/README.md)

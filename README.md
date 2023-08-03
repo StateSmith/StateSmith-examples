@@ -10,6 +10,7 @@ A number of the projects in here are straight up experimental. See each project'
 # StateSmith
 ## 🌟 Features
 * [trigger-map](./trigger-map/README.md)
+* [sm-design-describer-1](./sm-design-describer-1/README.md) good for git diffs, understanding
 
 ## ✨ Advanced Features
 Not recommended for beginners.

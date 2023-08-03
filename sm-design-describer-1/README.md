@@ -9,6 +9,9 @@ This example outputs a [MySm.md](./MySm.md) file that can be useful for:
 
 Lots more detail here: https://github.com/StateSmith/StateSmith/issues/200
 
+# Video
+https://youtu.be/hfUY5opR60w
+
 # How To Use
 The generated code isn't meant to be compiled. We are just here to see the output .md file.
 

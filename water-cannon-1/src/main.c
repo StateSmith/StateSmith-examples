@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "WaterCannon.h"
 #include "WaterCannonSm.h"
-#include <stdarg.h> // for debug_log
 #include "DebugLog.h"
 
 static char read_char_from_line(void);
@@ -46,11 +45,11 @@ static void read_input_dispatch_event(void)
 
     if (event_id == -1)
     {
-        DebugLog_warn("Bad input: `%c`\n", c);
+        DebugLog_warn("Bad input: `%c`", c);
     }
     else
     {
-        DebugLog_info("Sending `%s` event to sm\n", WaterCannonSm_event_id_to_string(event_id));
+        DebugLog_info("Sending `%s` event to sm", WaterCannonSm_event_id_to_string(event_id));
 
         WaterCannon_handle_event(event_id);
 
@@ -60,7 +59,7 @@ static void read_input_dispatch_event(void)
         // log some info. not required.
         if (prev_state_id != cur_state_id)
         {
-            DebugLog_info("State changed from `%s` to `%s`\n", WaterCannonSm_state_id_to_string(prev_state_id), WaterCannonSm_state_id_to_string(cur_state_id));
+            DebugLog_info("State changed from `%s` to `%s`", WaterCannonSm_state_id_to_string(prev_state_id), WaterCannonSm_state_id_to_string(cur_state_id));
             prev_state_id = cur_state_id;
         }
     }

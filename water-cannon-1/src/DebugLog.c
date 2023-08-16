@@ -15,6 +15,7 @@ void DebugLog_info(const char* format, ...)
     va_start(args, format);
     printf(">>> LOG INFO: ");
     vprintf(format, args);   // TODO error checking
+    printf("\n");
     va_end(args);
 }
 
@@ -27,5 +28,6 @@ void DebugLog_warn(const char* format, ...)
     va_start(args, format);
     printf(">>> LOG WARN: ");
     vprintf(format, args);   // TODO error checking
+    printf("\n");
     va_end(args);
 }

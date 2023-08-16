@@ -17,7 +17,13 @@ void WaterCannon_init()
 
 void WaterCannon_handle_event(int event)
 {
-    // TODO should verify that event is valid
+    // state machine requires a valid event, so we make sure to check here.
+    if (event < 0 || event >= WaterCannonSm_EventIdCount)
+    {
+        DebugLog_warn("Invalid event: %d", event);
+        return;
+    }
+
     WaterCannonSm_dispatch_event(&sm, (WaterCannonSm_EventId)event);
 }
 

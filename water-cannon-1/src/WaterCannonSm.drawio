@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-08-16T02:40:42.385Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="6KAGCdjn-wAl4VNtGkPG" version="21.6.8" type="device">
+<mxfile host="Electron" modified="2023-08-16T05:42:33.178Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="EC1oMUycxJhNa-Y1Wy1S" version="21.6.8" type="device">
   <diagram name="Page-1" id="uRB3BkWz5BMOcn8KnAAD">
-    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="989" dy="582" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -96,13 +96,13 @@
         <mxCell id="N3am3iHTq1Hdmz5H3YwW-12" value="AUTO" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#FAFAFA;fillColor=#545454;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;" parent="9px4v0quIx1smHfE-xiB-3" vertex="1">
           <mxGeometry x="40" y="310" width="240" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="N3am3iHTq1Hdmz5H3YwW-13" value="enter / Screens_show_auto();&lt;br&gt;do / { &lt;font color=&quot;#009900&quot;&gt;/* do auto stuff */&lt;/font&gt; }" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=1;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;html=1;" parent="N3am3iHTq1Hdmz5H3YwW-12" vertex="1" connectable="0">
+        <mxCell id="N3am3iHTq1Hdmz5H3YwW-13" value="enter / Screens_show_auto();&lt;br&gt;enter /&amp;nbsp;enable_auto_stuff();" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=1;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;html=1;" parent="N3am3iHTq1Hdmz5H3YwW-12" vertex="1" connectable="0">
           <mxGeometry y="30" width="230" height="40" as="geometry" />
         </mxCell>
         <mxCell id="9px4v0quIx1smHfE-xiB-10" value="OK_PRESS" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="9px4v0quIx1smHfE-xiB-3" source="N3am3iHTq1Hdmz5H3YwW-21" target="9px4v0quIx1smHfE-xiB-9" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="N3am3iHTq1Hdmz5H3YwW-21" value="CALIBRATION_NAG" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#FAFAFA;fillColor=#545454;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;" parent="9px4v0quIx1smHfE-xiB-3" vertex="1">
+        <mxCell id="N3am3iHTq1Hdmz5H3YwW-21" value="CALIBRATION_REQUIRED" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#FAFAFA;fillColor=#545454;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;" parent="9px4v0quIx1smHfE-xiB-3" vertex="1">
           <mxGeometry x="270" y="110" width="280" height="140" as="geometry" />
         </mxCell>
         <mxCell id="N3am3iHTq1Hdmz5H3YwW-22" value="enter / {&lt;br&gt;&amp;nbsp; Screens_show_cal_required();&lt;br&gt;&amp;nbsp; &lt;font color=&quot;#009900&quot;&gt;// make an annoying sound&lt;/font&gt;&lt;br&gt;}" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=1;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;html=1;" parent="N3am3iHTq1Hdmz5H3YwW-21" vertex="1" connectable="0">

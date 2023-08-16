@@ -10,7 +10,11 @@ static void read_input_dispatch_event(void);
 
 int main(void)
 {
-    printf("USAGE:\n  Type 'o'<ENTER> for `OK_PRESS` event. TODO finish here...\n\n");
+    printf("USAGE:\n");
+    printf("  Type 'o'<ENTER>, or <ENTER> for `OK_PRESS` event.\n");
+    printf("  Type 'b'<ENTER> for `BACK_PRESS` event.\n");
+    printf("  Type 'c'<ENTER> for `CAL_PRESS` event (calibration).\n");
+    printf("  Type 'a'<ENTER> for `AUTO_PRESS` event.\n");
 
     WaterCannon_init();
 

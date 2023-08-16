@@ -23,13 +23,11 @@ static void AUTO_enter(WaterCannonSm* sm);
 
 static void AUTO_exit(WaterCannonSm* sm);
 
-static void AUTO_do(WaterCannonSm* sm);
+static void CALIBRATION_REQUIRED_enter(WaterCannonSm* sm);
 
-static void CALIBRATION_NAG_enter(WaterCannonSm* sm);
+static void CALIBRATION_REQUIRED_exit(WaterCannonSm* sm);
 
-static void CALIBRATION_NAG_exit(WaterCannonSm* sm);
-
-static void CALIBRATION_NAG_ok_press(WaterCannonSm* sm);
+static void CALIBRATION_REQUIRED_ok_press(WaterCannonSm* sm);
 
 static void CAL_GROUP_enter(WaterCannonSm* sm);
 
@@ -214,7 +212,6 @@ static void AUTO_enter(WaterCannonSm* sm)
 {
     // setup trigger/event handlers
     sm->current_state_exit_handler = AUTO_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_DO] = AUTO_do;
     
     // AUTO behavior
     // uml: enter / { Screens_show_auto(); }
@@ -222,66 +219,57 @@ static void AUTO_enter(WaterCannonSm* sm)
         // Step 1: execute action `Screens_show_auto();`
         Screens_show_auto();
     } // end of behavior for AUTO
+    
+    // AUTO behavior
+    // uml: enter / { enable_auto_stuff(); }
+    {
+        // Step 1: execute action `enable_auto_stuff();`
+        WaterCannon_enable_auto_stuff();
+    } // end of behavior for AUTO
 }
 
 static void AUTO_exit(WaterCannonSm* sm)
 {
     // adjust function pointers for this state's exit
     sm->current_state_exit_handler = AUTO_GROUP_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_DO] = NULL;  // no ancestor listens to this event
-}
-
-static void AUTO_do(WaterCannonSm* sm)
-{
-    // No ancestor state handles `do` event.
-    
-    // AUTO behavior
-    // uml: do / { /* do auto stuff */ }
-    {
-        // Step 1: execute action `/* do auto stuff */`
-        /* do auto stuff */
-        
-        // Step 2: determine if ancestor gets to handle event next.
-        // Don't consume special `do` event.
-    } // end of behavior for AUTO
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// event handlers for state CALIBRATION_NAG
+// event handlers for state CALIBRATION_REQUIRED
 ////////////////////////////////////////////////////////////////////////////////
 
-static void CALIBRATION_NAG_enter(WaterCannonSm* sm)
+static void CALIBRATION_REQUIRED_enter(WaterCannonSm* sm)
 {
     // setup trigger/event handlers
-    sm->current_state_exit_handler = CALIBRATION_NAG_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = CALIBRATION_NAG_ok_press;
+    sm->current_state_exit_handler = CALIBRATION_REQUIRED_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = CALIBRATION_REQUIRED_ok_press;
     
-    // CALIBRATION_NAG behavior
+    // CALIBRATION_REQUIRED behavior
     // uml: enter / { Screens_show_cal_required();\n// make an annoying sound }
     {
         // Step 1: execute action `Screens_show_cal_required();\n// make an annoying sound`
         Screens_show_cal_required();
         // make an annoying sound<EOF>
-    } // end of behavior for CALIBRATION_NAG
+    } // end of behavior for CALIBRATION_REQUIRED
 }
 
-static void CALIBRATION_NAG_exit(WaterCannonSm* sm)
+static void CALIBRATION_REQUIRED_exit(WaterCannonSm* sm)
 {
     // adjust function pointers for this state's exit
     sm->current_state_exit_handler = AUTO_GROUP_exit;
     sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = NULL;  // no ancestor listens to this event
 }
 
-static void CALIBRATION_NAG_ok_press(WaterCannonSm* sm)
+static void CALIBRATION_REQUIRED_ok_press(WaterCannonSm* sm)
 {
     // No ancestor state handles `ok_press` event.
     
-    // CALIBRATION_NAG behavior
+    // CALIBRATION_REQUIRED behavior
     // uml: OK_PRESS TransitionTo(AUTO_GROUP.<ExitPoint>(cal))
     {
         // Step 1: Exit states until we reach `AUTO_GROUP` state (Least Common Ancestor for transition).
-        CALIBRATION_NAG_exit(sm);
+        CALIBRATION_REQUIRED_exit(sm);
         
         // Step 2: Transition action: ``.
         
@@ -303,7 +291,7 @@ static void CALIBRATION_NAG_ok_press(WaterCannonSm* sm)
             CAL_GROUP_InitialState_transition(sm);
             return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
         } // end of behavior for AUTO_GROUP.<ExitPoint>(cal)
-    } // end of behavior for CALIBRATION_NAG
+    } // end of behavior for CALIBRATION_REQUIRED
 }
 
 
@@ -692,17 +680,17 @@ static void HOME_auto_press(WaterCannonSm* sm)
             } // end of behavior for AUTO_GROUP.<ChoicePoint>(auto_check)
             
             // AUTO_GROUP.<ChoicePoint>(auto_check) behavior
-            // uml: else TransitionTo(CALIBRATION_NAG)
+            // uml: else TransitionTo(CALIBRATION_REQUIRED)
             {
                 // Step 1: Exit states until we reach `AUTO_GROUP` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
                 // Step 2: Transition action: ``.
                 
-                // Step 3: Enter/move towards transition target `CALIBRATION_NAG`.
-                CALIBRATION_NAG_enter(sm);
+                // Step 3: Enter/move towards transition target `CALIBRATION_REQUIRED`.
+                CALIBRATION_REQUIRED_enter(sm);
                 
                 // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-                sm->state_id = WaterCannonSm_StateId_CALIBRATION_NAG;
+                sm->state_id = WaterCannonSm_StateId_CALIBRATION_REQUIRED;
                 // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
                 return;
             } // end of behavior for AUTO_GROUP.<ChoicePoint>(auto_check)
@@ -787,7 +775,7 @@ char const * WaterCannonSm_state_id_to_string(WaterCannonSm_StateId id)
         case WaterCannonSm_StateId_ROOT: return "ROOT";
         case WaterCannonSm_StateId_AUTO_GROUP: return "AUTO_GROUP";
         case WaterCannonSm_StateId_AUTO: return "AUTO";
-        case WaterCannonSm_StateId_CALIBRATION_NAG: return "CALIBRATION_NAG";
+        case WaterCannonSm_StateId_CALIBRATION_REQUIRED: return "CALIBRATION_REQUIRED";
         case WaterCannonSm_StateId_CAL_GROUP: return "CAL_GROUP";
         case WaterCannonSm_StateId_CANCELLABLE: return "CANCELLABLE";
         case WaterCannonSm_StateId_LOWER: return "LOWER";
@@ -808,7 +796,6 @@ char const * WaterCannonSm_event_id_to_string(WaterCannonSm_EventId id)
         case WaterCannonSm_EventId_AUTO_PRESS: return "AUTO_PRESS";
         case WaterCannonSm_EventId_BACK_PRESS: return "BACK_PRESS";
         case WaterCannonSm_EventId_CAL_PRESS: return "CAL_PRESS";
-        case WaterCannonSm_EventId_DO: return "DO";
         case WaterCannonSm_EventId_OK_PRESS: return "OK_PRESS";
         default: return "?";
     }

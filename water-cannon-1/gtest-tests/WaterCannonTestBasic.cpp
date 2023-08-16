@@ -40,7 +40,7 @@ TEST(Simple, startup_to_cal_required)
     WaterCannon_handle_event(WaterCannonSm_EventId_AUTO_PRESS);
     EXPECT_EQ(FakeDisplay::header, "====== Screen: Cal Required ======\n");
     EXPECT_EQ(FakeDisplay::sub, "Press OK to continue\n");
-    EXPECT_EQ(WaterCannonSm_StateId_CALIBRATION_NAG, WaterCannon_get_current_state());
+    EXPECT_EQ(WaterCannonSm_StateId_CALIBRATION_REQUIRED, WaterCannon_get_current_state());
 }
 
 

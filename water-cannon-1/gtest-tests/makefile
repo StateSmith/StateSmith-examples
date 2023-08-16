@@ -3,8 +3,8 @@ CXX = g++
 
 INCLUDES = -I ../src -I .
 
-CFLAGS = -std=c99 -Wall -g $(INCLUDES)
-CXXFLAGS = -Wall -g $(GTEST_INCLUDES) $(INCLUDES)
+CFLAGS = -std=c99 -Wall -Wextra -g $(INCLUDES)
+CXXFLAGS =        -Wall -Wextra -g $(GTEST_INCLUDES) $(INCLUDES)
 
 C_SRC = ../src
 
@@ -14,7 +14,7 @@ GTEST_LINK = -lpthread
 GTEST_SRC = lib/googletest/src/gtest-all.cc
 GTEST_INCLUDES = -I lib/googletest/include -I lib/googletest/
 
-OBJS = main.o gtest-all.o WaterCannonTest.o FakeDisplay.o WaterCannon.o WaterCannonSm.o Screens.o DebugLog.o
+OBJS = main.o gtest-all.o WaterCannonTestBasic.o WaterCannonTestBetter.o FakeDisplay.o WaterCannon.o WaterCannonSm.o Screens.o DebugLog.o
 
 all: test_program1 test
 

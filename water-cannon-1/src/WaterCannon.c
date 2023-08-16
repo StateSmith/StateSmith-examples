@@ -44,3 +44,9 @@ int WaterCannon_get_current_state(void)
 {
     return sm.state_id;
 }
+
+void WaterCannon_enable_auto_stuff(void)
+{
+    // do stuff
+}
+

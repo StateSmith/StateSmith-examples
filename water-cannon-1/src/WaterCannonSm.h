@@ -8,16 +8,15 @@
 
 typedef enum WaterCannonSm_EventId
 {
-    WaterCannonSm_EventId_DO = 0, // The `do` event is special. State event handlers do not consume this event (ancestors all get it too) unless a transition occurs.
-    WaterCannonSm_EventId_AUTO_PRESS = 1,
-    WaterCannonSm_EventId_BACK_PRESS = 2,
-    WaterCannonSm_EventId_CAL_PRESS = 3,
-    WaterCannonSm_EventId_OK_PRESS = 4,
+    WaterCannonSm_EventId_AUTO_PRESS = 0,
+    WaterCannonSm_EventId_BACK_PRESS = 1,
+    WaterCannonSm_EventId_CAL_PRESS = 2,
+    WaterCannonSm_EventId_OK_PRESS = 3,
 } WaterCannonSm_EventId;
 
 enum
 {
-    WaterCannonSm_EventIdCount = 5
+    WaterCannonSm_EventIdCount = 4
 };
 
 typedef enum WaterCannonSm_StateId
@@ -25,7 +24,7 @@ typedef enum WaterCannonSm_StateId
     WaterCannonSm_StateId_ROOT = 0,
     WaterCannonSm_StateId_AUTO_GROUP = 1,
     WaterCannonSm_StateId_AUTO = 2,
-    WaterCannonSm_StateId_CALIBRATION_NAG = 3,
+    WaterCannonSm_StateId_CALIBRATION_REQUIRED = 3,
     WaterCannonSm_StateId_CAL_GROUP = 4,
     WaterCannonSm_StateId_CANCELLABLE = 5,
     WaterCannonSm_StateId_LOWER = 6,

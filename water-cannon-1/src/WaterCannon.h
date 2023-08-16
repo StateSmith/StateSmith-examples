@@ -20,3 +20,6 @@ void WaterCannon_capture_lowered_position(void);
 
 // This function is only needed by state machine. Could be moved to a private header.
 void WaterCannon_capture_raised_position(void);
+
+// This function is only needed by state machine. Could be moved to a private header.
+void WaterCannon_enable_auto_stuff(void);

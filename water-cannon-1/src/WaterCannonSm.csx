@@ -21,6 +21,7 @@ public class MyRenderConfig : IRenderConfigC
     public class MyExpansions : UserExpansionScriptBase
     {
         string is_calibrated => "WaterCannon_is_calibrated()";
+        string enable_auto_stuff() => "WaterCannon_enable_auto_stuff()";
         string capture_lowered_position() => "WaterCannon_capture_lowered_position()";
         string capture_raised_position()  => "WaterCannon_capture_raised_position()";
     }

@@ -18,7 +18,7 @@ void WaterCannon_init()
 void WaterCannon_handle_event(int event)
 {
     // TODO should verify that event is valid
-    WaterCannonSm_dispatch_event(&sm, event);
+    WaterCannonSm_dispatch_event(&sm, (WaterCannonSm_EventId)event);
 }
 
 bool WaterCannon_is_calibrated(void)

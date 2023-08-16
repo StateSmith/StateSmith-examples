@@ -20,7 +20,7 @@ void Screens_show_splash(void)
 void Screens_show_home(void)
 {
     heading("Screen: Home");
-    sub("press CAL or AUTO");
+    sub("Press CAL or AUTO");
 }
 
 void Screens_show_auto(void)

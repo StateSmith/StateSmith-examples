@@ -6,7 +6,6 @@
 std::string FakeDisplay::header;
 std::string FakeDisplay::sub;
 
-
 void Display_header(const char *format, ...)
 {
     char buf[48];

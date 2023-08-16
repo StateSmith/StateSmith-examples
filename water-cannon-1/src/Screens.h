@@ -8,5 +8,3 @@ void Screens_show_cal_lower(void);
 void Screens_show_cal_raise(void);
 void Screens_show_cal_done(void);
 void Screens_show_cal_cancelled(void);
-
-void Control_auto_iteration(void);

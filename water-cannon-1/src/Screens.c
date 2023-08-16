@@ -3,12 +3,12 @@
 
 static void heading(const char * const heading)
 {
-    Display_header("====== %s ======", heading);
+    Display_header("====== %s ======\n", heading);
 }
 
 static void sub(const char * const message)
 {
-    Display_header("%s\n", message);
+    Display_sub("%s\n", message);
 }
 
 void Screens_show_splash(void)

@@ -8,7 +8,7 @@ void Display_header(const char *format, ...)
 {
     va_list args;
     va_start(args, format);
-    printf("\n\n");
+    printf("\n");
     vprintf(format, args);   // TODO error checking
     va_end(args);
 }

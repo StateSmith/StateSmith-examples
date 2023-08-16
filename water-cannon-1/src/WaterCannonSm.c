@@ -675,22 +675,6 @@ static void HOME_auto_press(WaterCannonSm* sm)
             // AUTO_GROUP.<ChoicePoint>(auto_check) is a pseudo state and cannot have an `enter` trigger.
             
             // AUTO_GROUP.<ChoicePoint>(auto_check) behavior
-            // uml: TransitionTo(CALIBRATION_NAG)
-            {
-                // Step 1: Exit states until we reach `AUTO_GROUP` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
-                
-                // Step 2: Transition action: ``.
-                
-                // Step 3: Enter/move towards transition target `CALIBRATION_NAG`.
-                CALIBRATION_NAG_enter(sm);
-                
-                // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-                sm->state_id = WaterCannonSm_StateId_CALIBRATION_NAG;
-                // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
-                return;
-            } // end of behavior for AUTO_GROUP.<ChoicePoint>(auto_check)
-            
-            // AUTO_GROUP.<ChoicePoint>(auto_check) behavior
             // uml: [is_calibrated] TransitionTo(AUTO)
             if (WaterCannon_is_calibrated())
             {
@@ -703,6 +687,22 @@ static void HOME_auto_press(WaterCannonSm* sm)
                 
                 // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
                 sm->state_id = WaterCannonSm_StateId_AUTO;
+                // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
+                return;
+            } // end of behavior for AUTO_GROUP.<ChoicePoint>(auto_check)
+            
+            // AUTO_GROUP.<ChoicePoint>(auto_check) behavior
+            // uml: else TransitionTo(CALIBRATION_NAG)
+            {
+                // Step 1: Exit states until we reach `AUTO_GROUP` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
+                
+                // Step 2: Transition action: ``.
+                
+                // Step 3: Enter/move towards transition target `CALIBRATION_NAG`.
+                CALIBRATION_NAG_enter(sm);
+                
+                // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+                sm->state_id = WaterCannonSm_StateId_CALIBRATION_NAG;
                 // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
                 return;
             } // end of behavior for AUTO_GROUP.<ChoicePoint>(auto_check)

@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "WaterCannon.h"
+#include "WaterCannonSm.h"
 #include <stdarg.h> // for debug_log
+#include "DebugLog.h"
 
 static char read_char_from_line(void);
 static void read_input_dispatch_event(void);
-static void debug_log(const char *format, ...);
-
 
 int main(void)
 {
-    printf("USAGE:\n  Type 'o'<ENTER> for `OK_PRESS` event.\n TODO finish here.\n\n");
+    printf("USAGE:\n  Type 'o'<ENTER> for `OK_PRESS` event. TODO finish here...\n\n");
+
+    WaterCannon_init();
 
     while (1)
     {
@@ -30,6 +32,8 @@ static void read_input_dispatch_event(void)
 
     switch (c)
     {
+        case '\r':
+        case '\n':
         case 'o': event_id = WaterCannonSm_EventId_OK_PRESS;  break;
         case 'b': event_id = WaterCannonSm_EventId_BACK_PRESS;  break;
         case 'c': event_id = WaterCannonSm_EventId_CAL_PRESS;  break;
@@ -38,13 +42,13 @@ static void read_input_dispatch_event(void)
 
     if (event_id == -1)
     {
-        debug_log("Bad input: `%c`\n", c);
+        DebugLog_warn("Bad input: `%c`\n", c);
     }
     else
     {
-        debug_log("Sending `%s` event to sm\n", WaterCannonSm_event_id_to_string(event_id));
+        DebugLog_info("Sending `%s` event to sm\n", WaterCannonSm_event_id_to_string(event_id));
 
-        WaterCannon_handle_event((enum WaterCannonSm_EventId)event_id); // cast OK because of test above
+        WaterCannon_handle_event(event_id);
 
         // get current state id
         const WaterCannonSm_StateId cur_state_id = WaterCannon_get_current_state();
@@ -52,7 +56,7 @@ static void read_input_dispatch_event(void)
         // log some info. not required.
         if (prev_state_id != cur_state_id)
         {
-            debug_log("State changed from `%s` to `%s`\n", WaterCannonSm_state_id_to_string(prev_state_id), WaterCannonSm_state_id_to_string(cur_state_id));
+            DebugLog_info("State changed from `%s` to `%s`\n", WaterCannonSm_state_id_to_string(prev_state_id), WaterCannonSm_state_id_to_string(cur_state_id));
             prev_state_id = cur_state_id;
         }
     }
@@ -73,11 +77,4 @@ static char read_char_from_line(void)
     return *c_ptr;
 }
 
-static void debug_log(const char *format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    printf("  LOG: ");
-    vprintf(format, args);   // TODO error checking
-    va_end(args);
-}
+

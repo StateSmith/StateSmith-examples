@@ -10,11 +10,18 @@ SmRunner runner = new(diagramPath: "WaterCannonSm.drawio", new MyRenderConfig(),
 runner.Run();
 
 // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-2
-public class MyRenderConfig : IRenderConfig
+public class MyRenderConfig : IRenderConfigC
 {
+    string IRenderConfigC.HFileTop => """
+        #include "WaterCannon.h"
+        #include "Screens.h"
+        """;
+
     // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-3
     public class MyExpansions : UserExpansionScriptBase
     {
-        
+        string is_calibrated => "WaterCannon_is_calibrated()";
+        string capture_lowered_position() => "WaterCannon_capture_lowered_position()";
+        string capture_raised_position()  => "WaterCannon_capture_raised_position()";
     }
 }

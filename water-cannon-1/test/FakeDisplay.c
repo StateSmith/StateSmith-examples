@@ -1,12 +1,12 @@
-// This is a fake Lcd.c file for testing purposes
-
-#include "Lcd.h"
+// This is a fake Display file for testing purposes.
+// It captures the output of Display_header() and Display_sub() in two global variables.
+#include "Display.h"
 #include <stdarg.h>
 
-char Lcd_header[48];
-char Lcd_sub[48];
+char FakeDisplay_header[48];
+char FakeDisplay_sub[48];
 
-void Lcd_header(const char *format, ...)
+void Display_header(const char *format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -14,7 +14,7 @@ void Lcd_header(const char *format, ...)
     va_end(args);
 }
 
-void Lcd_sub(const char *format, ...)
+void Display_sub(const char *format, ...)
 {
     va_list args;
     va_start(args, format);

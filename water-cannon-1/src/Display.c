@@ -1,59 +1,23 @@
+// The display could be an LCD, a serial port, or a console window.
+// In this case, it is a console window for ease of use.
 #include "Display.h"
-#include "Lcd.h"
+#include <stdarg.h>
+#include <stdio.h>
 
-static void heading(const char * const heading)
+void Display_header(const char *format, ...)
 {
-    Lcd_header("====== %s ======", heading);
+    va_list args;
+    va_start(args, format);
+    printf("\n\n");
+    vprintf(format, args);   // TODO error checking
+    va_end(args);
 }
 
-static void sub(const char * const message)
+void Display_sub(const char *format, ...)
 {
-    printf("%s\n", message);
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);   // TODO error checking
+    va_end(args);
 }
-
-void Display_init(void)
-{
-
-}
-
-void Display_show_splash(void)
-{
-    heading("Screen: Splash");
-}
-
-void Display_show_auto(void)
-{
-    heading("Screen: Auto");
-}
-
-void Display_show_cal_required(void)
-{
-    heading("Screen: Cal Required");
-}
-
-void Display_show_cal_lower(void)
-{
-    heading("Screen: Cal Lower");
-    sub("Lower Cannon to bottom position then press OK");
-}
-
-void Display_show_cal_raise(void)
-{
-    heading("Screen: Cal Raise");
-    sub("Raise Cannon to top position then press OK");
-}
-
-void Display_show_cal_done(void)
-{
-    heading("Screen: Cal Done");
-    sub("Calibration complete");
-}
-
-void Display_show_cal_cancelled(void)
-{
-    heading("Screen: Cal Cancelled");
-    sub("Calibration cancelled");
-}
-
-
 

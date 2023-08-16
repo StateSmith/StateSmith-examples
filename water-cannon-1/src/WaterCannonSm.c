@@ -39,11 +39,13 @@ static void CAL_GROUP_back_press(WaterCannonSm* sm);
 
 static void CAL_GROUP_InitialState_transition(WaterCannonSm* sm);
 
-static void CONFIRMATION_enter(WaterCannonSm* sm);
+static void CAL_GROUP_ExitPoint_done__transition(WaterCannonSm* sm);
 
-static void CONFIRMATION_exit(WaterCannonSm* sm);
+static void CANCELLABLE_enter(WaterCannonSm* sm);
 
-static void CONFIRMATION_ok_press(WaterCannonSm* sm);
+static void CANCELLABLE_exit(WaterCannonSm* sm);
+
+static void CANCELLABLE_back_press(WaterCannonSm* sm);
 
 static void LOWER_enter(WaterCannonSm* sm);
 
@@ -57,11 +59,23 @@ static void RAISE_exit(WaterCannonSm* sm);
 
 static void RAISE_ok_press(WaterCannonSm* sm);
 
+static void CANCELLED_enter(WaterCannonSm* sm);
+
+static void CANCELLED_exit(WaterCannonSm* sm);
+
+static void CANCELLED_ok_press(WaterCannonSm* sm);
+
+static void CONFIRMATION_enter(WaterCannonSm* sm);
+
+static void CONFIRMATION_exit(WaterCannonSm* sm);
+
+static void CONFIRMATION_ok_press(WaterCannonSm* sm);
+
 static void HOME_enter(WaterCannonSm* sm);
 
 static void HOME_exit(WaterCannonSm* sm);
 
-static void HOME_auto(WaterCannonSm* sm);
+static void HOME_auto_press(WaterCannonSm* sm);
 
 static void HOME_cal_press(WaterCannonSm* sm);
 
@@ -203,10 +217,10 @@ static void AUTO_enter(WaterCannonSm* sm)
     sm->current_event_handlers[WaterCannonSm_EventId_DO] = AUTO_do;
     
     // AUTO behavior
-    // uml: enter / { show_auto_screen(); }
+    // uml: enter / { Screens_show_auto(); }
     {
-        // Step 1: execute action `show_auto_screen();`
-        show_auto_screen();
+        // Step 1: execute action `Screens_show_auto();`
+        Screens_show_auto();
     } // end of behavior for AUTO
 }
 
@@ -222,10 +236,10 @@ static void AUTO_do(WaterCannonSm* sm)
     // No ancestor state handles `do` event.
     
     // AUTO behavior
-    // uml: do / { auto_iteration(); }
+    // uml: do / { /* do auto stuff */ }
     {
-        // Step 1: execute action `auto_iteration();`
-        auto_iteration();
+        // Step 1: execute action `/* do auto stuff */`
+        /* do auto stuff */
         
         // Step 2: determine if ancestor gets to handle event next.
         // Don't consume special `do` event.
@@ -244,12 +258,11 @@ static void CALIBRATION_NAG_enter(WaterCannonSm* sm)
     sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = CALIBRATION_NAG_ok_press;
     
     // CALIBRATION_NAG behavior
-    // uml: enter / { show_cal_required_screen();\nt1_reset();\nbeep(); }
+    // uml: enter / { Screens_show_cal_required();\n// make an annoying sound }
     {
-        // Step 1: execute action `show_cal_required_screen();\nt1_reset();\nbeep();`
-        show_cal_required_screen();
-        t1_reset();
-        beep();
+        // Step 1: execute action `Screens_show_cal_required();\n// make an annoying sound`
+        Screens_show_cal_required();
+        // make an annoying sound<EOF>
     } // end of behavior for CALIBRATION_NAG
 }
 
@@ -344,6 +357,7 @@ static void CAL_GROUP_InitialState_transition(WaterCannonSm* sm)
         // Step 2: Transition action: ``.
         
         // Step 3: Enter/move towards transition target `LOWER`.
+        CANCELLABLE_enter(sm);
         LOWER_enter(sm);
         
         // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
@@ -351,6 +365,213 @@ static void CAL_GROUP_InitialState_transition(WaterCannonSm* sm)
         sm->ancestor_event_handler = NULL;
         return;
     } // end of behavior for CAL_GROUP.<InitialState>
+}
+
+static void CAL_GROUP_ExitPoint_done__transition(WaterCannonSm* sm)
+{
+    // CAL_GROUP.<ExitPoint>(done) behavior
+    // uml: TransitionTo(HOME)
+    {
+        // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
+        CAL_GROUP_exit(sm);
+        
+        // Step 2: Transition action: ``.
+        
+        // Step 3: Enter/move towards transition target `HOME`.
+        HOME_enter(sm);
+        
+        // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+        sm->state_id = WaterCannonSm_StateId_HOME;
+        sm->ancestor_event_handler = NULL;
+        return;
+    } // end of behavior for CAL_GROUP.<ExitPoint>(done)
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// event handlers for state CANCELLABLE
+////////////////////////////////////////////////////////////////////////////////
+
+static void CANCELLABLE_enter(WaterCannonSm* sm)
+{
+    // setup trigger/event handlers
+    sm->current_state_exit_handler = CANCELLABLE_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_BACK_PRESS] = CANCELLABLE_back_press;
+}
+
+static void CANCELLABLE_exit(WaterCannonSm* sm)
+{
+    // adjust function pointers for this state's exit
+    sm->current_state_exit_handler = CAL_GROUP_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_BACK_PRESS] = CAL_GROUP_back_press;  // the next ancestor that handles this event is CAL_GROUP
+}
+
+static void CANCELLABLE_back_press(WaterCannonSm* sm)
+{
+    // Setup handler for next ancestor that listens to `back_press` event.
+    sm->ancestor_event_handler = CAL_GROUP_back_press;
+    
+    // CANCELLABLE behavior
+    // uml: BACK_PRESS TransitionTo(CANCELLED)
+    {
+        // Step 1: Exit states until we reach `CAL_GROUP` state (Least Common Ancestor for transition).
+        exit_up_to_state_handler(sm, CAL_GROUP_exit);
+        
+        // Step 2: Transition action: ``.
+        
+        // Step 3: Enter/move towards transition target `CANCELLED`.
+        CANCELLED_enter(sm);
+        
+        // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+        sm->state_id = WaterCannonSm_StateId_CANCELLED;
+        sm->ancestor_event_handler = NULL;
+        return;
+    } // end of behavior for CANCELLABLE
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// event handlers for state LOWER
+////////////////////////////////////////////////////////////////////////////////
+
+static void LOWER_enter(WaterCannonSm* sm)
+{
+    // setup trigger/event handlers
+    sm->current_state_exit_handler = LOWER_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = LOWER_ok_press;
+    
+    // LOWER behavior
+    // uml: enter / { Screens_show_cal_lower(); }
+    {
+        // Step 1: execute action `Screens_show_cal_lower();`
+        Screens_show_cal_lower();
+    } // end of behavior for LOWER
+}
+
+static void LOWER_exit(WaterCannonSm* sm)
+{
+    // adjust function pointers for this state's exit
+    sm->current_state_exit_handler = CANCELLABLE_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = NULL;  // no ancestor listens to this event
+}
+
+static void LOWER_ok_press(WaterCannonSm* sm)
+{
+    // No ancestor state handles `ok_press` event.
+    
+    // LOWER behavior
+    // uml: OK_PRESS / { capture_lowered_position(); } TransitionTo(RAISE)
+    {
+        // Step 1: Exit states until we reach `CANCELLABLE` state (Least Common Ancestor for transition).
+        LOWER_exit(sm);
+        
+        // Step 2: Transition action: `capture_lowered_position();`.
+        WaterCannon_capture_lowered_position();
+        
+        // Step 3: Enter/move towards transition target `RAISE`.
+        RAISE_enter(sm);
+        
+        // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+        sm->state_id = WaterCannonSm_StateId_RAISE;
+        // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
+        return;
+    } // end of behavior for LOWER
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// event handlers for state RAISE
+////////////////////////////////////////////////////////////////////////////////
+
+static void RAISE_enter(WaterCannonSm* sm)
+{
+    // setup trigger/event handlers
+    sm->current_state_exit_handler = RAISE_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = RAISE_ok_press;
+    
+    // RAISE behavior
+    // uml: enter / { Screens_show_cal_raise(); }
+    {
+        // Step 1: execute action `Screens_show_cal_raise();`
+        Screens_show_cal_raise();
+    } // end of behavior for RAISE
+}
+
+static void RAISE_exit(WaterCannonSm* sm)
+{
+    // adjust function pointers for this state's exit
+    sm->current_state_exit_handler = CANCELLABLE_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = NULL;  // no ancestor listens to this event
+}
+
+static void RAISE_ok_press(WaterCannonSm* sm)
+{
+    // No ancestor state handles `ok_press` event.
+    
+    // RAISE behavior
+    // uml: OK_PRESS / { capture_raised_position(); } TransitionTo(CONFIRMATION)
+    {
+        // Step 1: Exit states until we reach `CAL_GROUP` state (Least Common Ancestor for transition).
+        exit_up_to_state_handler(sm, CAL_GROUP_exit);
+        
+        // Step 2: Transition action: `capture_raised_position();`.
+        WaterCannon_capture_raised_position();
+        
+        // Step 3: Enter/move towards transition target `CONFIRMATION`.
+        CONFIRMATION_enter(sm);
+        
+        // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+        sm->state_id = WaterCannonSm_StateId_CONFIRMATION;
+        // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
+        return;
+    } // end of behavior for RAISE
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// event handlers for state CANCELLED
+////////////////////////////////////////////////////////////////////////////////
+
+static void CANCELLED_enter(WaterCannonSm* sm)
+{
+    // setup trigger/event handlers
+    sm->current_state_exit_handler = CANCELLED_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = CANCELLED_ok_press;
+    
+    // CANCELLED behavior
+    // uml: enter / { Screens_show_cal_cancelled(); }
+    {
+        // Step 1: execute action `Screens_show_cal_cancelled();`
+        Screens_show_cal_cancelled();
+    } // end of behavior for CANCELLED
+}
+
+static void CANCELLED_exit(WaterCannonSm* sm)
+{
+    // adjust function pointers for this state's exit
+    sm->current_state_exit_handler = CAL_GROUP_exit;
+    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = NULL;  // no ancestor listens to this event
+}
+
+static void CANCELLED_ok_press(WaterCannonSm* sm)
+{
+    // No ancestor state handles `ok_press` event.
+    
+    // CANCELLED behavior
+    // uml: OK_PRESS TransitionTo(CAL_GROUP.<ExitPoint>(done))
+    {
+        // Step 1: Exit states until we reach `CAL_GROUP` state (Least Common Ancestor for transition).
+        CANCELLED_exit(sm);
+        
+        // Step 2: Transition action: ``.
+        
+        // Step 3: Enter/move towards transition target `CAL_GROUP.<ExitPoint>(done)`.
+        // CAL_GROUP.<ExitPoint>(done) is a pseudo state and cannot have an `enter` trigger.
+        
+        // Finish transition by calling pseudo state transition function.
+        CAL_GROUP_ExitPoint_done__transition(sm);
+        return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
+    } // end of behavior for CANCELLED
 }
 
 
@@ -365,10 +586,10 @@ static void CONFIRMATION_enter(WaterCannonSm* sm)
     sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = CONFIRMATION_ok_press;
     
     // CONFIRMATION behavior
-    // uml: enter / { show_cal_done_screen(); }
+    // uml: enter / { Screens_show_cal_done(); }
     {
-        // Step 1: execute action `show_cal_done_screen();`
-        show_cal_done_screen();
+        // Step 1: execute action `Screens_show_cal_done();`
+        Screens_show_cal_done();
     } // end of behavior for CONFIRMATION
 }
 
@@ -394,121 +615,10 @@ static void CONFIRMATION_ok_press(WaterCannonSm* sm)
         // Step 3: Enter/move towards transition target `CAL_GROUP.<ExitPoint>(done)`.
         // CAL_GROUP.<ExitPoint>(done) is a pseudo state and cannot have an `enter` trigger.
         
-        // CAL_GROUP.<ExitPoint>(done) behavior
-        // uml: TransitionTo(HOME)
-        {
-            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-            CAL_GROUP_exit(sm);
-            
-            // Step 2: Transition action: ``.
-            
-            // Step 3: Enter/move towards transition target `HOME`.
-            HOME_enter(sm);
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            sm->state_id = WaterCannonSm_StateId_HOME;
-            // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
-            return;
-        } // end of behavior for CAL_GROUP.<ExitPoint>(done)
+        // Finish transition by calling pseudo state transition function.
+        CAL_GROUP_ExitPoint_done__transition(sm);
+        return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
     } // end of behavior for CONFIRMATION
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// event handlers for state LOWER
-////////////////////////////////////////////////////////////////////////////////
-
-static void LOWER_enter(WaterCannonSm* sm)
-{
-    // setup trigger/event handlers
-    sm->current_state_exit_handler = LOWER_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = LOWER_ok_press;
-    
-    // LOWER behavior
-    // uml: enter / { show_cal_lower_screen(); }
-    {
-        // Step 1: execute action `show_cal_lower_screen();`
-        show_cal_lower_screen();
-    } // end of behavior for LOWER
-}
-
-static void LOWER_exit(WaterCannonSm* sm)
-{
-    // adjust function pointers for this state's exit
-    sm->current_state_exit_handler = CAL_GROUP_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = NULL;  // no ancestor listens to this event
-}
-
-static void LOWER_ok_press(WaterCannonSm* sm)
-{
-    // No ancestor state handles `ok_press` event.
-    
-    // LOWER behavior
-    // uml: OK_PRESS / { capture_lower_position(); } TransitionTo(RAISE)
-    {
-        // Step 1: Exit states until we reach `CAL_GROUP` state (Least Common Ancestor for transition).
-        LOWER_exit(sm);
-        
-        // Step 2: Transition action: `capture_lower_position();`.
-        capture_lower_position();
-        
-        // Step 3: Enter/move towards transition target `RAISE`.
-        RAISE_enter(sm);
-        
-        // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-        sm->state_id = WaterCannonSm_StateId_RAISE;
-        // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
-        return;
-    } // end of behavior for LOWER
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// event handlers for state RAISE
-////////////////////////////////////////////////////////////////////////////////
-
-static void RAISE_enter(WaterCannonSm* sm)
-{
-    // setup trigger/event handlers
-    sm->current_state_exit_handler = RAISE_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = RAISE_ok_press;
-    
-    // RAISE behavior
-    // uml: enter / { show_cal_raise_screen(); }
-    {
-        // Step 1: execute action `show_cal_raise_screen();`
-        show_cal_raise_screen();
-    } // end of behavior for RAISE
-}
-
-static void RAISE_exit(WaterCannonSm* sm)
-{
-    // adjust function pointers for this state's exit
-    sm->current_state_exit_handler = CAL_GROUP_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = NULL;  // no ancestor listens to this event
-}
-
-static void RAISE_ok_press(WaterCannonSm* sm)
-{
-    // No ancestor state handles `ok_press` event.
-    
-    // RAISE behavior
-    // uml: OK_PRESS / { capture_raised_position(); } TransitionTo(CONFIRMATION)
-    {
-        // Step 1: Exit states until we reach `CAL_GROUP` state (Least Common Ancestor for transition).
-        RAISE_exit(sm);
-        
-        // Step 2: Transition action: `capture_raised_position();`.
-        capture_raised_position();
-        
-        // Step 3: Enter/move towards transition target `CONFIRMATION`.
-        CONFIRMATION_enter(sm);
-        
-        // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-        sm->state_id = WaterCannonSm_StateId_CONFIRMATION;
-        // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
-        return;
-    } // end of behavior for RAISE
 }
 
 
@@ -520,14 +630,14 @@ static void HOME_enter(WaterCannonSm* sm)
 {
     // setup trigger/event handlers
     sm->current_state_exit_handler = HOME_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_AUTO] = HOME_auto;
+    sm->current_event_handlers[WaterCannonSm_EventId_AUTO_PRESS] = HOME_auto_press;
     sm->current_event_handlers[WaterCannonSm_EventId_CAL_PRESS] = HOME_cal_press;
     
     // HOME behavior
-    // uml: enter / { show_home_screen(); }
+    // uml: enter / { Screens_show_home(); }
     {
-        // Step 1: execute action `show_home_screen();`
-        show_home_screen();
+        // Step 1: execute action `Screens_show_home();`
+        Screens_show_home();
     } // end of behavior for HOME
 }
 
@@ -535,16 +645,16 @@ static void HOME_exit(WaterCannonSm* sm)
 {
     // adjust function pointers for this state's exit
     sm->current_state_exit_handler = ROOT_exit;
-    sm->current_event_handlers[WaterCannonSm_EventId_AUTO] = NULL;  // no ancestor listens to this event
+    sm->current_event_handlers[WaterCannonSm_EventId_AUTO_PRESS] = NULL;  // no ancestor listens to this event
     sm->current_event_handlers[WaterCannonSm_EventId_CAL_PRESS] = NULL;  // no ancestor listens to this event
 }
 
-static void HOME_auto(WaterCannonSm* sm)
+static void HOME_auto_press(WaterCannonSm* sm)
 {
-    // No ancestor state handles `auto` event.
+    // No ancestor state handles `auto_press` event.
     
     // HOME behavior
-    // uml: AUTO TransitionTo(AUTO_GROUP)
+    // uml: AUTO_PRESS TransitionTo(AUTO_GROUP)
     {
         // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
         HOME_exit(sm);
@@ -582,7 +692,7 @@ static void HOME_auto(WaterCannonSm* sm)
             
             // AUTO_GROUP.<ChoicePoint>(auto_check) behavior
             // uml: [is_calibrated] TransitionTo(AUTO)
-            if (is_calibrated)
+            if (WaterCannon_is_calibrated())
             {
                 // Step 1: Exit states until we reach `AUTO_GROUP` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
@@ -633,10 +743,10 @@ static void SPLASH_SCREEN_enter(WaterCannonSm* sm)
     sm->current_event_handlers[WaterCannonSm_EventId_OK_PRESS] = SPLASH_SCREEN_ok_press;
     
     // SPLASH_SCREEN behavior
-    // uml: enter / { show_splash_screen(); }
+    // uml: enter / { Screens_show_splash(); }
     {
-        // Step 1: execute action `show_splash_screen();`
-        show_splash_screen();
+        // Step 1: execute action `Screens_show_splash();`
+        Screens_show_splash();
     } // end of behavior for SPLASH_SCREEN
 }
 
@@ -679,9 +789,11 @@ char const * WaterCannonSm_state_id_to_string(WaterCannonSm_StateId id)
         case WaterCannonSm_StateId_AUTO: return "AUTO";
         case WaterCannonSm_StateId_CALIBRATION_NAG: return "CALIBRATION_NAG";
         case WaterCannonSm_StateId_CAL_GROUP: return "CAL_GROUP";
-        case WaterCannonSm_StateId_CONFIRMATION: return "CONFIRMATION";
+        case WaterCannonSm_StateId_CANCELLABLE: return "CANCELLABLE";
         case WaterCannonSm_StateId_LOWER: return "LOWER";
         case WaterCannonSm_StateId_RAISE: return "RAISE";
+        case WaterCannonSm_StateId_CANCELLED: return "CANCELLED";
+        case WaterCannonSm_StateId_CONFIRMATION: return "CONFIRMATION";
         case WaterCannonSm_StateId_HOME: return "HOME";
         case WaterCannonSm_StateId_SPLASH_SCREEN: return "SPLASH_SCREEN";
         default: return "?";
@@ -693,7 +805,7 @@ char const * WaterCannonSm_event_id_to_string(WaterCannonSm_EventId id)
 {
     switch (id)
     {
-        case WaterCannonSm_EventId_AUTO: return "AUTO";
+        case WaterCannonSm_EventId_AUTO_PRESS: return "AUTO_PRESS";
         case WaterCannonSm_EventId_BACK_PRESS: return "BACK_PRESS";
         case WaterCannonSm_EventId_CAL_PRESS: return "CAL_PRESS";
         case WaterCannonSm_EventId_DO: return "DO";

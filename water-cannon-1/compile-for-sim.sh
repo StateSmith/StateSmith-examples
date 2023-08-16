@@ -1,0 +1,1 @@
+gcc -I src src/*.c

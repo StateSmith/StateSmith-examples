@@ -36,6 +36,9 @@ Not recommended for beginners.
 ## 👾 Video Game
 * [mario-sm-1](./mario-sm-1/README.md)
 
+## 🗄️ Web/Database
+* [history-storage-1](./history-storage-1/README.md) Resumes a state machine from a clean start and some storage (file/database/...).
+
 ## 📱 Menu / User Interface
 * [csharp-space-menu-1](csharp-space-menu-1/README.md)
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
@@ -63,6 +66,7 @@ Not recommended for beginners.
 
 ## JavaScript
 * [mario-sm-1](./mario-sm-1/README.md)
+* [history-storage-1](./history-storage-1/README.md)
 
 ## Arduino
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)

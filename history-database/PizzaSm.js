@@ -18,12 +18,12 @@ class PizzaSm
     static StateId = 
     {
         ROOT : 0,
-        BUILD_A_PIZZA : 1,
-        CRUST : 2,
-        SIZE : 3,
-        TOPPINGS : 4,
-        PIZZA_ORDERED : 5,
-        PURCHASE_PIZZA : 6,
+        ORDERED : 1,
+        PIZZA_BUILD : 2,
+        CRUST : 3,
+        SIZE : 4,
+        TOPPINGS : 5,
+        PURCHASING : 6,
         CONFIRM_ORDER : 7,
         REVIEW_ORDER : 8,
     }
@@ -34,9 +34,9 @@ class PizzaSm
     
     static PizzaSm_HistoryId = 
     {
-        BUILD_A_PIZZA : 0, // default transition
-        PURCHASE_PIZZA : 1,
-        PIZZA_ORDERED : 2,
+        PIZZA_BUILD : 0, // default transition
+        PURCHASING : 1,
+        ORDERED : 2,
         CRUST : 3,
         TOPPINGS : 4,
         SIZE : 5,
@@ -85,34 +85,34 @@ class PizzaSm
                 // ROOT.<History> is a pseudo state and cannot have an `enter` trigger.
                 
                 // ROOT.<History> behavior
-                // uml: [$gil(this.vars.PizzaSm_history == PizzaSm_HistoryId.PURCHASE_PIZZA)] TransitionTo(PURCHASE_PIZZA)
-                if (this.vars.PizzaSm_history == PizzaSm.PizzaSm_HistoryId.PURCHASE_PIZZA)
+                // uml: [$gil(this.vars.PizzaSm_history == PizzaSm_HistoryId.PURCHASING)] TransitionTo(PURCHASING)
+                if (this.vars.PizzaSm_history == PizzaSm.PizzaSm_HistoryId.PURCHASING)
                 {
                     // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                     
                     // Step 2: Transition action: ``.
                     
-                    // Step 3: Enter/move towards transition target `PURCHASE_PIZZA`.
-                    this.#PURCHASE_PIZZA_enter();
+                    // Step 3: Enter/move towards transition target `PURCHASING`.
+                    this.#PURCHASING_enter();
                     
                     // Finish transition by calling pseudo state transition function.
-                    this.#PURCHASE_PIZZA_InitialState_transition();
+                    this.#PURCHASING_InitialState_transition();
                     return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
                 } // end of behavior for ROOT.<History>
                 
                 // ROOT.<History> behavior
-                // uml: [$gil(this.vars.PizzaSm_history == PizzaSm_HistoryId.PIZZA_ORDERED)] TransitionTo(PIZZA_ORDERED)
-                if (this.vars.PizzaSm_history == PizzaSm.PizzaSm_HistoryId.PIZZA_ORDERED)
+                // uml: [$gil(this.vars.PizzaSm_history == PizzaSm_HistoryId.ORDERED)] TransitionTo(ORDERED)
+                if (this.vars.PizzaSm_history == PizzaSm.PizzaSm_HistoryId.ORDERED)
                 {
                     // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                     
                     // Step 2: Transition action: ``.
                     
-                    // Step 3: Enter/move towards transition target `PIZZA_ORDERED`.
-                    this.#PIZZA_ORDERED_enter();
+                    // Step 3: Enter/move towards transition target `ORDERED`.
+                    this.#ORDERED_enter();
                     
                     // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-                    this.stateId = PizzaSm.StateId.PIZZA_ORDERED;
+                    this.stateId = PizzaSm.StateId.ORDERED;
                     // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
                     return;
                 } // end of behavior for ROOT.<History>
@@ -126,7 +126,7 @@ class PizzaSm
                     // Step 2: Transition action: ``.
                     
                     // Step 3: Enter/move towards transition target `CRUST`.
-                    this.#BUILD_A_PIZZA_enter();
+                    this.#PIZZA_BUILD_enter();
                     this.#CRUST_enter();
                     
                     // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
@@ -144,7 +144,7 @@ class PizzaSm
                     // Step 2: Transition action: ``.
                     
                     // Step 3: Enter/move towards transition target `TOPPINGS`.
-                    this.#BUILD_A_PIZZA_enter();
+                    this.#PIZZA_BUILD_enter();
                     this.#TOPPINGS_enter();
                     
                     // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
@@ -162,7 +162,7 @@ class PizzaSm
                     // Step 2: Transition action: ``.
                     
                     // Step 3: Enter/move towards transition target `SIZE`.
-                    this.#BUILD_A_PIZZA_enter();
+                    this.#PIZZA_BUILD_enter();
                     this.#SIZE_enter();
                     
                     // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
@@ -172,17 +172,17 @@ class PizzaSm
                 } // end of behavior for ROOT.<History>
                 
                 // ROOT.<History> behavior
-                // uml: else TransitionTo(BUILD_A_PIZZA)
+                // uml: else TransitionTo(PIZZA_BUILD)
                 {
                     // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                     
                     // Step 2: Transition action: ``.
                     
-                    // Step 3: Enter/move towards transition target `BUILD_A_PIZZA`.
-                    this.#BUILD_A_PIZZA_enter();
+                    // Step 3: Enter/move towards transition target `PIZZA_BUILD`.
+                    this.#PIZZA_BUILD_enter();
                     
                     // Finish transition by calling pseudo state transition function.
-                    this.#BUILD_A_PIZZA_InitialState_transition();
+                    this.#PIZZA_BUILD_InitialState_transition();
                     return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
                 } // end of behavior for ROOT.<History>
             } // end of behavior for ROOT.<InitialState>
@@ -229,34 +229,88 @@ class PizzaSm
     
     
     ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state BUILD_A_PIZZA
+    // event handlers for state ORDERED
     ////////////////////////////////////////////////////////////////////////////////
     
-    #BUILD_A_PIZZA_enter()
+    #ORDERED_enter()
     {
         // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#BUILD_A_PIZZA_exit;
+        this.#currentStateExitHandler = this.#ORDERED_exit;
+        this.#currentEventHandlers[PizzaSm.EventId.CANCEL] = this.#ORDERED_cancel;
         
-        // BUILD_A_PIZZA behavior
-        // uml: enter / { $gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.BUILD_A_PIZZA;) }
+        // ORDERED behavior
+        // uml: enter / { show_ordered(); }
         {
-            // Step 1: execute action `$gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.BUILD_A_PIZZA;)`
-            this.vars.PizzaSm_history = PizzaSm.PizzaSm_HistoryId.BUILD_A_PIZZA;
-        } // end of behavior for BUILD_A_PIZZA
+            // Step 1: execute action `show_ordered();`
+            show_ordered();
+        } // end of behavior for ORDERED
+        
+        // ORDERED behavior
+        // uml: enter / { $gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.ORDERED;) }
+        {
+            // Step 1: execute action `$gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.ORDERED;)`
+            this.vars.PizzaSm_history = PizzaSm.PizzaSm_HistoryId.ORDERED;
+        } // end of behavior for ORDERED
     }
     
-    #BUILD_A_PIZZA_exit()
+    #ORDERED_exit()
+    {
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#ROOT_exit;
+        this.#currentEventHandlers[PizzaSm.EventId.CANCEL] = null;  // no ancestor listens to this event
+    }
+    
+    #ORDERED_cancel()
+    {
+        // No ancestor state handles `cancel` event.
+        
+        // ORDERED behavior
+        // uml: CANCEL TransitionTo(PIZZA_BUILD)
+        {
+            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
+            this.#ORDERED_exit();
+            
+            // Step 2: Transition action: ``.
+            
+            // Step 3: Enter/move towards transition target `PIZZA_BUILD`.
+            this.#PIZZA_BUILD_enter();
+            
+            // Finish transition by calling pseudo state transition function.
+            this.#PIZZA_BUILD_InitialState_transition();
+            return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
+        } // end of behavior for ORDERED
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state PIZZA_BUILD
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #PIZZA_BUILD_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#PIZZA_BUILD_exit;
+        
+        // PIZZA_BUILD behavior
+        // uml: enter / { $gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PIZZA_BUILD;) }
+        {
+            // Step 1: execute action `$gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PIZZA_BUILD;)`
+            this.vars.PizzaSm_history = PizzaSm.PizzaSm_HistoryId.PIZZA_BUILD;
+        } // end of behavior for PIZZA_BUILD
+    }
+    
+    #PIZZA_BUILD_exit()
     {
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#ROOT_exit;
     }
     
-    #BUILD_A_PIZZA_InitialState_transition()
+    #PIZZA_BUILD_InitialState_transition()
     {
-        // BUILD_A_PIZZA.<InitialState> behavior
+        // PIZZA_BUILD.<InitialState> behavior
         // uml: TransitionTo(CRUST)
         {
-            // Step 1: Exit states until we reach `BUILD_A_PIZZA` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
+            // Step 1: Exit states until we reach `PIZZA_BUILD` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
             
             // Step 2: Transition action: ``.
             
@@ -267,7 +321,7 @@ class PizzaSm
             this.stateId = PizzaSm.StateId.CRUST;
             this.#ancestorEventHandler = null;
             return;
-        } // end of behavior for BUILD_A_PIZZA.<InitialState>
+        } // end of behavior for PIZZA_BUILD.<InitialState>
     }
     
     
@@ -299,7 +353,7 @@ class PizzaSm
     #CRUST_exit()
     {
         // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#BUILD_A_PIZZA_exit;
+        this.#currentStateExitHandler = this.#PIZZA_BUILD_exit;
         this.#currentEventHandlers[PizzaSm.EventId.NEXT] = null;  // no ancestor listens to this event
     }
     
@@ -310,7 +364,7 @@ class PizzaSm
         // CRUST behavior
         // uml: NEXT TransitionTo(SIZE)
         {
-            // Step 1: Exit states until we reach `BUILD_A_PIZZA` state (Least Common Ancestor for transition).
+            // Step 1: Exit states until we reach `PIZZA_BUILD` state (Least Common Ancestor for transition).
             this.#CRUST_exit();
             
             // Step 2: Transition action: ``.
@@ -355,7 +409,7 @@ class PizzaSm
     #SIZE_exit()
     {
         // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#BUILD_A_PIZZA_exit;
+        this.#currentStateExitHandler = this.#PIZZA_BUILD_exit;
         this.#currentEventHandlers[PizzaSm.EventId.BACK] = null;  // no ancestor listens to this event
         this.#currentEventHandlers[PizzaSm.EventId.NEXT] = null;  // no ancestor listens to this event
     }
@@ -367,7 +421,7 @@ class PizzaSm
         // SIZE behavior
         // uml: BACK TransitionTo(CRUST)
         {
-            // Step 1: Exit states until we reach `BUILD_A_PIZZA` state (Least Common Ancestor for transition).
+            // Step 1: Exit states until we reach `PIZZA_BUILD` state (Least Common Ancestor for transition).
             this.#SIZE_exit();
             
             // Step 2: Transition action: ``.
@@ -389,7 +443,7 @@ class PizzaSm
         // SIZE behavior
         // uml: NEXT TransitionTo(TOPPINGS)
         {
-            // Step 1: Exit states until we reach `BUILD_A_PIZZA` state (Least Common Ancestor for transition).
+            // Step 1: Exit states until we reach `PIZZA_BUILD` state (Least Common Ancestor for transition).
             this.#SIZE_exit();
             
             // Step 2: Transition action: ``.
@@ -434,7 +488,7 @@ class PizzaSm
     #TOPPINGS_exit()
     {
         // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#BUILD_A_PIZZA_exit;
+        this.#currentStateExitHandler = this.#PIZZA_BUILD_exit;
         this.#currentEventHandlers[PizzaSm.EventId.BACK] = null;  // no ancestor listens to this event
         this.#currentEventHandlers[PizzaSm.EventId.NEXT] = null;  // no ancestor listens to this event
     }
@@ -446,7 +500,7 @@ class PizzaSm
         // TOPPINGS behavior
         // uml: BACK TransitionTo(SIZE)
         {
-            // Step 1: Exit states until we reach `BUILD_A_PIZZA` state (Least Common Ancestor for transition).
+            // Step 1: Exit states until we reach `PIZZA_BUILD` state (Least Common Ancestor for transition).
             this.#TOPPINGS_exit();
             
             // Step 2: Transition action: ``.
@@ -466,141 +520,100 @@ class PizzaSm
         // No ancestor state handles `next` event.
         
         // TOPPINGS behavior
-        // uml: NEXT TransitionTo(BUILD_A_PIZZA.<ExitPoint>(done))
+        // uml: NEXT TransitionTo(PIZZA_BUILD.<ExitPoint>(done))
         {
-            // Step 1: Exit states until we reach `BUILD_A_PIZZA` state (Least Common Ancestor for transition).
+            // Step 1: Exit states until we reach `PIZZA_BUILD` state (Least Common Ancestor for transition).
             this.#TOPPINGS_exit();
             
             // Step 2: Transition action: ``.
             
-            // Step 3: Enter/move towards transition target `BUILD_A_PIZZA.<ExitPoint>(done)`.
-            // BUILD_A_PIZZA.<ExitPoint>(done) is a pseudo state and cannot have an `enter` trigger.
+            // Step 3: Enter/move towards transition target `PIZZA_BUILD.<ExitPoint>(done)`.
+            // PIZZA_BUILD.<ExitPoint>(done) is a pseudo state and cannot have an `enter` trigger.
             
-            // BUILD_A_PIZZA.<ExitPoint>(done) behavior
-            // uml: TransitionTo(PURCHASE_PIZZA)
+            // PIZZA_BUILD.<ExitPoint>(done) behavior
+            // uml: TransitionTo(PURCHASING)
             {
                 // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-                this.#BUILD_A_PIZZA_exit();
+                this.#PIZZA_BUILD_exit();
                 
                 // Step 2: Transition action: ``.
                 
-                // Step 3: Enter/move towards transition target `PURCHASE_PIZZA`.
-                this.#PURCHASE_PIZZA_enter();
+                // Step 3: Enter/move towards transition target `PURCHASING`.
+                this.#PURCHASING_enter();
                 
                 // Finish transition by calling pseudo state transition function.
-                this.#PURCHASE_PIZZA_InitialState_transition();
+                this.#PURCHASING_InitialState_transition();
                 return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
-            } // end of behavior for BUILD_A_PIZZA.<ExitPoint>(done)
+            } // end of behavior for PIZZA_BUILD.<ExitPoint>(done)
         } // end of behavior for TOPPINGS
     }
     
     
     ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state PIZZA_ORDERED
+    // event handlers for state PURCHASING
     ////////////////////////////////////////////////////////////////////////////////
     
-    #PIZZA_ORDERED_enter()
+    #PURCHASING_enter()
     {
         // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#PIZZA_ORDERED_exit;
-        this.#currentEventHandlers[PizzaSm.EventId.CANCEL] = this.#PIZZA_ORDERED_cancel;
+        this.#currentStateExitHandler = this.#PURCHASING_exit;
+        this.#currentEventHandlers[PizzaSm.EventId.BACK] = this.#PURCHASING_back;
         
-        // PIZZA_ORDERED behavior
-        // uml: enter / { show_ordered(); }
+        // PURCHASING behavior
+        // uml: enter / { $gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PURCHASING;) }
         {
-            // Step 1: execute action `show_ordered();`
-            show_ordered();
-        } // end of behavior for PIZZA_ORDERED
-        
-        // PIZZA_ORDERED behavior
-        // uml: enter / { $gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PIZZA_ORDERED;) }
-        {
-            // Step 1: execute action `$gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PIZZA_ORDERED;)`
-            this.vars.PizzaSm_history = PizzaSm.PizzaSm_HistoryId.PIZZA_ORDERED;
-        } // end of behavior for PIZZA_ORDERED
+            // Step 1: execute action `$gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PURCHASING;)`
+            this.vars.PizzaSm_history = PizzaSm.PizzaSm_HistoryId.PURCHASING;
+        } // end of behavior for PURCHASING
     }
     
-    #PIZZA_ORDERED_exit()
-    {
-        // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#ROOT_exit;
-        this.#currentEventHandlers[PizzaSm.EventId.CANCEL] = null;  // no ancestor listens to this event
-    }
-    
-    #PIZZA_ORDERED_cancel()
-    {
-        // No ancestor state handles `cancel` event.
-        
-        // PIZZA_ORDERED behavior
-        // uml: CANCEL TransitionTo(BUILD_A_PIZZA)
-        {
-            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-            this.#PIZZA_ORDERED_exit();
-            
-            // Step 2: Transition action: ``.
-            
-            // Step 3: Enter/move towards transition target `BUILD_A_PIZZA`.
-            this.#BUILD_A_PIZZA_enter();
-            
-            // Finish transition by calling pseudo state transition function.
-            this.#BUILD_A_PIZZA_InitialState_transition();
-            return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
-        } // end of behavior for PIZZA_ORDERED
-    }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state PURCHASE_PIZZA
-    ////////////////////////////////////////////////////////////////////////////////
-    
-    #PURCHASE_PIZZA_enter()
-    {
-        // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#PURCHASE_PIZZA_exit;
-        this.#currentEventHandlers[PizzaSm.EventId.BACK] = this.#PURCHASE_PIZZA_back;
-        
-        // PURCHASE_PIZZA behavior
-        // uml: enter / { $gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PURCHASE_PIZZA;) }
-        {
-            // Step 1: execute action `$gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PURCHASE_PIZZA;)`
-            this.vars.PizzaSm_history = PizzaSm.PizzaSm_HistoryId.PURCHASE_PIZZA;
-        } // end of behavior for PURCHASE_PIZZA
-    }
-    
-    #PURCHASE_PIZZA_exit()
+    #PURCHASING_exit()
     {
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#ROOT_exit;
         this.#currentEventHandlers[PizzaSm.EventId.BACK] = null;  // no ancestor listens to this event
     }
     
-    #PURCHASE_PIZZA_back()
+    #PURCHASING_back()
     {
         // No ancestor state handles `back` event.
         
-        // PURCHASE_PIZZA behavior
-        // uml: BACK TransitionTo(BUILD_A_PIZZA)
+        // PURCHASING behavior
+        // uml: BACK TransitionTo(PIZZA_BUILD.<EntryPoint>(from_back))
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ROOT_exit);
             
             // Step 2: Transition action: ``.
             
-            // Step 3: Enter/move towards transition target `BUILD_A_PIZZA`.
-            this.#BUILD_A_PIZZA_enter();
+            // Step 3: Enter/move towards transition target `PIZZA_BUILD.<EntryPoint>(from_back)`.
+            this.#PIZZA_BUILD_enter();
+            // PIZZA_BUILD.<EntryPoint>(from_back) is a pseudo state and cannot have an `enter` trigger.
             
-            // Finish transition by calling pseudo state transition function.
-            this.#BUILD_A_PIZZA_InitialState_transition();
-            return; // event processing immediately stops when a transition finishes. No other behaviors for this state are checked.
-        } // end of behavior for PURCHASE_PIZZA
+            // PIZZA_BUILD.<EntryPoint>(from_back) behavior
+            // uml: TransitionTo(TOPPINGS)
+            {
+                // Step 1: Exit states until we reach `PIZZA_BUILD` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
+                
+                // Step 2: Transition action: ``.
+                
+                // Step 3: Enter/move towards transition target `TOPPINGS`.
+                this.#TOPPINGS_enter();
+                
+                // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+                this.stateId = PizzaSm.StateId.TOPPINGS;
+                // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+                return;
+            } // end of behavior for PIZZA_BUILD.<EntryPoint>(from_back)
+        } // end of behavior for PURCHASING
     }
     
-    #PURCHASE_PIZZA_InitialState_transition()
+    #PURCHASING_InitialState_transition()
     {
-        // PURCHASE_PIZZA.<InitialState> behavior
+        // PURCHASING.<InitialState> behavior
         // uml: TransitionTo(REVIEW_ORDER)
         {
-            // Step 1: Exit states until we reach `PURCHASE_PIZZA` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
+            // Step 1: Exit states until we reach `PURCHASING` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
             
             // Step 2: Transition action: ``.
             
@@ -611,7 +624,7 @@ class PizzaSm
             this.stateId = PizzaSm.StateId.REVIEW_ORDER;
             this.#ancestorEventHandler = null;
             return;
-        } // end of behavior for PURCHASE_PIZZA.<InitialState>
+        } // end of behavior for PURCHASING.<InitialState>
     }
     
     
@@ -637,20 +650,20 @@ class PizzaSm
     #CONFIRM_ORDER_exit()
     {
         // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#PURCHASE_PIZZA_exit;
-        this.#currentEventHandlers[PizzaSm.EventId.BACK] = this.#PURCHASE_PIZZA_back;  // the next ancestor that handles this event is PURCHASE_PIZZA
+        this.#currentStateExitHandler = this.#PURCHASING_exit;
+        this.#currentEventHandlers[PizzaSm.EventId.BACK] = this.#PURCHASING_back;  // the next ancestor that handles this event is PURCHASING
         this.#currentEventHandlers[PizzaSm.EventId.NEXT] = null;  // no ancestor listens to this event
     }
     
     #CONFIRM_ORDER_back()
     {
         // Setup handler for next ancestor that listens to `back` event.
-        this.#ancestorEventHandler = this.#PURCHASE_PIZZA_back;
+        this.#ancestorEventHandler = this.#PURCHASING_back;
         
         // CONFIRM_ORDER behavior
         // uml: BACK TransitionTo(REVIEW_ORDER)
         {
-            // Step 1: Exit states until we reach `PURCHASE_PIZZA` state (Least Common Ancestor for transition).
+            // Step 1: Exit states until we reach `PURCHASING` state (Least Common Ancestor for transition).
             this.#CONFIRM_ORDER_exit();
             
             // Step 2: Transition action: ``.
@@ -670,32 +683,32 @@ class PizzaSm
         // No ancestor state handles `next` event.
         
         // CONFIRM_ORDER behavior
-        // uml: NEXT TransitionTo(PURCHASE_PIZZA.<ExitPoint>(done))
+        // uml: NEXT TransitionTo(PURCHASING.<ExitPoint>(done))
         {
-            // Step 1: Exit states until we reach `PURCHASE_PIZZA` state (Least Common Ancestor for transition).
+            // Step 1: Exit states until we reach `PURCHASING` state (Least Common Ancestor for transition).
             this.#CONFIRM_ORDER_exit();
             
             // Step 2: Transition action: ``.
             
-            // Step 3: Enter/move towards transition target `PURCHASE_PIZZA.<ExitPoint>(done)`.
-            // PURCHASE_PIZZA.<ExitPoint>(done) is a pseudo state and cannot have an `enter` trigger.
+            // Step 3: Enter/move towards transition target `PURCHASING.<ExitPoint>(done)`.
+            // PURCHASING.<ExitPoint>(done) is a pseudo state and cannot have an `enter` trigger.
             
-            // PURCHASE_PIZZA.<ExitPoint>(done) behavior
-            // uml: TransitionTo(PIZZA_ORDERED)
+            // PURCHASING.<ExitPoint>(done) behavior
+            // uml: TransitionTo(ORDERED)
             {
                 // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-                this.#PURCHASE_PIZZA_exit();
+                this.#PURCHASING_exit();
                 
                 // Step 2: Transition action: ``.
                 
-                // Step 3: Enter/move towards transition target `PIZZA_ORDERED`.
-                this.#PIZZA_ORDERED_enter();
+                // Step 3: Enter/move towards transition target `ORDERED`.
+                this.#ORDERED_enter();
                 
                 // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-                this.stateId = PizzaSm.StateId.PIZZA_ORDERED;
+                this.stateId = PizzaSm.StateId.ORDERED;
                 // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
                 return;
-            } // end of behavior for PURCHASE_PIZZA.<ExitPoint>(done)
+            } // end of behavior for PURCHASING.<ExitPoint>(done)
         } // end of behavior for CONFIRM_ORDER
     }
     
@@ -721,7 +734,7 @@ class PizzaSm
     #REVIEW_ORDER_exit()
     {
         // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#PURCHASE_PIZZA_exit;
+        this.#currentStateExitHandler = this.#PURCHASING_exit;
         this.#currentEventHandlers[PizzaSm.EventId.NEXT] = null;  // no ancestor listens to this event
     }
     
@@ -732,7 +745,7 @@ class PizzaSm
         // REVIEW_ORDER behavior
         // uml: NEXT TransitionTo(CONFIRM_ORDER)
         {
-            // Step 1: Exit states until we reach `PURCHASE_PIZZA` state (Least Common Ancestor for transition).
+            // Step 1: Exit states until we reach `PURCHASING` state (Least Common Ancestor for transition).
             this.#REVIEW_ORDER_exit();
             
             // Step 2: Transition action: ``.
@@ -753,12 +766,12 @@ class PizzaSm
         switch (id)
         {
             case PizzaSm.StateId.ROOT: return "ROOT";
-            case PizzaSm.StateId.BUILD_A_PIZZA: return "BUILD_A_PIZZA";
+            case PizzaSm.StateId.ORDERED: return "ORDERED";
+            case PizzaSm.StateId.PIZZA_BUILD: return "PIZZA_BUILD";
             case PizzaSm.StateId.CRUST: return "CRUST";
             case PizzaSm.StateId.SIZE: return "SIZE";
             case PizzaSm.StateId.TOPPINGS: return "TOPPINGS";
-            case PizzaSm.StateId.PIZZA_ORDERED: return "PIZZA_ORDERED";
-            case PizzaSm.StateId.PURCHASE_PIZZA: return "PURCHASE_PIZZA";
+            case PizzaSm.StateId.PURCHASING: return "PURCHASING";
             case PizzaSm.StateId.CONFIRM_ORDER: return "CONFIRM_ORDER";
             case PizzaSm.StateId.REVIEW_ORDER: return "REVIEW_ORDER";
             default: return "?";

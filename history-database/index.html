@@ -1,5 +1,4 @@
 <html>
-
     <style>
         body {
             background-color: #000000;
@@ -7,13 +6,15 @@
             font-family: "Courier New", Courier, monospace;
             font-size: 20px;
             text-align: center;
+            max-width: 800px;
         }
     </style>
 
     <body>
+        <p><i>Selections are not saved in demo. Only the ordering stage.</i></p>
+
         <div id="ask-crust" class="ordering-div" style="display: none;">
             <h1>Step: Choose your pizza crust</h1>
-            <p><i>Values not saved in demo. Only the ordering step.</i></p>
             <select>
                 <option value="thin">Thin</option>
                 <option value="thick">Thick</option>
@@ -26,7 +27,6 @@
 
         <div id="ask-size" class="ordering-div" style="display: none;">
             <h1>Step: Choose your pizza size</h1>
-            <p><i>Values not saved in demo. Only the ordering step.</i></p>
             <select>
                 <option value="small">Small</option>
                 <option value="medium">Medium</option>
@@ -39,30 +39,22 @@
 
         <div  id="ask-toppings" class="ordering-div" style="display: none;">
             <h1>Step: Choose your toppings</h1>
-            <p><i>Values not saved in demo. Only the ordering step.</i></p>
             <fieldset>
                 <legend>Protein</legend>
                 <input type="checkbox" name="protein" value="pepperoni">Pepperoni<br>
-                <input type="checkbox" name="protein" value="ham">Ham<br>
-                <input type="checkbox" name="protein" value="beef">Beef<br>
-                <input type="checkbox" name="protein" value="chicken">Chicken<br>
                 <input type="checkbox" name="protein" value="beyond-meat">Beyond Meat<br>
             </fieldset>
 
             <fieldset>
                 <legend>Veggies</legend>
                 <input type="checkbox" name="veggies" value="mushrooms">Mushrooms<br>
-                <input type="checkbox" name="veggies" value="onions">Onions<br>
                 <input type="checkbox" name="veggies" value="green peppers">Green Peppers<br>
-                <input type="checkbox" name="veggies" value="black olives">Black Olives<br>
             </fieldset>
 
             <fieldset>
                 <legend>Other</legend>
                 <input type="checkbox" name="other" value="pineapple">Pineapple<br>
                 <input type="checkbox" name="other" value="jalapenos">Jalapenos<br>
-                <input type="checkbox" name="other" value="anchovies">Anchovies<br>
-                <input type="checkbox" name="other" value="extra cheese">Extra Cheese<br>
             </fieldset>
 
             <button class="btn-back">Back</button>
@@ -71,7 +63,6 @@
 
         <div id="ask-review-order" class="ordering-div" style="display: none;">
             <h1>Step: Review your order</h1>
-            <p><i>Values not saved in demo. Only the ordering step.</i></p>
             <p>Imagine your order was here :)</p>
             <button class="btn-back">Back</button>
             <button class="btn-next">Next</button>
@@ -79,7 +70,6 @@
 
         <div id="ask-confirmation" class="ordering-div" style="display: none;">
             <h1>Step: confirm order</h1>
-            <p><i>Values not saved in demo. Only the ordering step.</i></p>
             <p>Press NEXT to give us your money for a pizza!</p>
             <button class="btn-back">Back</button>
             <button class="btn-next">Next</button>
@@ -87,7 +77,6 @@
 
         <div id="show-ordered" class="ordering-div" style="display: none;">
             <h1>Step: Order confirmed!</h1>
-            <p><i>Values not saved in demo. Only the ordering step.</i></p>
             <p>If this was a mistake, use the cancel button.</p>
             <button class="btn-cancel">Cancel Order</button>
         </div>

@@ -39,7 +39,7 @@ void AddHistoryStateChangeDetection()
             foreach (var name in expectedButMissing)
                 detail += "-" + name + ", ";
 
-            throw new Exception($"State machine root history changes: {detail}");
+            throw new Exception($"History tracked states modified. Update manual mappings in .js & .csx! Changes: {detail}");
         }
     }));
 }

@@ -292,6 +292,13 @@ class PizzaSm
         this.#currentStateExitHandler = this.#PIZZA_BUILD_exit;
         
         // PIZZA_BUILD behavior
+        // uml: enter / { console.log("PIZZA_BUILD entered"); }
+        {
+            // Step 1: execute action `console.log("PIZZA_BUILD entered");`
+            console.log("PIZZA_BUILD entered");
+        } // end of behavior for PIZZA_BUILD
+        
+        // PIZZA_BUILD behavior
         // uml: enter / { $gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PIZZA_BUILD;) }
         {
             // Step 1: execute action `$gil(this.vars.PizzaSm_history = PizzaSm_HistoryId.PIZZA_BUILD;)`

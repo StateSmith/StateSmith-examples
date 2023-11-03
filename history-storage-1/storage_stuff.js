@@ -30,11 +30,11 @@ class MappingElement {
 // This example is coded in a way that any language can roughly follow.
 const mappingArray = [
     new MappingElement("PIZZA_BUILD", PizzaSm.PizzaSm_HistoryId.PIZZA_BUILD),
-    new MappingElement("PURCHASING", PizzaSm.PizzaSm_HistoryId.PURCHASING),
-    new MappingElement("ORDERED", PizzaSm.PizzaSm_HistoryId.ORDERED),
-    new MappingElement("CRUST", PizzaSm.PizzaSm_HistoryId.CRUST),
-    new MappingElement("TOPPINGS", PizzaSm.PizzaSm_HistoryId.TOPPINGS),
-    new MappingElement("SIZE", PizzaSm.PizzaSm_HistoryId.SIZE),
+    new MappingElement("PURCHASING",  PizzaSm.PizzaSm_HistoryId.PURCHASING),
+    new MappingElement("ORDERED",     PizzaSm.PizzaSm_HistoryId.ORDERED),
+    new MappingElement("CRUST",       PizzaSm.PizzaSm_HistoryId.CRUST),
+    new MappingElement("TOPPINGS",    PizzaSm.PizzaSm_HistoryId.TOPPINGS),
+    new MappingElement("SIZE",        PizzaSm.PizzaSm_HistoryId.SIZE),
 ];
 
 

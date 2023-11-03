@@ -39,7 +39,14 @@ void AddHistoryStateChangeDetection()
             foreach (var name in expectedButMissing)
                 detail += "-" + name + ", ";
 
-            throw new Exception($"History tracked states modified. Update manual mappings in .js & .csx! Changes: {detail}");
+            throw new UpdateRequiredException($"History tracked states modified. Update manual mappings in .js & .csx! Changes: {detail}");
         }
     }));
+}
+
+public class UpdateRequiredException : Exception
+{
+    public UpdateRequiredException() { }
+    public UpdateRequiredException(string message) : base(message) { }
+    public UpdateRequiredException(string message, Exception innerException) : base(message, innerException) { }
 }

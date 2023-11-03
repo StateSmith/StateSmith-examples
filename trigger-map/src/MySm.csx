@@ -14,6 +14,6 @@ public class MyRenderConfig : IRenderConfigJavaScript
 {
     public class MyExpansions : UserExpansionScriptBase
     {
-        public string log_unhandled_event() => $"""log_unhandled_event("{CurrentTrigger}")""";
+        public string log_unhandled_event() => $"""log_unhandled_event("{CurrentTrigger.ToUpper()}")"""; // CurrentTrigger returns trigger in lower case so we convert it to upper case.
     }
 }

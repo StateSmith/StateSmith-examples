@@ -14,6 +14,7 @@ A number of the projects in here are straight up experimental. See each project'
 
 ## ✨ Advanced Features
 Not recommended for beginners.
+* [multi-lang-1](./multi-lang-1/README.md). Generate state machines for multiple programming languages from a single diagram.
 * [modding-logging](./modding-logging/README.md)
 * [custom-triggers](./custom-triggers/README.md)
 * [user-post-process](./user-post-process/README.md)

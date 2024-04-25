@@ -33,7 +33,9 @@ public class ButtonRenderConfig : IRenderConfigC
     string IRenderConfigC.CFileIncludes => """
         #include "Arduino.h"
         """;
-
+    
+    // NOTE!!! Idiomatic C++ code generation is coming. This will improve.
+    // See https://github.com/StateSmith/StateSmith/issues/126
     string IRenderConfigC.CFileExtension => ".cpp";
     string IRenderConfigC.HFileExtension => ".hpp";
     string IRenderConfigC.CEnumDeclarer => "typedef enum __attribute__((packed)) {enumName}";

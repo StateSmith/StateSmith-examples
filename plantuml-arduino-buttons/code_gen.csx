@@ -1,5 +1,5 @@
 #!/usr/bin/env dotnet-script
-#r "nuget: StateSmith, 0.9.2-alpha"
+#r "nuget: StateSmith, 0.9.10-alpha"
 
 using StateSmith.Input.Expansions;
 using StateSmith.Output.Gil.C99;
@@ -9,16 +9,7 @@ using StateSmith.SmGraph;
 
 // See https://github.com/StateSmith/tutorial-2/blob/main/lesson-1/
 SmRunner runner = new(diagramPath: "ButtonSm1Cpp.puml", new MyRenderConfig(), transpilerId: TranspilerId.C99);
-
-// NOTE!!! Idiomatic C++ code generation is coming. This will improve.
-// See https://github.com/StateSmith/StateSmith/issues/126
-// and https://github.com/StateSmith/StateSmith/issues/185
-var customizer = runner.GetExperimentalAccess().DiServiceProvider.GetInstanceOf<GilToC99Customizer>();
-customizer.CFileNameBuilder = (StateMachine sm) => $"{sm.Name}.cpp";
-customizer.EnumDeclarationBuilder = (string enumName) => $"typedef enum __attribute__((packed)) {enumName}";
-
 runner.Settings.outputDirectory = "src";
-
 runner.Run();
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -26,6 +17,12 @@ runner.Run();
 // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-2
 public class MyRenderConfig : IRenderConfigC
 {
+    // NOTE!!! Idiomatic C++ code generation is coming. This will improve.
+    // See https://github.com/StateSmith/StateSmith/issues/126
+    string IRenderConfigC.CFileExtension => ".cpp"; // the generated StateSmith C code is also valid C++ code
+    string IRenderConfigC.HFileExtension => ".h";   // could also be .hh, .hpp or whatever you like
+    string IRenderConfigC.CEnumDeclarer => "typedef enum __attribute__((packed)) {enumName}";   // save RAM by packing enum type to smallest int type
+
     string IRenderConfigC.CFileIncludes => """
         #include "Arduino.h"
         """;

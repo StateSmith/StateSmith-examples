@@ -9,7 +9,8 @@ A number of the projects in here are straight up experimental. See each project'
 
 # StateSmith
 ## 🌟 Features
-* [trigger-map](./trigger-map/README.md)
+* [trigger-map](./trigger-map/README.md) - short hands for events/triggers. 
+* [multiple state machines in a single diagram](./buttons-lights-1/README.md) - connect state machines together through variables & events.
 * [sm-design-describer-1](./sm-design-describer-1/README.md) good for git diffs, understanding
 
 ## ✨ Advanced Features
@@ -49,6 +50,7 @@ Not recommended for beginners.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 
 ## 🕹️ Buttons/Input
+* [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
@@ -69,10 +71,10 @@ Not recommended for beginners.
 * [mario-sm-1](./mario-sm-1/README.md)
 * [history-storage-1](./history-storage-1/README.md)
 
-## Arduino
+## C++ / Arduino
+* [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
-
 
 <br>
 

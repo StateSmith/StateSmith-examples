@@ -1,0 +1,165 @@
+<mxfile host="65bd71144e" scale="1.2" border="0">
+    <diagram name="Page-1" id="ahwWs56YI2XBYRBzwlqw">
+        <mxGraphModel dx="320" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-57" value="$STATEMACHINE : LightSm" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#ffffff;fillColor=#1ba1e2;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;strokeColor=#006EAF;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="80" width="360" height="760" as="geometry"/>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-58" value=" " style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="ZIOTUwtG6jgaDJF-H-SD-57" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-59" value="$initial_state" style="shape=ellipse;aspect=fixed;fillColor=#000000;resizable=0;rotatable=0;noLabel=1;" parent="ZIOTUwtG6jgaDJF-H-SD-57" vertex="1">
+                    <mxGeometry x="157.5" y="50" width="25" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-66" value="INC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="ZIOTUwtG6jgaDJF-H-SD-57" source="ZIOTUwtG6jgaDJF-H-SD-60" target="ZIOTUwtG6jgaDJF-H-SD-62" edge="1">
+                    <mxGeometry x="-0.6" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-60" value="OFF" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#FAFAFA;fillColor=#545454;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;" parent="ZIOTUwtG6jgaDJF-H-SD-57" vertex="1">
+                    <mxGeometry x="60" y="120" width="220" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-61" value="enter / set_id(OFF);&#10;enter / printf(&quot;OFF\n&quot;);" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="ZIOTUwtG6jgaDJF-H-SD-60" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-67" value="DIM" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="ZIOTUwtG6jgaDJF-H-SD-57" source="ZIOTUwtG6jgaDJF-H-SD-62" target="ZIOTUwtG6jgaDJF-H-SD-60" edge="1">
+                    <mxGeometry x="-0.5" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-64" style="rounded=0;" parent="ZIOTUwtG6jgaDJF-H-SD-57" source="ZIOTUwtG6jgaDJF-H-SD-59" target="ZIOTUwtG6jgaDJF-H-SD-60" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="OFF" style="edgeStyle=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="ZIOTUwtG6jgaDJF-H-SD-57" source="73" target="ZIOTUwtG6jgaDJF-H-SD-60" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="73" value="ON_GROUP" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#FAFAFA;fillColor=#545454;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;" parent="ZIOTUwtG6jgaDJF-H-SD-57" vertex="1">
+                    <mxGeometry x="40" y="250" width="260" height="490" as="geometry"/>
+                </mxCell>
+                <mxCell id="74" value=" " style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="73" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-62" value="ON1" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#FAFAFA;fillColor=#545454;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;" parent="73" vertex="1">
+                    <mxGeometry x="20" y="80" width="220" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="ZIOTUwtG6jgaDJF-H-SD-63" value="enter / {&#10;  set_id(ON1);&#10;  blue();&#10;}" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="ZIOTUwtG6jgaDJF-H-SD-62" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="130" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" value="DIM" style="edgeStyle=none;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="73" source="58" target="ZIOTUwtG6jgaDJF-H-SD-62" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="58" value="ON2" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#FAFAFA;fillColor=#545454;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;" parent="73" vertex="1">
+                    <mxGeometry x="20" y="210" width="220" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="enter / {&#10;  set_id(ON2);&#10;  yellow();&#10;}" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="58" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="130" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="INC" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="73" source="ZIOTUwtG6jgaDJF-H-SD-62" target="58" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="DIM" style="edgeStyle=none;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" parent="73" source="69" target="58" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="69" value="ON3" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;fontColor=#FAFAFA;fillColor=#545454;swimlaneFillColor=default;rounded=1;arcSize=15;absoluteArcSize=1;" parent="73" vertex="1">
+                    <mxGeometry x="20" y="350" width="220" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="enter / {&#10;  set_id(ON3);&#10;  count++;&#10;  red();&#10;}" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="69" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="130" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="71" value="INC" style="edgeStyle=none;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="73" source="58" target="69" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="$RenderConfig" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;swimlaneFillColor=default;html=1;rounded=1;arcSize=15;absoluteArcSize=1;fillColor=#76608a;strokeColor=#432D57;fontColor=#ffffff;" parent="1" vertex="1" collapsed="1">
+                    <mxGeometry x="840" width="210" height="70" as="geometry">
+                        <mxRectangle width="840" height="650" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="77" value="" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="76" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="50" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="$CONFIG: AutoExpandedVars" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;swimlaneFillColor=default;html=1;rounded=1;arcSize=15;absoluteArcSize=1;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" parent="76" vertex="1" collapsed="1">
+                    <mxGeometry x="40" y="40" width="280" height="70" as="geometry">
+                        <mxRectangle x="30" y="170" width="290" height="90" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="79" value="// your variable declartions here like: &#10;// uint8_t count;" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="78" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="310" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="&lt;b&gt;$NOTES&lt;/b&gt;&lt;br&gt;The &lt;b&gt;AutoExpandedVars &lt;/b&gt;render config section gives a convenient way to create a state machine variable and automatically add an expansion to it at the same time.&lt;br&gt;&lt;br&gt;It is combined with the C# &lt;b&gt;IRenderConfigC.&lt;/b&gt;&lt;b&gt;AutoExpandedVars&amp;nbsp;&lt;/b&gt;config.&lt;br&gt;&lt;br&gt;See&amp;nbsp;&lt;a href=&quot;https://github.com/StateSmith/StateSmith/issues/91&quot;&gt;https://github.com/StateSmith/StateSmith/issues/91&lt;/a&gt; for more info." style="shape=rectangle;rounded=1;arcSize=15;absoluteArcSize=1;align=left;verticalAlign=top;whiteSpace=wrap;html=1;spacingLeft=4;strokeWidth=1;strokeColor=default;fillColor=#fff2cc;fontColor=#000000;gradientColor=#ffd966;" parent="78" vertex="1">
+                    <mxGeometry x="50" y="130" width="410" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" value="&lt;b&gt;$NOTES&lt;/b&gt;&lt;br&gt;Diagram based RenderConfig support was added in StateSmith&amp;nbsp;version&amp;nbsp;0.7.7.&lt;br&gt;&lt;br&gt;See&amp;nbsp;&lt;a href=&quot;https://github.com/StateSmith/StateSmith/issues/23&quot;&gt;https://github.com/StateSmith/StateSmith/issues/23&lt;/a&gt;&amp;nbsp;for more info." style="shape=rectangle;rounded=1;arcSize=15;absoluteArcSize=1;align=left;verticalAlign=top;whiteSpace=wrap;html=1;spacingLeft=4;strokeWidth=1;strokeColor=default;fillColor=#fff2cc;fontColor=#000000;gradientColor=#ffd966;" parent="76" vertex="1">
+                    <mxGeometry x="360" y="40" width="460" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="82" value="&lt;b&gt;$NOTES&lt;/b&gt;&lt;br&gt;Generic expansions can only be created from the C# file within the &lt;b&gt;IRenderConfigC &lt;/b&gt;section for now." style="shape=rectangle;rounded=1;arcSize=15;absoluteArcSize=1;align=left;verticalAlign=top;whiteSpace=wrap;html=1;spacingLeft=4;strokeWidth=1;strokeColor=default;fillColor=#fff2cc;fontColor=#000000;gradientColor=#ffd966;" parent="76" vertex="1">
+                    <mxGeometry x="360" y="160" width="460" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="$CONFIG: HFileTop" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;swimlaneFillColor=default;html=1;rounded=1;arcSize=15;absoluteArcSize=1;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" parent="76" vertex="1" collapsed="1">
+                    <mxGeometry x="40" y="160" width="280" height="70" as="geometry">
+                        <mxRectangle x="30" y="60" width="290" height="90" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="84" value="// User RenderConfig HFileTop text..." style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="83" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="290" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" value="&lt;b&gt;$NOTES&lt;/b&gt;&lt;br&gt;Anything you type in the &lt;b&gt;HFileTop&amp;nbsp;&lt;/b&gt;vertex ends up at the top of the generated .h file. It is combined with the C# &lt;b&gt;IRenderConfigC.HFileTop&lt;/b&gt; config." style="shape=rectangle;rounded=1;arcSize=15;absoluteArcSize=1;align=left;verticalAlign=top;whiteSpace=wrap;html=1;spacingLeft=4;strokeWidth=1;strokeColor=default;fillColor=#fff2cc;fontColor=#000000;gradientColor=#ffd966;" parent="83" vertex="1">
+                    <mxGeometry x="50" y="130" width="330" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" value="$CONFIG: HFileIncludes" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;swimlaneFillColor=default;html=1;rounded=1;arcSize=15;absoluteArcSize=1;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" parent="76" vertex="1" collapsed="1">
+                    <mxGeometry x="40" y="240" width="280" height="70" as="geometry">
+                        <mxRectangle x="30" y="60" width="290" height="90" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="87" value="// User RenderConfig HFileIncludes text..." style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="86" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="330" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="88" value="&lt;b&gt;$NOTES&lt;/b&gt;&lt;br&gt;Anything you type in the &lt;b&gt;HFileIncludes &lt;/b&gt;vertex ends up in the generated .h file. It is combined with the C# &lt;b&gt;IRenderConfigC.HFileIncludes&lt;/b&gt; config." style="shape=rectangle;rounded=1;arcSize=15;absoluteArcSize=1;align=left;verticalAlign=top;whiteSpace=wrap;html=1;spacingLeft=4;strokeWidth=1;strokeColor=default;fillColor=#fff2cc;fontColor=#000000;gradientColor=#ffd966;" parent="86" vertex="1">
+                    <mxGeometry x="40" y="120" width="330" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="89" value="$CONFIG: CFileTop" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;swimlaneFillColor=default;html=1;rounded=1;arcSize=15;absoluteArcSize=1;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" parent="76" vertex="1" collapsed="1">
+                    <mxGeometry x="40" y="360" width="280" height="70" as="geometry">
+                        <mxRectangle x="30" y="170" width="290" height="90" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="90" value="// This file is intended to be *INCLUDED* into another .c file" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="89" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="470" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="91" value="&lt;b&gt;$NOTES&lt;/b&gt;&lt;br&gt;Anything you type in the &lt;b&gt;CFileTop&amp;nbsp;&lt;/b&gt;vertex ends up at the top of the generated .c file. It is combined with the C# &lt;b&gt;IRenderConfigC.CFileTop&lt;/b&gt; config." style="shape=rectangle;rounded=1;arcSize=15;absoluteArcSize=1;align=left;verticalAlign=top;whiteSpace=wrap;html=1;spacingLeft=4;strokeWidth=1;strokeColor=default;fillColor=#fff2cc;fontColor=#000000;gradientColor=#ffd966;" parent="89" vertex="1">
+                    <mxGeometry x="60" y="140" width="330" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="92" value="$CONFIG: CFileIncludes" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;swimlaneFillColor=default;html=1;rounded=1;arcSize=15;absoluteArcSize=1;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" parent="76" vertex="1" collapsed="1">
+                    <mxGeometry x="40" y="440" width="280" height="70" as="geometry">
+                        <mxRectangle x="30" y="170" width="290" height="90" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="93" value="// User RenderConfig CFileIncludes text..." style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="92" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="330" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="&lt;b&gt;$NOTES&lt;/b&gt;&lt;br&gt;Anything you type in the &lt;b&gt;CFileIncludes &lt;/b&gt;vertex ends up in the generated .c file. It is combined with the C# &lt;b&gt;IRenderConfigC.CFileIncludes&lt;/b&gt; config." style="shape=rectangle;rounded=1;arcSize=15;absoluteArcSize=1;align=left;verticalAlign=top;whiteSpace=wrap;html=1;spacingLeft=4;strokeWidth=1;strokeColor=default;fillColor=#fff2cc;fontColor=#000000;gradientColor=#ffd966;" parent="92" vertex="1">
+                    <mxGeometry x="50" y="130" width="330" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="95" value="$CONFIG: VariableDeclarations" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;swimlaneFillColor=default;html=1;rounded=1;arcSize=15;absoluteArcSize=1;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" parent="76" vertex="1" collapsed="1">
+                    <mxGeometry x="40" y="560" width="280" height="70" as="geometry">
+                        <mxRectangle x="30" y="170" width="290" height="90" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="96" value="// This section is ignored if it only contains c style comments.&#10;// Add something like `bool my_flag;` to see a variables section get added to the state machine struct." style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="95" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="770" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="97" value="&lt;b&gt;$NOTES&lt;/b&gt;&lt;br&gt;Anything you type in the &lt;b&gt;VariableDeclarations&amp;nbsp;&lt;/b&gt;vertex ends up in the generated .h file variables section. It is combined with the C# &lt;b&gt;IRenderConfigC.VariableDeclarations&amp;nbsp;&lt;/b&gt;config." style="shape=rectangle;rounded=1;arcSize=15;absoluteArcSize=1;align=left;verticalAlign=top;whiteSpace=wrap;html=1;spacingLeft=4;strokeWidth=1;strokeColor=default;fillColor=#fff2cc;fontColor=#000000;gradientColor=#ffd966;" parent="95" vertex="1">
+                    <mxGeometry x="60" y="140" width="330" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="98" value="$CONFIG: CFileExtension" style="shape=swimlane;rotatable=0;align=center;verticalAlign=top;fontFamily=Lucida Console;startSize=30;fontSize=14;fontStyle=1;swimlaneFillColor=default;html=1;rounded=1;arcSize=15;absoluteArcSize=1;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" parent="76" vertex="1">
+                    <mxGeometry x="400" y="360" width="290" height="90" as="geometry">
+                        <mxRectangle x="400" y="360" width="280" height="70" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="99" value=".inc" style="fontFamily=Lucida Console;align=left;verticalAlign=top;fillColor=none;gradientColor=none;strokeColor=none;rounded=0;spacingLeft=4;resizable=0;movable=0;deletable=0;rotatable=0;autosize=1;" parent="98" vertex="1" connectable="0">
+                    <mxGeometry y="30" width="50" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

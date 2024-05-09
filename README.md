@@ -59,6 +59,7 @@ Not recommended for beginners.
 # By Language
 
 ## C
+* [c-include-sm](./c-include-sm/README.md) - easy connection between user code and fsm. No expansions needed.
 * [rtos-event-queue-c](./rtos-event-queue-c/README.md)
 * [example-drawio-1 repo](https://github.com/StateSmith/example-drawio-1)
 * [logging-simple-1](./logging-simple-1/README.md)
@@ -72,6 +73,7 @@ Not recommended for beginners.
 * [history-storage-1](./history-storage-1/README.md)
 
 ## C++ / Arduino
+* [c-include-sm](./c-include-sm/README.md) - easy connection between user code and fsm. No expansions needed.
 * [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).

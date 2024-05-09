@@ -13,7 +13,7 @@ Why `.inc`? Somewhat common to mean "code fragment" and not a normal header. See
 * no expansions are needed at all.
 * user private variables/functions remain private.
     - they don't need to be put into a header for fsm to access.
-    - private var/function pointers don't need to be into struct for fsm to access.
+    - private var/function pointers don't need to be put into struct for fsm to access.
 
 # The Design
 The actual user state machine diagram and user code is just a trivial example. The key point is that the state machine is directly included into the user code and how they can interact.

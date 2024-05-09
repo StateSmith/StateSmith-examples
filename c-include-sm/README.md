@@ -5,6 +5,8 @@ This example shows an fsm directly `#included` into a user written c/cpp file. T
 * `LightSm.h` 
 * `LightSm.inc`
 
+Why `.inc`? Somewhat common to mean "code fragment" and not a normal header. See https://stackoverflow.com/a/48474197/7331858 
+
 # Benefits
 * fsm can access private variables/functions inside a user c/cpp file.
 * no additional wiring or data structures need to be created by user.

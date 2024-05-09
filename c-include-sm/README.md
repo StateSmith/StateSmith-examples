@@ -23,7 +23,14 @@ This particular example assumes you only have a single instance of the target fs
 but the same approach can be applied to multiple instances of a fsm (like for multiple buttons).
 
 # Bare .CSX File
-Note that the .csx file is almost empty.
+Note that the .csx file is almost empty (no render config, no expansions).
+
+```cs
+using StateSmith.Runner;
+SmRunner runner = new(diagramPath: "LightSm.drawio", transpilerId: TranspilerId.C99);
+runner.Run();
+```
+
 * This gets us closer to not needing to use .csx files. 
 * .csx files allow powerful customization, but many fsm designs don't need that power.
 * It would be nice to be simpler.

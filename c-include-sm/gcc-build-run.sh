@@ -1,2 +1,2 @@
 #! /bin/bash
-gcc main.c && ./a.out
+gcc -Wall main.c && ./a.out

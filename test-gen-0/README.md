@@ -3,35 +3,37 @@
 Stuff in here will change. This directory name will also likely change. Don't link to it just yet.
 
 # Purpose
-Shows a simple way to get all states and state behaviors for a design.
+Demonstrates how StateSmith could generate some simple scaffolding to make testing simple.
 
-This information could be used to generate test plans, test scaffolding, or documentation.
+This example demonstrates JS tests using npm and jest.
 
-Sample output:
-```
-Root initial state behaviors:
-    TransitionTo(OFF)
+StateSmith would generate the following:
+- LightSm.sample.jest.test.js
+- package.sample.json (static)
 
-State ON_GROUP behaviors:
-    OFF TransitionTo(OFF)
+Users would use the sample as guidance on how to write their own tests.
+The easiest thing to do is copy the sample file to LightSm.jest.test.js
+and start editing. I've done that and provided LightSm.jest.test.js,
+which is how I imagine a user might go about testing this particular
+state machine.
 
-State ON1 behaviors:
-    enter / { light_blue(); }
-    INCREASE TransitionTo(ON2)
-    DIM TransitionTo(OFF)
+Setup instructions are in the test file, but tldr `npm test`.
 
-State ON_HOT behaviors:
-    enter / { light_red(); }
-    DIM TransitionTo(ON2)
+In this example I added "jest" to the file names. It's a bit verbose and
+maybe we don't want to do that, but I did it to suggest that we could
+also provide samples using other frameworks. eg. we could allow the
+user to select between jest and mocha generators. But this might be overkill.
 
-State ON2 behaviors:
-    1. INCREASE / { count++; }
-    2. INCREASE [count >= 3] TransitionTo(ON_HOT)
-    enter / { light_yellow(); }
-    enter / { count = 0; }
-    DIM TransitionTo(ON1)
+# Other languages
 
-State OFF behaviors:
-    enter / { std::cout << "OFF\n"; }
-    INCREASE TransitionTo(ON1)
-```
+JS is a handy language for writing tests, but there are all kinds of reasons
+someone might want to use a different language. The idea would be to generate
+tests for any languages that the user specifies. If and when StateSmith
+generates JS by default https://github.com/StateSmith/StateSmith/issues/267, 
+this would give the user the choice of implementing in there target language
+or implementing in JS.
+
+The JS state machine is easy to inspect, but that may not be the case for other
+languages such as C++ that support access restrictions. StateSmith will need
+to provide an inspection interface to allow developers to write tests based 
+on internal state, eg. the equivalent of expect(sm.stateId).toBe(LightSm.StateId.OFF);

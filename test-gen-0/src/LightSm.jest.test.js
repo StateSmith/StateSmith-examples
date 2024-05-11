@@ -9,7 +9,7 @@ import {jest} from '@jest/globals'; // We'll use jest in this example. see packa
 // Your implementations should also be tested, but in separate tests.
 globalThis.println = jest.fn();
 
-test('starts in the OFF state', () => {
+test('println to be called once on startup', () => {
     const sm = new LightSm();
     sm.start();
     expect(globalThis.println.mock.calls).toHaveLength(1);

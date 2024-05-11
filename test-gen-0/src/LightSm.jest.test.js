@@ -9,6 +9,8 @@ import {jest} from '@jest/globals'; // We'll use jest in this example. see packa
 // Your implementations should also be tested, but in separate tests.
 globalThis.println = jest.fn();
 globalThis.light_blue = jest.fn();
+globalThis.light_yellow = jest.fn();
+globalThis.light_red = jest.fn();
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -52,3 +54,25 @@ test('light can be turned off', () => {
     // Assert
     expect(sm.stateId).toBe(LightSm.StateId.OFF);
 });
+
+test('count how many times INCREASE is pressed in ON2', ()=>{
+    // Arrange
+    const sm = new LightSm();
+    sm.start();
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+    expect(sm.stateId).toBe(LightSm.StateId.ON2);
+    expect(sm.vars.count).toBe(0);
+
+    // Act
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+
+    // Assert
+    expect(sm.stateId).toBe(LightSm.StateId.ON2);
+    expect(sm.vars.count).toBe(1);
+})
+
+
+/// Notes:
+/// - in JS we have access to the internals of the state machine so we don't need
+///   to implement a special test api. For other languages we'll need a test api.

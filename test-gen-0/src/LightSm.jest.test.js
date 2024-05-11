@@ -72,6 +72,24 @@ test('count how many times INCREASE is pressed in ON2', ()=>{
     expect(sm.vars.count).toBe(1);
 })
 
+test('increase until red', ()=>{
+    // Arrange
+    const sm = new LightSm();
+    sm.start();
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+    expect(sm.stateId).toBe(LightSm.StateId.ON2);
+    expect(sm.vars.count).toBe(2);
+
+    // Act
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+
+    // Assert
+    expect(sm.stateId).toBe(LightSm.StateId.ON_HOT);
+    expect(sm.vars.count).toBe(3);
+})
 
 /// Notes:
 /// - in JS we have access to the internals of the state machine so we don't need

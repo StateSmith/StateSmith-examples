@@ -4,11 +4,15 @@ import {LightSm} from './LightSm.js';
 import {jest} from '@jest/globals'; // We'll use jest in this example. see package.json for config details
 
 // Mock the functions used by the state machine
+// We recommend mocking rather than importing your actual functions,
+// to keep these tests purely about testing the state machine itself.
+// Your implementations should also be tested, but in separate tests.
 globalThis.println = jest.fn();
 
-test('adds 1 + 2 to equal 3', () => {
+test('starts in the OFF state', () => {
     const sm = new LightSm();
     sm.start();
-//   expect(sum(1, 2)).toBe(3);
+    expect(globalThis.println.mock.calls).toHaveLength(1);
+    // expect(sm.StateId).toBe(LightSm.StateId.OFF);
 });
 

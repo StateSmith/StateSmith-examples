@@ -10,6 +10,10 @@ import {jest} from '@jest/globals'; // We'll use jest in this example. see packa
 globalThis.println = jest.fn();
 globalThis.light_blue = jest.fn();
 
+beforeEach(() => {
+    jest.clearAllMocks();
+});
+
 test('starts in the off state', () => {
     const sm = new LightSm();
     sm.start();
@@ -28,4 +32,14 @@ test('light is blue when turned on', () => {
     sm.dispatchEvent(LightSm.EventId.INCREASE);
     expect(sm.stateId).toBe(LightSm.StateId.ON1);
     expect(globalThis.light_blue.mock.calls).toHaveLength(1);
+});
+
+test('light can be turned off', () => {
+    const sm = new LightSm();
+    sm.start();
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+    expect(sm.stateId).toBe(LightSm.StateId.ON1);
+
+    sm.dispatchEvent(LightSm.EventId.DIM);
+    expect(sm.stateId).toBe(LightSm.StateId.OFF);
 });

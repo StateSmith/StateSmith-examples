@@ -16,3 +16,9 @@ test('println to be called once on startup', () => {
     // expect(sm.StateId).toBe(LightSm.StateId.OFF);
 });
 
+test('starts in the off state', () => {
+    const sm = new LightSm();
+    sm.start();
+    expect(sm.stateId).toBe(LightSm.StateId.OFF);
+});
+

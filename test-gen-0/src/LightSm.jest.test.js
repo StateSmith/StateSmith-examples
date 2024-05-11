@@ -8,12 +8,12 @@ import {jest} from '@jest/globals'; // We'll use jest in this example. see packa
 // to keep these tests purely about testing the state machine itself.
 // Your implementations should also be tested, but in separate tests.
 globalThis.println = jest.fn();
+globalThis.light_blue = jest.fn();
 
 test('println to be called once on startup', () => {
     const sm = new LightSm();
     sm.start();
     expect(globalThis.println.mock.calls).toHaveLength(1);
-    // expect(sm.StateId).toBe(LightSm.StateId.OFF);
 });
 
 test('starts in the off state', () => {
@@ -22,3 +22,11 @@ test('starts in the off state', () => {
     expect(sm.stateId).toBe(LightSm.StateId.OFF);
 });
 
+
+test('light is blue when turned on', () => {
+    const sm = new LightSm();
+    sm.start();
+    sm.dispatchEvent(LightSm.EventId.INCREASE);
+    expect(sm.stateId).toBe(LightSm.StateId.ON1);
+    expect(globalThis.light_blue.mock.calls).toHaveLength(1);
+});

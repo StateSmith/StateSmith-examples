@@ -27,19 +27,28 @@ test('println to be called once on startup', () => {
 });
 
 test('light is blue when turned on', () => {
+    // Arrange
     const sm = new LightSm();
     sm.start();
+
+    // Act
     sm.dispatchEvent(LightSm.EventId.INCREASE);
+
+    // Assert
     expect(sm.stateId).toBe(LightSm.StateId.ON1);
     expect(globalThis.light_blue.mock.calls).toHaveLength(1);
 });
 
 test('light can be turned off', () => {
+    // Arrange
     const sm = new LightSm();
     sm.start();
     sm.dispatchEvent(LightSm.EventId.INCREASE);
     expect(sm.stateId).toBe(LightSm.StateId.ON1);
 
+    // Act
     sm.dispatchEvent(LightSm.EventId.DIM);
+
+    // Assert
     expect(sm.stateId).toBe(LightSm.StateId.OFF);
 });

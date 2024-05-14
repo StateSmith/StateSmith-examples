@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "gcc-build",
+            "command": "${workspaceFolder}/code_gen_compile.sh",
+            "type": "process",
+            "problemMatcher": "$gcc"
+        },
+    ]
+}

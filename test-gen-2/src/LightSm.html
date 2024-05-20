@@ -17,7 +17,7 @@
             ON2: INCREASE / count++#59;
         
             ON_HOT: ON_HOT
-            ON_HOT: enter / {\nlight_red()#59;\n}
+            ON_HOT: enter / {\nlight_red()#59;\n}            
         
             %% transitions
             ON1 --> ON2: INCREASE
@@ -38,7 +38,11 @@
                 ON2
                 ON_HOT  
             }
-        }        
+        }
+
+        classDef badBadEvent fill:#f00,color:white,font-weight:bold,stroke-width:2px,stroke:yellow
+
+        class OFF badBadEvent
     </pre>
 
     <script type="module">

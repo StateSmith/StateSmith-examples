@@ -5,6 +5,18 @@ state LightSm {
     OFF: enter / std#colon;#colon;cout #lt;#lt; "OFF#92;n"#59;
 
     state ON_GROUP {
+        state ON1 {}
+        ON1: ON1
+        ON1: enter / light_blue()#59;
+
+        ON2: ON2
+        ON2: enter / light_yellow()#59;
+        ON2: count = 0#59;
+        ON2: INCREASE / count++#59;
+
+        ON_HOT: ON_HOT
+        ON_HOT: enter / {\nlight_red()#59;\n}
+
         ON1 --> ON2: INCREASE
         ON2 --> ON_HOT: INCREASE [count >= 3]
         ON2 --> ON1: DIM

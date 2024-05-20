@@ -1,0 +1,13 @@
+stateDiagram
+
+state LightSm {
+    [*] --> OFF
+    OFF: OFF
+    OFF: enter / std#colon;#colon;cout #lt;#lt; "OFF#92;n"#59;
+
+    state ON_GROUP {
+        ON1 --> ON2
+        ON2 --> ON_HOT
+    }
+}
+

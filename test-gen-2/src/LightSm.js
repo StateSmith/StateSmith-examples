@@ -128,10 +128,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.INCREASE] = this.#OFF_increase;
         
         // OFF behavior
-        // uml: enter / { document.querySelector('g[data-id=OFF]').classList.add('active'); }
+        // uml: enter / { document.querySelector('g[data-id=OFF]')?.classList.add('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=OFF]').classList.add('active');`
-            document.querySelector('g[data-id=OFF]').classList.add('active');
+            // Step 1: execute action `document.querySelector('g[data-id=OFF]')?.classList.add('active');`
+            document.querySelector('g[data-id=OFF]')?.classList.add('active');
         } // end of behavior for OFF
         
         // OFF behavior
@@ -159,10 +159,10 @@ class LightSm
         } // end of behavior for OFF
         
         // OFF behavior
-        // uml: exit / { document.querySelector('g[data-id=OFF]').classList.remove('active'); }
+        // uml: exit / { document.querySelector('g[data-id=OFF]')?.classList.remove('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=OFF]').classList.remove('active');`
-            document.querySelector('g[data-id=OFF]').classList.remove('active');
+            // Step 1: execute action `document.querySelector('g[data-id=OFF]')?.classList.remove('active');`
+            document.querySelector('g[data-id=OFF]')?.classList.remove('active');
         } // end of behavior for OFF
         
         // adjust function pointers for this state's exit
@@ -205,10 +205,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.OFF] = this.#ON_GROUP_off;
         
         // ON_GROUP behavior
-        // uml: enter / { document.querySelector('g[data-id=ON_GROUP]').classList.add('active'); }
+        // uml: enter / { document.querySelector('g[data-id=ON_GROUP]')?.classList.add('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON_GROUP]').classList.add('active');`
-            document.querySelector('g[data-id=ON_GROUP]').classList.add('active');
+            // Step 1: execute action `document.querySelector('g[data-id=ON_GROUP]')?.classList.add('active');`
+            document.querySelector('g[data-id=ON_GROUP]')?.classList.add('active');
         } // end of behavior for ON_GROUP
         
         // ON_GROUP behavior
@@ -229,10 +229,10 @@ class LightSm
         } // end of behavior for ON_GROUP
         
         // ON_GROUP behavior
-        // uml: exit / { document.querySelector('g[data-id=ON_GROUP]').classList.remove('active'); }
+        // uml: exit / { document.querySelector('g[data-id=ON_GROUP]')?.classList.remove('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON_GROUP]').classList.remove('active');`
-            document.querySelector('g[data-id=ON_GROUP]').classList.remove('active');
+            // Step 1: execute action `document.querySelector('g[data-id=ON_GROUP]')?.classList.remove('active');`
+            document.querySelector('g[data-id=ON_GROUP]')?.classList.remove('active');
         } // end of behavior for ON_GROUP
         
         // adjust function pointers for this state's exit
@@ -274,10 +274,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.DIM] = this.#ON_HOT_dim;
         
         // ON_HOT behavior
-        // uml: enter / { document.querySelector('g[data-id=ON_HOT]').classList.add('active'); }
+        // uml: enter / { document.querySelector('g[data-id=ON_HOT]')?.classList.add('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON_HOT]').classList.add('active');`
-            document.querySelector('g[data-id=ON_HOT]').classList.add('active');
+            // Step 1: execute action `document.querySelector('g[data-id=ON_HOT]')?.classList.add('active');`
+            document.querySelector('g[data-id=ON_HOT]')?.classList.add('active');
         } // end of behavior for ON_HOT
         
         // ON_HOT behavior
@@ -305,10 +305,10 @@ class LightSm
         } // end of behavior for ON_HOT
         
         // ON_HOT behavior
-        // uml: exit / { document.querySelector('g[data-id=ON_HOT]').classList.remove('active'); }
+        // uml: exit / { document.querySelector('g[data-id=ON_HOT]')?.classList.remove('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON_HOT]').classList.remove('active');`
-            document.querySelector('g[data-id=ON_HOT]').classList.remove('active');
+            // Step 1: execute action `document.querySelector('g[data-id=ON_HOT]')?.classList.remove('active');`
+            document.querySelector('g[data-id=ON_HOT]')?.classList.remove('active');
         } // end of behavior for ON_HOT
         
         // adjust function pointers for this state's exit
@@ -351,10 +351,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.INCREASE] = this.#ON1_increase;
         
         // ON1 behavior
-        // uml: enter / { document.querySelector('g[data-id=ON1]').classList.add('active'); }
+        // uml: enter / { document.querySelector('g[data-id=ON1]')?.classList.add('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON1]').classList.add('active');`
-            document.querySelector('g[data-id=ON1]').classList.add('active');
+            // Step 1: execute action `document.querySelector('g[data-id=ON1]')?.classList.add('active');`
+            document.querySelector('g[data-id=ON1]')?.classList.add('active');
         } // end of behavior for ON1
         
         // ON1 behavior
@@ -382,10 +382,10 @@ class LightSm
         } // end of behavior for ON1
         
         // ON1 behavior
-        // uml: exit / { document.querySelector('g[data-id=ON1]').classList.remove('active'); }
+        // uml: exit / { document.querySelector('g[data-id=ON1]')?.classList.remove('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON1]').classList.remove('active');`
-            document.querySelector('g[data-id=ON1]').classList.remove('active');
+            // Step 1: execute action `document.querySelector('g[data-id=ON1]')?.classList.remove('active');`
+            document.querySelector('g[data-id=ON1]')?.classList.remove('active');
         } // end of behavior for ON1
         
         // adjust function pointers for this state's exit
@@ -451,10 +451,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.INCREASE] = this.#ON2_increase;
         
         // ON2 behavior
-        // uml: enter / { document.querySelector('g[data-id=ON2]').classList.add('active'); }
+        // uml: enter / { document.querySelector('g[data-id=ON2]')?.classList.add('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON2]').classList.add('active');`
-            document.querySelector('g[data-id=ON2]').classList.add('active');
+            // Step 1: execute action `document.querySelector('g[data-id=ON2]')?.classList.add('active');`
+            document.querySelector('g[data-id=ON2]')?.classList.add('active');
         } // end of behavior for ON2
         
         // ON2 behavior
@@ -489,10 +489,10 @@ class LightSm
         } // end of behavior for ON2
         
         // ON2 behavior
-        // uml: exit / { document.querySelector('g[data-id=ON2]').classList.remove('active'); }
+        // uml: exit / { document.querySelector('g[data-id=ON2]')?.classList.remove('active'); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON2]').classList.remove('active');`
-            document.querySelector('g[data-id=ON2]').classList.remove('active');
+            // Step 1: execute action `document.querySelector('g[data-id=ON2]')?.classList.remove('active');`
+            document.querySelector('g[data-id=ON2]')?.classList.remove('active');
         } // end of behavior for ON2
         
         // adjust function pointers for this state's exit

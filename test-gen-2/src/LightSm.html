@@ -2,8 +2,8 @@
   <body>
     <script src="LightSm.js"></script>
 
-    <button onclick="sm.dispatch(LightSm.EventId.INCREASE)">INCREASE</button>
-    <button>DIM</button>
+    <button id="increase">INCREASE</button>
+    <button id="dim">DIM</button>
 
     <pre class="mermaid">
         stateDiagram
@@ -55,6 +55,10 @@
         await mermaid.run();
 
         var sm = new LightSm();
+
+        document.getElementById("increase").addEventListener ("click", ()=>sm.dispatchEvent(LightSm.EventId.INCREASE), false);
+        document.getElementById("dim").addEventListener ("click", ()=>sm.dispatchEvent(LightSm.EventId.DIM), false);
+
         sm.start();
     </script>
 

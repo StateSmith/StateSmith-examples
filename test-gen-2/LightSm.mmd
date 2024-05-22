@@ -3,7 +3,7 @@ stateDiagram
 state LightSm {
     %% states
     OFF: OFF
-    OFF: enter / std#colon;#colon;cout #lt;#lt; "OFF#92;n"#59;
+    OFF: enter / console.log("OFF#92;n")#59;
 
     ON1: ON1
     ON1: enter / light_blue()#59;
@@ -14,7 +14,7 @@ state LightSm {
     ON2: INCREASE / count++#59;
 
     ON_HOT: ON_HOT
-    ON_HOT: enter / {\nlight_red()#59;\n}
+    ON_HOT: enter / {\nlight_red()#59;\n}            
 
     %% transitions
     ON1 --> ON2: INCREASE
@@ -37,3 +37,4 @@ state LightSm {
     }
 }
 
+classDef active fill:yellow,font-weight:bold,stroke-width:2px

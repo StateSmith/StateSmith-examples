@@ -42,12 +42,17 @@
 
         classDef selected fill:yellow,font-weight:bold,stroke-width:2px
 
-        class OFF selected
     </pre>
 
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: false });
+        await mermaid.run();
+
+        await document.querySelectorAll('g').forEach((g) => {
+            g.classList.remove('selected');
+        });
+        await document.querySelector('g[data-id=ON2]').classList.add('selected');
         await mermaid.run();
     </script>
 

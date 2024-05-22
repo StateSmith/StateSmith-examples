@@ -31,6 +31,11 @@ void LoggingTransformationStep(StateMachine sm)
     {
         state.AddEnterAction($"console.log(\"--> Entered {state.Name}.\");", index:0); // use index to insert at start
         state.AddExitAction($"console.log(\"<-- Exited {state.Name}.\");"); // behavior added to end
+
+        // TODO how to handle escaping state names
+        state.AddEnterAction($"document.querySelector('g[data-id={state.Name}]').classList.add('selected');", index:0); // use index to insert at start
+        state.AddExitAction($"document.querySelector('g[data-id={state.Name}]').classList.remove('selected');");
+
     });
 }
 

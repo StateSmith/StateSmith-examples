@@ -55,11 +55,11 @@
         mermaid.initialize({ startOnLoad: false });
         await mermaid.run();
 
-        await document.querySelectorAll('g').forEach((g) => {
-            g.classList.remove('selected');
-        });
-        await document.querySelector('g[data-id=ON2]').classList.add('selected');
-        await mermaid.run();
+        // await document.querySelectorAll('g').forEach((g) => {
+        //     g.classList.remove('selected');
+        // });
+        // await document.querySelector('g[data-id=ON2]').classList.add('selected');
+        // await mermaid.run();
 
         let sm = new LightSm();
         sm.start();

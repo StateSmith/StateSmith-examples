@@ -1,7 +1,8 @@
 <html>
   <body>
+    <script src="LightSm.js"></script>
 
-    <button>INCREASE</button>
+    <button onclick="sm.dispatch(LightSm.EventId.INCREASE)">INCREASE</button>
     <button>DIM</button>
 
     <pre class="mermaid">
@@ -48,14 +49,12 @@
 
     </pre>
 
-    <script src="LightSm.js"></script>
-
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: false });
         await mermaid.run();
 
-        let sm = new LightSm();
+        var sm = new LightSm();
         sm.start();
     </script>
 

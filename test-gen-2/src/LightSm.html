@@ -10,7 +10,7 @@
         state LightSm {
             %% states
             OFF: OFF
-            OFF: enter / std#colon;#colon;cout #lt;#lt; "OFF#92;n"#59;
+            OFF: enter / console.log("OFF#92;n")#59;
         
             ON1: ON1
             ON1: enter / light_blue()#59;
@@ -48,6 +48,7 @@
 
     </pre>
 
+    <script src="LightSm.js"></script>
 
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -59,7 +60,11 @@
         });
         await document.querySelector('g[data-id=ON2]').classList.add('selected');
         await mermaid.run();
+
+        let sm = new LightSm();
+        sm.start();
     </script>
+
 
   </body>
 </html>

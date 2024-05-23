@@ -71,8 +71,8 @@ string foo = $"""
 <html>
   <body>
 
-    <button id="button1">{event1Name}</button>
-    <button id="button2">{event2Name}</button>
+    <button id="button1">{events[0].Name}</button>
+    <button id="button2">{events[1].Name}</button>
 
     <pre class="mermaid">
         {mermaidCode}
@@ -86,8 +86,8 @@ string foo = $"""
 
         var sm = new {sm.Name}();
 
-        document.getElementById("button1").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{event1Name}), false);
-        document.getElementById("button2").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{event2Name}), false);
+        document.getElementById("button1").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{events[0].Name}), false);
+        document.getElementById("button2").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{events[1].Name}), false);
 
         sm.start();
     </script>

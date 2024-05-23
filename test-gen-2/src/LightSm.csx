@@ -45,10 +45,6 @@ void LoggingTransformationStep(StateMachine sm)
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// NOTHING NOTABLE BELOW THIS LINE
-/////////////////////////////////////////////////////////////////////////////////////////
-
 
 // This class gives StateSmith the info it needs to generate working C code.
 // It adds user code to the generated .c/.h files, declares user variables,
@@ -69,3 +65,34 @@ public class LightSmRenderConfig : IRenderConfigJavaScript
         // public string light_red()    => """std::cout << "RED\n";""";
     }
 }
+
+
+string foo = $"""
+<html>
+  <body>
+
+    <button id="button1">{event1Name}</button>
+    <button id="button2">{event2Name}</button>
+
+    <pre class="mermaid">
+        {mermaidCode}
+    </pre>
+
+    <script src="{sm.Name}.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({{ startOnLoad: false }});
+        await mermaid.run();
+
+        var sm = new {sm.Name}();
+
+        document.getElementById("button1").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{event1Name}), false);
+        document.getElementById("button2").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{event2Name}), false);
+
+        sm.start();
+    </script>
+
+
+  </body>
+</html>
+""";

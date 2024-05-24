@@ -20,10 +20,9 @@ runner.SmTransformer.InsertBeforeFirstMatch(
     StandardSmTransformer.TransformationId.Standard_FinalValidation,
     new TransformationStep(id: "some string id", action: (sm) =>
     {
-        Console.WriteLine("\n\nStarting to visit the graph");
+        Console.WriteLine("stateDiagram");
         var visitor = new MyGraphVisitor();
         sm.Accept(visitor);
-        Console.WriteLine("Finished visiting the graph\n\n");
     }));
 
 
@@ -54,7 +53,7 @@ void LoggingTransformationStep(StateMachine sm)
 // Of note, it is particularly useful for making sure at compile time that we handle all the different types of vertices in the graph.
 class MyGraphVisitor : IVertexVisitor
 {
-    int indentLevel = 1;
+    int indentLevel = 0;
 
     private void Print(string message)
     {
@@ -89,9 +88,10 @@ class MyGraphVisitor : IVertexVisitor
 
     public void Visit(StateMachine v)
     {
-        Print("Visiting StateMachine: " + v.Name);
+        
+        Print( $"state {v.Name} {{\n");
         VisitChildren(v);
-        Print("Finished Visiting StateMachine: " + v.Name);
+        Print( $"}}\n");
     }
 
     public void Visit(NamedVertex v)

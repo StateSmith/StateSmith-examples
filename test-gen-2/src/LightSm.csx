@@ -20,8 +20,10 @@ runner.SmTransformer.InsertBeforeFirstMatch(
     StandardSmTransformer.TransformationId.Standard_FinalValidation,
     new TransformationStep(id: "some string id", action: (sm) =>
     {
-        Console.WriteLine("stateDiagram");
-        var visitor = new MyGraphVisitor();
+        // TextWriter mermaidCode = new StringWriter();
+        TextWriter mermaidCode = Console.Out;
+        mermaidCode.WriteLine("stateDiagram");
+        var visitor = new MermaidGenerator(mermaidCode);
         sm.Accept(visitor);
     }));
 
@@ -51,16 +53,23 @@ void LoggingTransformationStep(StateMachine sm)
 // This class implements the IVertexVisitor interface, which is used to visit the graph.
 // If you haven't seen the visitor pattern before, you can check out https://en.wikipedia.org/wiki/Visitor_pattern
 // Of note, it is particularly useful for making sure at compile time that we handle all the different types of vertices in the graph.
-class MyGraphVisitor : IVertexVisitor
+class MermaidGenerator : IVertexVisitor
 {
+    private readonly TextWriter writer;
+
+    public MermaidGenerator(TextWriter writer)
+    {
+        this.writer = writer;
+    }
+
     int indentLevel = 0;
 
     private void Print(string message)
     {
         for (int i = 0; i < indentLevel; i++)
-            Console.Write("        ");
+            writer.Write("        ");
 
-        Console.WriteLine(message);
+        writer.WriteLine(message);
     }
 
     private void VisitChildren(Vertex v)

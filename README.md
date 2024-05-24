@@ -19,8 +19,7 @@ Not recommended for beginners.
 * [modding-logging](./modding-logging/README.md)
 * [custom-triggers](./custom-triggers/README.md)
 * [user-post-process](./user-post-process/README.md)
-
-
+* [visitor-graph-1](./visitor-graph-1/README.md). Analyze a state machine graph using the [Visitor Pattern](https://en.wikipedia.org/wiki/Visitor_pattern).
 
 <br>
 

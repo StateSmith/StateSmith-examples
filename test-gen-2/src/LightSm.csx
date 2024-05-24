@@ -18,6 +18,7 @@ runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.Transformation
                                             new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
 
 // This code generate the html
+// TODO generate the mermaid code BEFORE adding tracing and stuff
 runner.SmTransformer.InsertBeforeFirstMatch(
     StandardSmTransformer.TransformationId.Standard_FinalValidation,
     new TransformationStep(id: "some string id", action: (sm) =>

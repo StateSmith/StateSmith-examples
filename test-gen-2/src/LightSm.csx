@@ -22,9 +22,9 @@ runner.SmTransformer.InsertBeforeFirstMatch(
     {
         // TextWriter mermaidCode = new StringWriter();
         TextWriter mermaidCode = Console.Out;
-        mermaidCode.WriteLine("stateDiagram");
         var visitor = new MermaidGenerator(mermaidCode);
         sm.Accept(visitor);
+        visitor.Print();
     }));
 
 
@@ -55,31 +55,74 @@ void LoggingTransformationStep(StateMachine sm)
 // Of note, it is particularly useful for making sure at compile time that we handle all the different types of vertices in the graph.
 class MermaidGenerator : IVertexVisitor
 {
-    private readonly TextWriter writer;
+    private HashSet<Vertex> leafNodes = new HashSet<Vertex>();
+    private HashSet<Vertex> compositeNodes = new HashSet<Vertex>();      
+    private TextWriter writer;
 
     public MermaidGenerator(TextWriter writer)
     {
         this.writer = writer;
     }
 
-    int indentLevel = 0;
+
+    public void Print() {
+        Print("stateDiagram");
+        foreach (var node in leafNodes.Concat(compositeNodes)) {
+            PrintTransitions(node);
+        }
+        foreach (var node in leafNodes) {
+            PrintLeafNode(node);
+        }
+        foreach (var node in compositeNodes) {
+            PrintCompositeNode(node);
+        }
+    }
+
+
+    private void PrintLeafNode(Vertex v) {
+        if( v is NamedVertex ) {
+            string name = ((NamedVertex)v).Name;
+            Print($"{name} : {name}");
+        }
+    }
+
+    private void PrintCompositeNode(Vertex v) {
+        if( !(v is NamedVertex) ) {
+            throw new Exception("Composite node must be named");
+        }
+
+        Print($"state {((NamedVertex)v).Name} {{");
+        foreach (var child in v.Children)
+        {
+            if(child is NamedVertex) {
+                Print(((NamedVertex)child).Name);
+            }
+        }
+        Print("}");
+    }
+
+    private void PrintTransitions(Vertex v) {
+        foreach (var behavior in v.Behaviors)
+        {
+            if(behavior.TransitionTarget!=null) {
+                string start = v is NamedVertex ? ((NamedVertex)v).Name : "[*]";
+                string end = behavior.TransitionTarget is NamedVertex ? ((NamedVertex)behavior.TransitionTarget).Name : "[*]";
+                Print($"{start} --> {end}");
+            }
+        }
+    }
 
     private void Print(string message)
     {
-        for (int i = 0; i < indentLevel; i++)
-            writer.Write("        ");
-
         writer.WriteLine(message);
     }
 
     private void VisitChildren(Vertex v)
     {
-        indentLevel++;
         foreach (var child in v.Children)
         {
             child.Accept(this);
         }
-        indentLevel--;
     }
 
     private void AssertNoChildren(Vertex v)
@@ -97,10 +140,9 @@ class MermaidGenerator : IVertexVisitor
 
     public void Visit(StateMachine v)
     {
-        
-        Print( $"state {v.Name} {{");
+        Print("Visiting StateMachine");        
         VisitChildren(v);
-        Print( $"}}");
+        Print("Finished Visiting StateMachine");
     }
 
     public void Visit(NamedVertex v)
@@ -125,25 +167,11 @@ class MermaidGenerator : IVertexVisitor
     // Then composite states
     public void Visit(State v)
     {
-        VisitBehaviors(v);
-
         if(v.Children.Count > 0) {
+            compositeNodes.Add(v);
             VisitChildren(v);
-            Print( $"state {v.Name} {{");
-            PrintChildNames(v);
-            Print( "}");
         } else {
-            Print($"{v.Name}: {v.Name}");        
-        }
-    }
-
-    private void PrintChildNames(State v)
-    {
-        foreach (var child in v.Children)
-        {
-            if(child is NamedVertex) {
-                Print(((NamedVertex)child).Name);
-            }
+            leafNodes.Add(v);
         }
     }
 
@@ -155,12 +183,12 @@ class MermaidGenerator : IVertexVisitor
 
     public void Visit(NotesVertex v)
     {
-        // just ignore notes and any children
+        throw new NotImplementedException();
     }
 
     public void Visit(InitialState v)
     {
-        VisitBehaviors(v);
+        Print("Visiting InitialState");
         AssertNoChildren(v);
     }
 

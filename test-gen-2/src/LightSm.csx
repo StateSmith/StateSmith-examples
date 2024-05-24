@@ -200,32 +200,27 @@ class MermaidGenerator : IVertexVisitor
 
     public void Visit(ChoicePoint v)
     {
-        Print("Visiting ChoicePoint with label: " + v.label);
-        AssertNoChildren(v);
+        throw new NotImplementedException();
     }
 
     public void Visit(EntryPoint v)
     {
-        Print("Visiting EntryPoint with label: " + v.label);
-        AssertNoChildren(v);
+        throw new NotImplementedException();
     }
 
     public void Visit(ExitPoint v)
     {
-        Print("Visiting ExitPoint with label: " + v.label);
-        AssertNoChildren(v);
+        throw new NotImplementedException();
     }
 
     public void Visit(HistoryVertex v)
     {
-        Print("Visiting HistoryVertex");
-        AssertNoChildren(v);
+        throw new NotImplementedException();
     }
 
     public void Visit(HistoryContinueVertex v)
     {
-        Print("Visiting HistoryContinueVertex");
-        AssertNoChildren(v);
+        throw new NotImplementedException();
     }
 
     public void Visit(RenderConfigVertex v)

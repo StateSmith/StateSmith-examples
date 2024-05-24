@@ -1,53 +1,65 @@
 <html>
   <body>
 
-    <button id="increase">INCREASE</button>
-    <button id="dim">DIM</button>
+    <button id="button_DIM">DIM</button>
+<button id="button_INCREASE">INCREASE</button>
+<button id="button_OFF">OFF</button>
+
 
     <pre class="mermaid">
+        stateDiagram
+classDef active fill:yellow,font-weight:bold,stroke-width:2px;
 
-      stateDiagram
+ON1 --> ON2
+ON1 --> OFF
 
-      state LightSm {
-      
-          %% transitions
-          OFF --> ON1: INCREASE
-          ON1 --> OFF: DIM
-      
-          ON1 --> ON2: INCREASE
-          ON2 --> ON_HOT: INCREASE [count >= 3]
-          ON2 --> ON1: DIM
-          ON_HOT --> ON2: DIM
-      
-          [*] --> OFF
-          ON_GROUP --> OFF: OFF
-      
-          %% states
-          OFF: OFF
-          OFF: enter / console.log("OFF#92;n")#59;
-      
-          ON1: ON1
-          ON1: enter / light_blue()#59;
-      
-          ON2: ON2
-          ON2: enter / light_yellow()#59;
-          ON2: count = 0#59;
-          ON2: INCREASE / count++#59;
-      
-          ON_HOT: ON_HOT
-          ON_HOT: enter / {\nlight_red()#59;\n}
-      
-          %% composites
-          state ON_GROUP {
-              ON1
-              ON2
-              ON_HOT    
-          }
-      
-      }
-      
-      classDef active fill:yellow,font-weight:bold,stroke-width:2px
-          </pre>
+ON_HOT --> ON2
+
+ON2 --> ON_HOT
+ON2 --> ON1
+
+OFF --> ON1
+
+ON_GROUP --> OFF
+
+ON1 : ON1
+ON1 : enter / #123; document.querySelector('g[data-id=ON1]')?.classList.add('active')#59; #125;
+ON1 : enter / #123; console.log("--> Entered ON1.")#59; #125;
+ON1 : enter / #123; light_blue()#59; #125;
+ON1 : exit / #123; console.log("<-- Exited ON1.")#59; #125;
+ON1 : exit / #123; document.querySelector('g[data-id=ON1]')?.classList.remove('active')#59; #125;
+
+ON_HOT : ON_HOT
+ON_HOT : enter / #123; document.querySelector('g[data-id=ON_HOT]')?.classList.add('active')#59; #125;
+ON_HOT : enter / #123; console.log("--> Entered ON_HOT.")#59; #125;
+ON_HOT : enter / #123; light_red()#59; #125;
+ON_HOT : exit / #123; console.log("<-- Exited ON_HOT.")#59; #125;
+ON_HOT : exit / #123; document.querySelector('g[data-id=ON_HOT]')?.classList.remove('active')#59; #125;
+
+ON2 : ON2
+ON2 : enter / #123; document.querySelector('g[data-id=ON2]')?.classList.add('active')#59; #125;
+ON2 : enter / #123; console.log("--> Entered ON2.")#59; #125;
+ON2 : 1. INCREASE / #123; count++#59; #125;
+ON2 : enter / #123; light_yellow()#59; #125;
+ON2 : enter / #123; count = 0#59; #125;
+ON2 : exit / #123; console.log("<-- Exited ON2.")#59; #125;
+ON2 : exit / #123; document.querySelector('g[data-id=ON2]')?.classList.remove('active')#59; #125;
+
+OFF : OFF
+OFF : enter / #123; document.querySelector('g[data-id=OFF]')?.classList.add('active')#59; #125;
+OFF : enter / #123; console.log("--> Entered OFF.")#59; #125;
+OFF : enter / #123; console.log( "OFF\n")#59; #125;
+OFF : exit / #123; console.log("<-- Exited OFF.")#59; #125;
+OFF : exit / #123; document.querySelector('g[data-id=OFF]')?.classList.remove('active')#59; #125;
+
+state ON_GROUP {
+ON1
+ON_HOT
+ON2
+}
+
+
+    </pre>
 
     <script src="LightSm.js"></script>
     <script type="module">
@@ -57,8 +69,10 @@
 
         var sm = new LightSm();
 
-        document.getElementById("increase").addEventListener ("click", ()=>sm.dispatchEvent(LightSm.EventId.INCREASE), false);
-        document.getElementById("dim").addEventListener ("click", ()=>sm.dispatchEvent(LightSm.EventId.DIM), false);
+        document.getElementById('button_DIM').addEventListener('click', () => sm.dispatchEvent(LightSm.EventId.DIM), false);
+document.getElementById('button_INCREASE').addEventListener('click', () => sm.dispatchEvent(LightSm.EventId.INCREASE), false);
+document.getElementById('button_OFF').addEventListener('click', () => sm.dispatchEvent(LightSm.EventId.OFF), false);
+
 
         sm.start();
     </script>

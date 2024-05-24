@@ -26,10 +26,15 @@ runner.SmTransformer.InsertBeforeFirstMatch(
         sm.Accept(visitor);
         visitor.Print(); // print the mermaid code to the mermaidcodewriter
         List<string> events = GetNonDoEvents(sm);
-        events = events.ConvertAll(e => e.ToUpper());
-        string mermaidCode = mermaidCodeWriter.ToString(); // TODO what is the right way to get the event name in the proper case?
+        events = events.ConvertAll(e => e.ToUpper()); // TODO what is the right way to get the event name in the proper case?
+        StringWriter buttonCodeWriter = new StringWriter();
+        StringWriter eventsCodeWriter = new StringWriter();
+        foreach(var e in events) {
+            buttonCodeWriter.WriteLine($"<button id=\"button_{e}\">{e}</button>"); // TODO will this handle special chars in event names?
+            eventsCodeWriter.WriteLine($"document.getElementById('button_{e}').addEventListener('click', () => sm.dispatchEvent({sm.Name}.EventId.{e}), false);");
+        }
         using(StreamWriter htmlWriter = new StreamWriter($"{sm.Name}.html")) {
-            PrintHtml(htmlWriter,sm, mermaidCode, events);
+            PrintHtml(htmlWriter,sm, buttonCodeWriter.ToString(), mermaidCodeWriter.ToString(), eventsCodeWriter.ToString());
         }
     }));
 
@@ -37,14 +42,13 @@ runner.SmTransformer.InsertBeforeFirstMatch(
 runner.Run();
 
 
-void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode, List<string> events) {
+void PrintHtml(TextWriter writer,  StateMachine sm, string buttonCode, string mermaidCode, string eventsCode) {
 
     string foo = $$"""
 <html>
   <body>
 
-    <button id="button1">{{events[0]}}</button>
-    <button id="button2">{{events[1]}}</button>
+    {{buttonCode}}
 
     <pre class="mermaid">
         {{mermaidCode}}
@@ -58,8 +62,7 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode, List<str
 
         var sm = new {{sm.Name}}();
 
-        document.getElementById("button1").addEventListener ("click", ()=>sm.dispatchEvent({{sm.Name}}.EventId.{{events[0]}}), false);
-        document.getElementById("button2").addEventListener ("click", ()=>sm.dispatchEvent({{sm.Name}}.EventId.{{events[1]}}), false);
+        {{eventsCode}}
 
         sm.start();
     </script>

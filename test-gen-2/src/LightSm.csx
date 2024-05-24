@@ -7,21 +7,28 @@ using StateSmith.Input.Expansions;
 using StateSmith.Output.UserConfig;
 using StateSmith.Runner;
 using StateSmith.SmGraph;  // Note using! This is required to access StateMachine and NamedVertex classes...
+using StateSmith.SmGraph.Visitors;
 
 SmRunner runner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
-AddPipelineStep();
+
+// This code modifies the js state machine itself
+runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, 
+                                            new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
+
+// This code generate the html
+runner.SmTransformer.InsertBeforeFirstMatch(
+    StandardSmTransformer.TransformationId.Standard_FinalValidation,
+    new TransformationStep(id: "some string id", action: (sm) =>
+    {
+        Console.WriteLine("\n\nStarting to visit the graph");
+        var visitor = new MyGraphVisitor();
+        sm.Accept(visitor);
+        Console.WriteLine("Finished visiting the graph\n\n");
+    }));
+
+
 runner.Run();
 
-
-/////////////////////////////////////////////////////////////////////////////////////////
-
-void AddPipelineStep()
-{
-    // This method adds your custom step into the StateSmith transformation pipeline.
-    // Some more info here: https://github.com/StateSmith/StateSmith/wiki/How-StateSmith-Works
-    runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, 
-                                                new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
-}
 
 
 void LoggingTransformationStep(StateMachine sm)
@@ -41,6 +48,123 @@ void LoggingTransformationStep(StateMachine sm)
 
 
 
+
+// This class implements the IVertexVisitor interface, which is used to visit the graph.
+// If you haven't seen the visitor pattern before, you can check out https://en.wikipedia.org/wiki/Visitor_pattern
+// Of note, it is particularly useful for making sure at compile time that we handle all the different types of vertices in the graph.
+class MyGraphVisitor : IVertexVisitor
+{
+    int indentLevel = 1;
+
+    private void Print(string message)
+    {
+        for (int i = 0; i < indentLevel; i++)
+            Console.Write("        ");
+
+        Console.WriteLine(message);
+    }
+
+    private void VisitChildren(Vertex v)
+    {
+        indentLevel++;
+        foreach (var child in v.Children)
+        {
+            child.Accept(this);
+        }
+        indentLevel--;
+    }
+
+    private void AssertNoChildren(Vertex v)
+    {
+        if (v.Children.Count > 0)
+        {
+            throw new Exception($"Vertex `{Vertex.Describe(v)}` not expected to have children");
+        }
+    }
+
+    public void Visit(Vertex v)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Visit(StateMachine v)
+    {
+        Print("Visiting StateMachine: " + v.Name);
+        VisitChildren(v);
+        Print("Finished Visiting StateMachine: " + v.Name);
+    }
+
+    public void Visit(NamedVertex v)
+    {
+        Print("Visiting NamedVertex: " + v.Name);
+        VisitChildren(v);
+        Print("Finished Visiting NamedVertex: " + v.Name);
+    }
+
+    public void Visit(State v)
+    {
+        Print("Visiting State: " + v.Name);
+        VisitChildren(v);
+        Print("Finished Visiting State: " + v.Name);
+    }
+
+    // orthogonal states are not yet implemented, but will be one day
+    public void Visit(OrthoState v)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Visit(NotesVertex v)
+    {
+        // just ignore notes and any children
+    }
+
+    public void Visit(InitialState v)
+    {
+        Print("Visiting InitialState");
+        AssertNoChildren(v);
+    }
+
+    public void Visit(ChoicePoint v)
+    {
+        Print("Visiting ChoicePoint with label: " + v.label);
+        AssertNoChildren(v);
+    }
+
+    public void Visit(EntryPoint v)
+    {
+        Print("Visiting EntryPoint with label: " + v.label);
+        AssertNoChildren(v);
+    }
+
+    public void Visit(ExitPoint v)
+    {
+        Print("Visiting ExitPoint with label: " + v.label);
+        AssertNoChildren(v);
+    }
+
+    public void Visit(HistoryVertex v)
+    {
+        Print("Visiting HistoryVertex");
+        AssertNoChildren(v);
+    }
+
+    public void Visit(HistoryContinueVertex v)
+    {
+        Print("Visiting HistoryContinueVertex");
+        AssertNoChildren(v);
+    }
+
+    public void Visit(RenderConfigVertex v)
+    {
+        // just ignore render config and any children
+    }
+
+    public void Visit(ConfigOptionVertex v)
+    {
+        // just ignore config option and any children
+    }
+}
 
 
 
@@ -67,32 +191,32 @@ public class LightSmRenderConfig : IRenderConfigJavaScript
 }
 
 
-string foo = $"""
-<html>
-  <body>
+// string foo = $"""
+// <html>
+//   <body>
 
-    <button id="button1">{events[0].Name}</button>
-    <button id="button2">{events[1].Name}</button>
+//     <button id="button1">{events[0].Name}</button>
+//     <button id="button2">{events[1].Name}</button>
 
-    <pre class="mermaid">
-        {mermaidCode}
-    </pre>
+//     <pre class="mermaid">
+//         {mermaidCode}
+//     </pre>
 
-    <script src="{sm.Name}.js"></script>
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({{ startOnLoad: false }});
-        await mermaid.run();
+//     <script src="{sm.Name}.js"></script>
+//     <script type="module">
+//         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+//         mermaid.initialize({ startOnLoad: false });
+//         await mermaid.run();
 
-        var sm = new {sm.Name}();
+//         var sm = new {sm.Name}();
 
-        document.getElementById("button1").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{events[0].Name}), false);
-        document.getElementById("button2").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{events[1].Name}), false);
+//         document.getElementById("button1").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{events[0].Name}), false);
+//         document.getElementById("button2").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{events[1].Name}), false);
 
-        sm.start();
-    </script>
+//         sm.start();
+//     </script>
 
 
-  </body>
-</html>
-""";
+//   </body>
+// </html>
+// """;

@@ -135,7 +135,7 @@ class MermaidGenerator : IVertexVisitor
     // https://github.com/mermaid-js/mermaid/issues/5522
     public void Print() {
         Print("stateDiagram");
-        Print("classDef active fill:yellow,font-weight:bold,stroke-width:2px;");
+        Print("classDef active fill:yellow,stroke-width:2px;");
         Print("");
         foreach (var node in leafNodes.Concat(compositeNodes)) {
             PrintTransitions(node);

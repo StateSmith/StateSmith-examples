@@ -26,7 +26,8 @@ runner.SmTransformer.InsertBeforeFirstMatch(
         sm.Accept(visitor);
         visitor.Print(); // print the mermaid code to the mermaidcodewriter
         List<string> events = GetNonDoEvents(sm);
-        string mermaidCode = mermaidCodeWriter.ToString();
+        events = events.ConvertAll(e => e.ToUpper());
+        string mermaidCode = mermaidCodeWriter.ToString(); // TODO what is the right way to get the event name in the proper case?
         using(StreamWriter htmlWriter = new StreamWriter($"{sm.Name}.html")) {
             PrintHtml(htmlWriter,sm, mermaidCode, events);
         }

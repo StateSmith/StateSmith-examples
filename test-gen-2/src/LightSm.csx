@@ -50,9 +50,7 @@ void LoggingTransformationStep(StateMachine sm)
 
 
 
-// This class implements the IVertexVisitor interface, which is used to visit the graph.
-// If you haven't seen the visitor pattern before, you can check out https://en.wikipedia.org/wiki/Visitor_pattern
-// Of note, it is particularly useful for making sure at compile time that we handle all the different types of vertices in the graph.
+// TODO it might be more straightforward to iterate over the graph directly instead of using a visitor
 class MermaidGenerator : IVertexVisitor
 {
     private HashSet<Vertex> leafNodes = new HashSet<Vertex>();
@@ -99,6 +97,9 @@ class MermaidGenerator : IVertexVisitor
         if( v is NamedVertex ) {
             string name = ((NamedVertex)v).Name;
             Print($"{name} : {name}");
+            foreach(var b in v.Behaviors.Where(b => b.TransitionTarget==null)) {
+                Print($"{name} : {b}");
+            }
             Print("");
         }
     }

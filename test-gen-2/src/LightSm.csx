@@ -99,6 +99,7 @@ class MermaidGenerator : IVertexVisitor
         if( v is NamedVertex ) {
             string name = ((NamedVertex)v).Name;
             Print($"{name} : {name}");
+            Print("");
         }
     }
 
@@ -115,6 +116,7 @@ class MermaidGenerator : IVertexVisitor
             }
         }
         Print("}");
+        Print("");
     }
 
     private void PrintTransitions(Vertex v) {
@@ -126,6 +128,7 @@ class MermaidGenerator : IVertexVisitor
                 Print($"{start} --> {end}");
             }
         }
+        Print("");
     }
 
     private void Print(string message)

@@ -8,7 +8,9 @@ using StateSmith.Output.UserConfig;
 using StateSmith.Runner;
 using StateSmith.SmGraph;  // Note using! This is required to access StateMachine and NamedVertex classes...
 using StateSmith.SmGraph.Visitors;
+using StateSmith.Common;
 
+TextWriter mermaidCodeWriter = new StringWriter();
 SmRunner runner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
 
 // This code modifies the js state machine itself
@@ -20,16 +22,63 @@ runner.SmTransformer.InsertBeforeFirstMatch(
     StandardSmTransformer.TransformationId.Standard_FinalValidation,
     new TransformationStep(id: "some string id", action: (sm) =>
     {
-        // TextWriter mermaidCode = new StringWriter();
-        TextWriter mermaidCode = Console.Out;
-        var visitor = new MermaidGenerator(mermaidCode);
+        var visitor = new MermaidGenerator(mermaidCodeWriter);
         sm.Accept(visitor);
-        visitor.Print();
+        visitor.Print(); // print the mermaid code to the mermaidcodewriter
+        List<string> events = GetNonDoEvents(sm);
+        string mermaidCode = mermaidCodeWriter.ToString();
+        using(StreamWriter htmlWriter = new StreamWriter($"{sm.Name}.html")) {
+            PrintHtml(htmlWriter,sm, mermaidCode, events);
+        }
     }));
 
 
 runner.Run();
 
+
+void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode, List<string> events) {
+
+    string foo = $$"""
+<html>
+  <body>
+
+    <button id="button1">{{events[0]}}</button>
+    <button id="button2">{{events[1]}}</button>
+
+    <pre class="mermaid">
+        {{mermaidCode}}
+    </pre>
+
+    <script src="{{sm.Name}}.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: false });
+        await mermaid.run();
+
+        var sm = new {{sm.Name}}();
+
+        document.getElementById("button1").addEventListener ("click", ()=>sm.dispatchEvent({{sm.Name}}.EventId.{{events[0]}}), false);
+        document.getElementById("button2").addEventListener ("click", ()=>sm.dispatchEvent({{sm.Name}}.EventId.{{events[1]}}), false);
+
+        sm.start();
+    </script>
+
+
+  </body>
+</html>
+""";
+
+    writer.WriteLine(foo);
+}
+
+
+
+private List<string> GetNonDoEvents(StateMachine sm)
+{
+    var nonDoEvents = sm.GetEventListCopy();
+    var ignored = nonDoEvents.RemoveAll((e) => TriggerHelper.IsDoEvent(e)) > 0;
+    return nonDoEvents;
+}
 
 
 void LoggingTransformationStep(StateMachine sm)
@@ -81,6 +130,8 @@ class MermaidGenerator : IVertexVisitor
     // https://github.com/mermaid-js/mermaid/issues/5522
     public void Print() {
         Print("stateDiagram");
+        Print("classDef active fill:yellow,font-weight:bold,stroke-width:2px;");
+        Print("");
         foreach (var node in leafNodes.Concat(compositeNodes)) {
             PrintTransitions(node);
         }
@@ -170,16 +221,12 @@ class MermaidGenerator : IVertexVisitor
 
     public void Visit(StateMachine v)
     {
-        Print("Visiting StateMachine");        
         VisitChildren(v);
-        Print("Finished Visiting StateMachine");
     }
 
     public void Visit(NamedVertex v)
     {
-        Print("Visiting NamedVertex: " + v.Name);
         VisitChildren(v);
-        Print("Finished Visiting NamedVertex: " + v.Name);
     }
 
     public void Visit(State v)
@@ -205,7 +252,6 @@ class MermaidGenerator : IVertexVisitor
 
     public void Visit(InitialState v)
     {
-        Print("Visiting InitialState");
         AssertNoChildren(v);
     }
 
@@ -282,33 +328,3 @@ public class LightSmRenderConfig : IRenderConfigJavaScript
     }
 }
 
-
-// string foo = $"""
-// <html>
-//   <body>
-
-//     <button id="button1">{events[0].Name}</button>
-//     <button id="button2">{events[1].Name}</button>
-
-//     <pre class="mermaid">
-//         {mermaidCode}
-//     </pre>
-
-//     <script src="{sm.Name}.js"></script>
-//     <script type="module">
-//         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-//         mermaid.initialize({ startOnLoad: false });
-//         await mermaid.run();
-
-//         var sm = new {sm.Name}();
-
-//         document.getElementById("button1").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{events[0].Name}), false);
-//         document.getElementById("button2").addEventListener ("click", ()=>sm.dispatchEvent({sm.Name}.EventId.{events[1].Name}), false);
-
-//         sm.start();
-//     </script>
-
-
-//   </body>
-// </html>
-// """;

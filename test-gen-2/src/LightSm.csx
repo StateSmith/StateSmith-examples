@@ -164,7 +164,7 @@ class MermaidGenerator : IVertexVisitor
     // TODO handle #
     // You can't naively add # to the list of characters because # and ; will interfere with each other
     private string MermaidEscape(string text) {
-        foreach( char c in ";{}".ToCharArray()) {
+        foreach( char c in ";\\{}".ToCharArray()) {
             text = text.Replace(c.ToString(), $"#{(int)c};");
         }
         return text;

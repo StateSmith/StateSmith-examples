@@ -23,34 +23,18 @@ OFF --> ON1
 ON_GROUP --> OFF
 
 ON1 : ON1
-ON1 : enter / #123; document.querySelector('g[data-id=ON1]')?.classList.add('active')#59; #125;
-ON1 : enter / #123; console.log("--> Entered ON1.")#59; #125;
 ON1 : enter / #123; light_blue()#59; #125;
-ON1 : exit / #123; console.log("<-- Exited ON1.")#59; #125;
-ON1 : exit / #123; document.querySelector('g[data-id=ON1]')?.classList.remove('active')#59; #125;
 
 ON_HOT : ON_HOT
-ON_HOT : enter / #123; document.querySelector('g[data-id=ON_HOT]')?.classList.add('active')#59; #125;
-ON_HOT : enter / #123; console.log("--> Entered ON_HOT.")#59; #125;
 ON_HOT : enter / #123; light_red()#59; #125;
-ON_HOT : exit / #123; console.log("<-- Exited ON_HOT.")#59; #125;
-ON_HOT : exit / #123; document.querySelector('g[data-id=ON_HOT]')?.classList.remove('active')#59; #125;
 
 ON2 : ON2
-ON2 : enter / #123; document.querySelector('g[data-id=ON2]')?.classList.add('active')#59; #125;
-ON2 : enter / #123; console.log("--> Entered ON2.")#59; #125;
 ON2 : 1. INCREASE / #123; count++#59; #125;
 ON2 : enter / #123; light_yellow()#59; #125;
 ON2 : enter / #123; count = 0#59; #125;
-ON2 : exit / #123; console.log("<-- Exited ON2.")#59; #125;
-ON2 : exit / #123; document.querySelector('g[data-id=ON2]')?.classList.remove('active')#59; #125;
 
 OFF : OFF
-OFF : enter / #123; document.querySelector('g[data-id=OFF]')?.classList.add('active')#59; #125;
-OFF : enter / #123; console.log("--> Entered OFF.")#59; #125;
 OFF : enter / #123; console.log( "OFF#92;n")#59; #125;
-OFF : exit / #123; console.log("<-- Exited OFF.")#59; #125;
-OFF : exit / #123; document.querySelector('g[data-id=OFF]')?.classList.remove('active')#59; #125;
 
 state ON_GROUP {
 ON1

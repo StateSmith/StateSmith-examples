@@ -11,15 +11,8 @@ using StateSmith.SmGraph.Visitors;
 using StateSmith.Common;
 
 TextWriter mermaidCodeWriter = new StringWriter();
-SmRunner runner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
-
-// This code modifies the js state machine itself
-runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, 
-                                            new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
-
-// This code generate the html
-// TODO generate the mermaid code BEFORE adding tracing and stuff
-runner.SmTransformer.InsertBeforeFirstMatch(
+SmRunner htmlRunner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
+htmlRunner.SmTransformer.InsertBeforeFirstMatch(
     StandardSmTransformer.TransformationId.Standard_FinalValidation,
     new TransformationStep(id: "some string id", action: (sm) =>
     {
@@ -38,9 +31,16 @@ runner.SmTransformer.InsertBeforeFirstMatch(
             PrintHtml(htmlWriter,sm, buttonCodeWriter.ToString(), mermaidCodeWriter.ToString(), eventsCodeWriter.ToString());
         }
     }));
+htmlRunner.Run();
 
 
-runner.Run();
+// HACK order is important, the jsRunner must run after the htmlRunner, because the htmlRunner
+// also generate js (but without the logging transforms), and the jsRunner must be the last to write
+SmRunner jsRunner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
+jsRunner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, 
+                                            new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
+jsRunner.Run();
+
 
 
 void PrintHtml(TextWriter writer,  StateMachine sm, string buttonCode, string mermaidCode, string eventsCode) {

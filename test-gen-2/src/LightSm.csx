@@ -98,9 +98,9 @@ class MermaidGenerator : IVertexVisitor
     public void Visit(StateMachine v)
     {
         
-        Print( $"state {v.Name} {{\n");
+        Print( $"state {v.Name} {{");
         VisitChildren(v);
-        Print( $"}}\n");
+        Print( $"}}");
     }
 
     public void Visit(NamedVertex v)
@@ -110,11 +110,24 @@ class MermaidGenerator : IVertexVisitor
         Print("Finished Visiting NamedVertex: " + v.Name);
     }
 
+    // Format for regular state:
+    //   OFF : title
+    //   OFF : first line
+    //   OFF : second line
+    //
+    // Format for composite state (multiple lines not supported) https://github.com/mermaid-js/mermaid/issues/5522:
+    //   state OFF {
+    //   }
     public void Visit(State v)
     {
-        Print("Visiting State: " + v.Name);
-        VisitChildren(v);
-        Print("Finished Visiting State: " + v.Name);
+        if(v.Children.Count > 0) {
+            Print( $"state {v.Name} {{");
+            VisitChildren(v);
+            Print( "}");
+        } else {
+            Print($"{v.Name}: {v.Name}");        
+        }
+        VisitBehaviors(v);
     }
 
     // orthogonal states are not yet implemented, but will be one day
@@ -130,7 +143,7 @@ class MermaidGenerator : IVertexVisitor
 
     public void Visit(InitialState v)
     {
-        Print("Visiting InitialState");
+        VisitBehaviors(v);
         AssertNoChildren(v);
     }
 
@@ -172,6 +185,19 @@ class MermaidGenerator : IVertexVisitor
     public void Visit(ConfigOptionVertex v)
     {
         // just ignore config option and any children
+    }
+
+    private void VisitBehaviors(Vertex v)
+    {
+        foreach (var behavior in v.Behaviors)
+        {
+            if(behavior.TransitionTarget!=null) {
+                string start = v is NamedVertex ? ((NamedVertex)v).Name : "[*]";
+                string end = behavior.TransitionTarget is NamedVertex ? ((NamedVertex)behavior.TransitionTarget).Name : "[*]";
+                
+                Print($"{start} --> {end}");
+            }
+        }
     }
 }
 

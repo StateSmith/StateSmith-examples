@@ -117,26 +117,34 @@ class MermaidGenerator : IVertexVisitor
     //
     // Format for composite state (multiple lines not supported) https://github.com/mermaid-js/mermaid/issues/5522:
     //   state OFF {
+    //    ...
     //   }
     //
-    // Note: if a transition crosses a composite state boundary, it must be declared inside the composite state
-    // eg
-    // STATE1
-    // state GROUP {
-    //     STATE2
-    //     STATE1 --> STATE2  RIGHT
-    // }
-    // STATE1 --> STATE2  WRONG
+    // Transitions must be first
+    // Then regular states
+    // Then composite states
     public void Visit(State v)
     {
+        VisitBehaviors(v);
+
         if(v.Children.Count > 0) {
-            Print( $"state {v.Name} {{");
             VisitChildren(v);
+            Print( $"state {v.Name} {{");
+            PrintChildNames(v);
             Print( "}");
         } else {
             Print($"{v.Name}: {v.Name}");        
         }
-        VisitBehaviors(v);
+    }
+
+    private void PrintChildNames(State v)
+    {
+        foreach (var child in v.Children)
+        {
+            if(child is NamedVertex) {
+                Print(((NamedVertex)child).Name);
+            }
+        }
     }
 
     // orthogonal states are not yet implemented, but will be one day

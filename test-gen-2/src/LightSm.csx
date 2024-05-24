@@ -98,10 +98,21 @@ class MermaidGenerator : IVertexVisitor
             string name = ((NamedVertex)v).Name;
             Print($"{name} : {name}");
             foreach(var b in v.Behaviors.Where(b => b.TransitionTarget==null)) {
-                Print($"{name} : {b}");
+                string text = MermaidEscape(b.ToString());
+                Print($"{name} : {text}");
             }
             Print("");
         }
+    }
+
+    private string MermaidEscape(string text) {
+        // Print("before: " + text);
+        foreach( char c in ";{}".ToCharArray()) {
+            // Print("char " + c);
+            text = text.Replace(c.ToString(), $"#{(int)c};");
+        // Print("after: " + text);
+        }
+        return text;
     }
 
     private void PrintCompositeNode(Vertex v) {

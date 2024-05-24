@@ -65,6 +65,22 @@ class MermaidGenerator : IVertexVisitor
     }
 
 
+    // Format for regular state:
+    //   OFF : title
+    //   OFF : first line
+    //   OFF : second line
+    //
+    // Format for composite state (multiple lines not supported):
+    //   state OFF {
+    //    ...
+    //   }
+    //
+    // Transitions must be first
+    // Then regular states
+    // Then composite states
+    //
+    // At least that the order that seems to be working best on my test models
+    // https://github.com/mermaid-js/mermaid/issues/5522
     public void Print() {
         Print("stateDiagram");
         foreach (var node in leafNodes.Concat(compositeNodes)) {
@@ -152,19 +168,6 @@ class MermaidGenerator : IVertexVisitor
         Print("Finished Visiting NamedVertex: " + v.Name);
     }
 
-    // Format for regular state:
-    //   OFF : title
-    //   OFF : first line
-    //   OFF : second line
-    //
-    // Format for composite state (multiple lines not supported) https://github.com/mermaid-js/mermaid/issues/5522:
-    //   state OFF {
-    //    ...
-    //   }
-    //
-    // Transitions must be first
-    // Then regular states
-    // Then composite states
     public void Visit(State v)
     {
         if(v.Children.Count > 0) {

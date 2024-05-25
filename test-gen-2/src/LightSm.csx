@@ -49,7 +49,7 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
     <div id="buttons"></div>
 
     <pre class="mermaid">
-        {{mermaidCode}}
+{{mermaidCode}}
     </pre>
 
     <script src="{{sm.Name}}.js"></script>
@@ -104,6 +104,7 @@ void LoggingTransformationStep(StateMachine sm)
 // TODO it might be more straightforward to iterate over the graph directly instead of using a visitor
 class MermaidGenerator : IVertexVisitor
 {
+    private int indentCount = 0;
     private HashSet<Vertex> leafNodes = new();
     private HashSet<Vertex> compositeNodes = new();
     private TextWriter writer;
@@ -173,12 +174,14 @@ class MermaidGenerator : IVertexVisitor
         }
 
         Print($"state {((NamedVertex)v).Name} {{");
+        indentCount++;
         foreach (var child in v.Children)
         {
             if(child is NamedVertex) {
                 Print(((NamedVertex)child).Name);
             }
         }
+        indentCount--;
         Print("}");
         Print("");
     }
@@ -197,6 +200,10 @@ class MermaidGenerator : IVertexVisitor
 
     private void Print(string message)
     {
+        for (int i = 0; i < indentCount; i++)
+        {
+            writer.Write("  ");
+        }
         writer.WriteLine(message);
     }
 

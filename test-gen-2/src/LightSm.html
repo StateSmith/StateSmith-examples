@@ -76,6 +76,7 @@ globalThis.light_blue = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Ca
 globalThis.light_yellow = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called light_yellow()");};
 
 
+        // Add a row to the history table.
         function addHistoryRow(time, event) {
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
@@ -110,7 +111,10 @@ globalThis.light_yellow = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "
             var button = document.createElement('button');
             button.id = 'button_' + eventName;
             button.innerText = eventName;
-            button.addEventListener('click', () => sm.dispatchEvent(LightSm.EventId[eventName]));
+            button.addEventListener('click', () => {
+                addHistoryRow(new Date().toLocaleTimeString(), "Dispatched " + eventName);
+                sm.dispatchEvent(LightSm.EventId[eventName]); 
+            });
             document.getElementById('buttons').appendChild(button);
         }
 

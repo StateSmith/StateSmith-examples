@@ -127,7 +127,10 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             var button = document.createElement('button');
             button.id = 'button_' + eventName;
             button.innerText = eventName;
-            button.addEventListener('click', () => sm.dispatchEvent({{smName}}.EventId[eventName]));
+            button.addEventListener('click', () => {
+                addHistoryRow(new Date().toLocaleTimeString(), "Dispatched " + eventName);
+                sm.dispatchEvent({{smName}}.EventId[eventName]); 
+            });
             document.getElementById('buttons').appendChild(button);
         }
 

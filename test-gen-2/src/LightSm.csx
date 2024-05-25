@@ -26,7 +26,7 @@ htmlRunner.Run();
 
 foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
 {
-    mocksWriter.WriteLine($"globalThis.{funcAttempt} = ()=>{{}};");
+    mocksWriter.WriteLine($$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called {{funcAttempt}}()");};""");
 }
 
 using(StreamWriter htmlWriter = new StreamWriter($"LightSm.html")) {
@@ -86,6 +86,17 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
 
 {{mocksCode}}
 
+        function addHistoryRow(time, event) {
+            var row = document.createElement('tr');
+            var timeCell = document.createElement('td');
+            timeCell.innerText = time;
+            var eventCell = document.createElement('td');
+            eventCell.innerText = event;
+            row.appendChild(timeCell);
+            row.appendChild(eventCell);
+            document.querySelector('tbody').appendChild(row);
+        }
+
         var sm = new {{smName}}();
 
         // The simulator uses a tracer callback to perform operations such as 
@@ -95,20 +106,10 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         sm.tracer = {
             enterState: (stateId) => {
                 var name = {{smName}}.stateIdToString(stateId);
-                console.log("--> Entered " + name);
                 document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
-
-                var row = document.createElement('tr');
-                var timeCell = document.createElement('td');
-                timeCell.innerText = new Date().toISOString();
-                var eventCell = document.createElement('td');
-                eventCell.innerText = 'Entered' + name;
-                row.appendChild(timeCell);
-                row.appendChild(eventCell);
-                document.querySelector('tbody').appendChild(row);
+                addHistoryRow(new Date().toLocaleTimeString(), "Entered " + name);
             },
             exitState: (stateId) => {
-                console.log("<-- Exited " + {{smName}}.stateIdToString(stateId));
                 var name = {{smName}}.stateIdToString(stateId);
                 document.querySelector('g[data-id=' + name + ']')?.classList.remove('active');
             }

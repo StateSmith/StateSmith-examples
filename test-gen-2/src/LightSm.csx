@@ -52,6 +52,17 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
 {{mermaidCode}}
     </pre>
 
+    <table class="console">
+      <thead>
+          <tr>
+              <th>Time</th>
+              <th>Event</th>
+          </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
     <script src="{{sm.Name}}.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -94,6 +105,17 @@ void LoggingTransformationStep(StateMachine sm)
         // TODO how to handle escaping state names
         state.AddEnterAction($"document.querySelector('g[data-id={state.Name}]')?.classList.add('active');", index:0); // use index to insert at start
         state.AddExitAction($"document.querySelector('g[data-id={state.Name}]')?.classList.remove('active');");
+
+        state.AddEnterAction($"""
+            var row = document.createElement('tr');
+            var timeCell = document.createElement('td');
+            timeCell.innerText = Date.now();
+            var eventCell = document.createElement('td');
+            eventCell.innerText = 'Enter {state.Name}';
+            row.appendChild(timeCell);
+            row.appendChild(eventCell);
+            document.querySelector('tbody').appendChild(row);
+            """);
     });
 }
 

@@ -147,6 +147,20 @@ class LightSm
             // Step 1: execute action `console.log( "OFF\n");`
             console.log( "OFF\n");
         } // end of behavior for OFF
+        
+        // OFF behavior
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter OFF';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        {
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter OFF';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            var row = document.createElement('tr');
+            var timeCell = document.createElement('td');
+            timeCell.innerText = Date.now();
+            var eventCell = document.createElement('td');
+            eventCell.innerText = 'Enter OFF';
+            row.appendChild(timeCell);
+            row.appendChild(eventCell);
+            document.querySelector('tbody').appendChild(row);
+        } // end of behavior for OFF
     }
     
     #OFF_exit()
@@ -216,6 +230,20 @@ class LightSm
         {
             // Step 1: execute action `console.log("--> Entered ON_GROUP.");`
             console.log("--> Entered ON_GROUP.");
+        } // end of behavior for ON_GROUP
+        
+        // ON_GROUP behavior
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_GROUP';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        {
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_GROUP';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            var row = document.createElement('tr');
+            var timeCell = document.createElement('td');
+            timeCell.innerText = Date.now();
+            var eventCell = document.createElement('td');
+            eventCell.innerText = 'Enter ON_GROUP';
+            row.appendChild(timeCell);
+            row.appendChild(eventCell);
+            document.querySelector('tbody').appendChild(row);
         } // end of behavior for ON_GROUP
     }
     
@@ -293,6 +321,20 @@ class LightSm
             // Step 1: execute action `light_red();`
             light_red();
         } // end of behavior for ON_HOT
+        
+        // ON_HOT behavior
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_HOT';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        {
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_HOT';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            var row = document.createElement('tr');
+            var timeCell = document.createElement('td');
+            timeCell.innerText = Date.now();
+            var eventCell = document.createElement('td');
+            eventCell.innerText = 'Enter ON_HOT';
+            row.appendChild(timeCell);
+            row.appendChild(eventCell);
+            document.querySelector('tbody').appendChild(row);
+        } // end of behavior for ON_HOT
     }
     
     #ON_HOT_exit()
@@ -369,6 +411,20 @@ class LightSm
         {
             // Step 1: execute action `light_blue();`
             light_blue();
+        } // end of behavior for ON1
+        
+        // ON1 behavior
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON1';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        {
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON1';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            var row = document.createElement('tr');
+            var timeCell = document.createElement('td');
+            timeCell.innerText = Date.now();
+            var eventCell = document.createElement('td');
+            eventCell.innerText = 'Enter ON1';
+            row.appendChild(timeCell);
+            row.appendChild(eventCell);
+            document.querySelector('tbody').appendChild(row);
         } // end of behavior for ON1
     }
     
@@ -476,6 +532,20 @@ class LightSm
         {
             // Step 1: execute action `count = 0;`
             this.vars.count = 0;
+        } // end of behavior for ON2
+        
+        // ON2 behavior
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON2';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        {
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON2';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            var row = document.createElement('tr');
+            var timeCell = document.createElement('td');
+            timeCell.innerText = Date.now();
+            var eventCell = document.createElement('td');
+            eventCell.innerText = 'Enter ON2';
+            row.appendChild(timeCell);
+            row.appendChild(eventCell);
+            document.querySelector('tbody').appendChild(row);
         } // end of behavior for ON2
     }
     

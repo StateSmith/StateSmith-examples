@@ -26,7 +26,8 @@ htmlRunner.Run();
 
 foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
 {
-    mocksWriter.WriteLine($$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called {{funcAttempt}}()");};""");
+    mocksWriter.WriteLine(
+        $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called {{funcAttempt}}()");};""");
 }
 
 using(StreamWriter htmlWriter = new StreamWriter($"LightSm.html")) {

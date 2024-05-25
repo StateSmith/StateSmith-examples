@@ -121,24 +121,6 @@ void LoggingTransformationStep(StateMachine sm)
     // The below code will visit all states in the state machine and add custom enter and exit behaviors.
     sm.VisitTypeRecursively<State>((State state) =>
     {
-        // state.AddEnterAction($"console.log(\"--> Entered {state.Name}.\");", index:0); // use index to insert at start
-        // state.AddExitAction($"console.log(\"<-- Exited {state.Name}.\");"); // behavior added to end
-
-        // TODO how to handle escaping state names
-        // state.AddEnterAction($"document.querySelector('g[data-id={state.Name}]')?.classList.add('active');", index:0); // use index to insert at start
-        // state.AddExitAction($"document.querySelector('g[data-id={state.Name}]')?.classList.remove('active');");
-
-        // state.AddEnterAction($"""
-        //     var row = document.createElement('tr');
-        //     var timeCell = document.createElement('td');
-        //     timeCell.innerText = new Date().toLocaleTimeString();
-        //     var eventCell = document.createElement('td');
-        //     eventCell.innerText = 'Enter {state.Name}';
-        //     row.appendChild(timeCell);
-        //     row.appendChild(eventCell);
-        //     document.querySelector('tbody').appendChild(row);
-        //     """);
-
         state.AddEnterAction($"this.tracer?.enterState({sm.Name}.StateId.{state.Name});", index:0); // use index to insert at start
         state.AddExitAction($"this.tracer?.exitState({sm.Name}.StateId.{state.Name});");
     });

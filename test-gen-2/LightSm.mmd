@@ -1,0 +1,40 @@
+stateDiagram
+
+state LightSm {
+    %% states
+    OFF: OFF
+    OFF: enter / console.log("OFF#92;n")#59;
+
+    ON1: ON1
+    ON1: enter / light_blue()#59;
+
+    ON2: ON2
+    ON2: enter / light_yellow()#59;
+    ON2: count = 0#59;
+    ON2: INCREASE / count++#59;
+
+    ON_HOT: ON_HOT
+    ON_HOT: enter / {\nlight_red()#59;\n}            
+
+    %% transitions
+    ON1 --> ON2: INCREASE
+    ON2 --> ON_HOT: INCREASE [count >= 3]
+    ON2 --> ON1: DIM
+    ON_HOT --> ON2: DIM
+
+    OFF --> ON1: INCREASE
+    ON1 --> OFF: DIM
+
+    [*] --> OFF
+    ON_GROUP --> OFF: OFF
+
+
+    %% composite states
+    state ON_GROUP {
+        ON1
+        ON2
+        ON_HOT  
+    }
+}
+
+classDef active fill:yellow,font-weight:bold,stroke-width:2px

@@ -1,0 +1,47 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "debug StateSmith code gen",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${env:HOME}/.dotnet/tools/dotnet-script",
+            "args": [
+                "${workspaceRoot}/src/LightSm.csx" // you can also use "${file}" to debug active vscode file
+            ],
+            "windows": {
+                "program": "${env:USERPROFILE}/.dotnet/tools/dotnet-script.exe",
+            },
+            "logging": {
+                "moduleLoad": false
+            },
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false
+        },
+        {
+            "name": "(Linux) code gen, compile, debug c code",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "gcc-build",
+            "program": "${workspaceRoot}/a.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+    ]
+}

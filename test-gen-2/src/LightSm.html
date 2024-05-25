@@ -1,10 +1,6 @@
 <html>
   <body>
-
-    <button id="button_DIM">DIM</button>
-<button id="button_INCREASE">INCREASE</button>
-<button id="button_OFF">OFF</button>
-
+    <div id="buttons"></div>
 
     <pre class="mermaid">
         stateDiagram
@@ -53,10 +49,13 @@ ON2
 
         var sm = new LightSm();
 
-        document.getElementById('button_DIM').addEventListener('click', () => sm.dispatchEvent(LightSm.EventId.DIM), false);
-document.getElementById('button_INCREASE').addEventListener('click', () => sm.dispatchEvent(LightSm.EventId.INCREASE), false);
-document.getElementById('button_OFF').addEventListener('click', () => sm.dispatchEvent(LightSm.EventId.OFF), false);
-
+        for (const eventName in LightSm.EventId) {
+            var button = document.createElement('button');
+            button.id = 'button_' + eventName;
+            button.innerText = eventName;
+            button.addEventListener('click', () => sm.dispatchEvent(LightSm.EventId[eventName]));
+            document.getElementById('buttons').appendChild(button);
+        }
 
         sm.start();
     </script>

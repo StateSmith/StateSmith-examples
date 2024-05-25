@@ -19,16 +19,8 @@ htmlRunner.SmTransformer.InsertBeforeFirstMatch(
         var visitor = new MermaidGenerator(mermaidCodeWriter);
         sm.Accept(visitor);
         visitor.Print(); // print the mermaid code to the mermaidcodewriter
-        List<string> events = GetNonDoEvents(sm);
-        events = events.ConvertAll(e => e.ToUpper()); // TODO what is the right way to get the event name in the proper case?
-        StringWriter buttonCodeWriter = new StringWriter();
-        StringWriter eventsCodeWriter = new StringWriter();
-        foreach(var e in events) {
-            buttonCodeWriter.WriteLine($"<button id=\"button_{e}\">{e}</button>"); // TODO will this handle special chars in event names?
-            eventsCodeWriter.WriteLine($"document.getElementById('button_{e}').addEventListener('click', () => sm.dispatchEvent({sm.Name}.EventId.{e}), false);");
-        }
         using(StreamWriter htmlWriter = new StreamWriter($"{sm.Name}.html")) {
-            PrintHtml(htmlWriter,sm, buttonCodeWriter.ToString(), mermaidCodeWriter.ToString(), eventsCodeWriter.ToString());
+            PrintHtml(htmlWriter,sm, mermaidCodeWriter.ToString());
         }
     }));
 htmlRunner.Run();
@@ -43,13 +35,12 @@ jsRunner.Run();
 
 
 
-void PrintHtml(TextWriter writer,  StateMachine sm, string buttonCode, string mermaidCode, string eventsCode) {
+void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
 
     string foo = $$"""
 <html>
   <body>
-
-    {{buttonCode}}
+    <div id="buttons"></div>
 
     <pre class="mermaid">
         {{mermaidCode}}
@@ -63,7 +54,13 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string buttonCode, string me
 
         var sm = new {{sm.Name}}();
 
-        {{eventsCode}}
+        for (const eventName in {{sm.Name}}.EventId) {
+            var button = document.createElement('button');
+            button.id = 'button_' + eventName;
+            button.innerText = eventName;
+            button.addEventListener('click', () => sm.dispatchEvent({{sm.Name}}.EventId[eventName]));
+            document.getElementById('buttons').appendChild(button);
+        }
 
         sm.start();
     </script>
@@ -78,12 +75,6 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string buttonCode, string me
 
 
 
-private List<string> GetNonDoEvents(StateMachine sm)
-{
-    var nonDoEvents = sm.GetEventListCopy();
-    var ignored = nonDoEvents.RemoveAll((e) => TriggerHelper.IsDoEvent(e)) > 0;
-    return nonDoEvents;
-}
 
 
 void LoggingTransformationStep(StateMachine sm)

@@ -43,6 +43,12 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
   -- It serves as an example of how to use the generated state machine in a web page.
   -- It also serves as an interactive console that you can use to validate the
   -- state machine's behavior.
+  --
+  -- Using {{sm.Name}}.js generally looks like:
+  --   var sm = new {{sm.Name}}();
+  --   sm.start();
+  --
+  -- And then using sm.dispatchEvent() to dispatch events to the state machine.
   -->
 <html>
   <body>
@@ -71,6 +77,10 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
 
         var sm = new {{sm.Name}}();
 
+        // The simulator uses a tracer callback to perform operations such as 
+        // state highlighting and logging. You do not need this functionality
+        // when using {{sm.Name}}.js in your own applications, although you may
+        // choose to implement a tracer for debugging purposes.
         sm.tracer = {
             enterState: (stateId) => {
                 var name = {{sm.Name}}.stateIdToString(stateId);
@@ -93,6 +103,7 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
             }
         };
 
+        // Wire up the buttons that dispatch events for the state machine.
         for (const eventName in {{sm.Name}}.EventId) {
             var button = document.createElement('button');
             button.id = 'button_' + eventName;

@@ -73,10 +73,14 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
 
         sm.tracer = {
             enterState: (stateId) => {
-                console.log("--> Entered " + {{sm.Name}}.stateIdToString(stateId));
+                var name = {{sm.Name}}.stateIdToString(stateId);
+                console.log("--> Entered " + name);
+                document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
             },
             exitState: (stateId) => {
                 console.log("<-- Exited " + {{sm.Name}}.stateIdToString(stateId));
+                var name = {{sm.Name}}.stateIdToString(stateId);
+                document.querySelector('g[data-id=' + name + ']')?.classList.remove('active');
             }
         };
 

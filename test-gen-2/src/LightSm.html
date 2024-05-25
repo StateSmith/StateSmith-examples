@@ -68,10 +68,14 @@ state ON_GROUP {
 
         sm.tracer = {
             enterState: (stateId) => {
-                console.log("--> Entered " + LightSm.stateIdToString(stateId));
+                var name = LightSm.stateIdToString(stateId);
+                console.log("--> Entered " + name);
+                document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
             },
             exitState: (stateId) => {
                 console.log("<-- Exited " + LightSm.stateIdToString(stateId));
+                var name = LightSm.stateIdToString(stateId);
+                document.querySelector('g[data-id=' + name + ']')?.classList.remove('active');
             }
         };
 

@@ -76,6 +76,15 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
                 var name = {{sm.Name}}.stateIdToString(stateId);
                 console.log("--> Entered " + name);
                 document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
+
+                var row = document.createElement('tr');
+                var timeCell = document.createElement('td');
+                timeCell.innerText = new Date().toLocaleTimeString();
+                var eventCell = document.createElement('td');
+                eventCell.innerText = 'Entered' + name;
+                row.appendChild(timeCell);
+                row.appendChild(eventCell);
+                document.querySelector('tbody').appendChild(row);
             },
             exitState: (stateId) => {
                 console.log("<-- Exited " + {{sm.Name}}.stateIdToString(stateId));

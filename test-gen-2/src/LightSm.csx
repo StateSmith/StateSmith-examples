@@ -79,7 +79,7 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
 
                 var row = document.createElement('tr');
                 var timeCell = document.createElement('td');
-                timeCell.innerText = new Date().toLocaleTimeString();
+                timeCell.innerText = new Date().toISOString();
                 var eventCell = document.createElement('td');
                 eventCell.innerText = 'Entered' + name;
                 row.appendChild(timeCell);

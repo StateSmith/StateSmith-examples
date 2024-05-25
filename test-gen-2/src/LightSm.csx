@@ -109,7 +109,7 @@ void LoggingTransformationStep(StateMachine sm)
         state.AddEnterAction($"""
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
-            timeCell.innerText = Date.now();
+            timeCell.innerText = new Date().toLocaleTimeString();
             var eventCell = document.createElement('td');
             eventCell.innerText = 'Enter {state.Name}';
             row.appendChild(timeCell);

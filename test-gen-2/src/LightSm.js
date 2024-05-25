@@ -149,12 +149,12 @@ class LightSm
         } // end of behavior for OFF
         
         // OFF behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter OFF';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter OFF';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
         {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter OFF';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter OFF';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
-            timeCell.innerText = Date.now();
+            timeCell.innerText = new Date().toLocaleTimeString();
             var eventCell = document.createElement('td');
             eventCell.innerText = 'Enter OFF';
             row.appendChild(timeCell);
@@ -233,12 +233,12 @@ class LightSm
         } // end of behavior for ON_GROUP
         
         // ON_GROUP behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_GROUP';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_GROUP';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
         {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_GROUP';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_GROUP';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
-            timeCell.innerText = Date.now();
+            timeCell.innerText = new Date().toLocaleTimeString();
             var eventCell = document.createElement('td');
             eventCell.innerText = 'Enter ON_GROUP';
             row.appendChild(timeCell);
@@ -323,12 +323,12 @@ class LightSm
         } // end of behavior for ON_HOT
         
         // ON_HOT behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_HOT';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_HOT';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
         {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_HOT';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_HOT';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
-            timeCell.innerText = Date.now();
+            timeCell.innerText = new Date().toLocaleTimeString();
             var eventCell = document.createElement('td');
             eventCell.innerText = 'Enter ON_HOT';
             row.appendChild(timeCell);
@@ -414,12 +414,12 @@ class LightSm
         } // end of behavior for ON1
         
         // ON1 behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON1';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON1';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
         {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON1';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON1';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
-            timeCell.innerText = Date.now();
+            timeCell.innerText = new Date().toLocaleTimeString();
             var eventCell = document.createElement('td');
             eventCell.innerText = 'Enter ON1';
             row.appendChild(timeCell);
@@ -535,12 +535,12 @@ class LightSm
         } // end of behavior for ON2
         
         // ON2 behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON2';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
+        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON2';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
         {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = Date.now();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON2';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
+            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON2';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
-            timeCell.innerText = Date.now();
+            timeCell.innerText = new Date().toLocaleTimeString();
             var eventCell = document.createElement('td');
             eventCell.innerText = 'Enter ON2';
             row.appendChild(timeCell);

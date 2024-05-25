@@ -24,6 +24,11 @@ htmlRunner.SmTransformer.InsertBeforeFirstMatch(
     }));
 htmlRunner.Run();
 
+mocksWriter.WriteLine(
+    """
+    // Mocks of functions referenced by your state machine.
+    """
+);
 foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
 {
     mocksWriter.WriteLine(
@@ -87,6 +92,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
 
 {{mocksCode}}
 
+        // Add a row to the history table.
         function addHistoryRow(time, event) {
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');

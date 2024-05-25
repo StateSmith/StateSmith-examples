@@ -70,6 +70,7 @@ state ON_GROUP {
         mermaid.initialize({ startOnLoad: false });
         await mermaid.run();
 
+// Mocks of functions referenced by your state machine.
 globalThis.light_red = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called light_red()");};
 globalThis.light_blue = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called light_blue()");};
 globalThis.light_yellow = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called light_yellow()");};

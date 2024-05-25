@@ -71,16 +71,24 @@ state ON_GROUP {
         await mermaid.run();
 
 // Mocks of functions referenced by your state machine.
-globalThis.light_red = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called light_red()");};
-globalThis.light_blue = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called light_blue()");};
-globalThis.light_yellow = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called light_yellow()");};
+globalThis.light_red = ()=>{ addHistoryRow(new Date(), "Called light_red()");};
+globalThis.light_blue = ()=>{ addHistoryRow(new Date(), "Called light_blue()");};
+globalThis.light_yellow = ()=>{ addHistoryRow(new Date(), "Called light_yellow()");};
 
+
+        // Convert a date to a string in the format HH:MM:SS.sss
+        function formatTime(date) {
+            return date.getHours().toString().padStart(2, '0') + ':' +
+                date.getMinutes().toString().padStart(2, '0') + ':' +
+                date.getSeconds().toString().padStart(2, '0') + '.' +
+                date.getMilliseconds().toString().padStart(3, '0');
+        }
 
         // Add a row to the history table.
         function addHistoryRow(time, event) {
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
-            timeCell.innerText = time;
+            timeCell.innerText = formatTime(time);
             var eventCell = document.createElement('td');
             eventCell.innerText = event;
             row.appendChild(timeCell);
@@ -98,7 +106,7 @@ globalThis.light_yellow = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "
             enterState: (stateId) => {
                 var name = LightSm.stateIdToString(stateId);
                 document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
-                addHistoryRow(new Date().toLocaleTimeString(), "Entered " + name);
+                addHistoryRow(new Date(), "Entered " + name);
             },
             exitState: (stateId) => {
                 var name = LightSm.stateIdToString(stateId);
@@ -112,7 +120,7 @@ globalThis.light_yellow = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "
             button.id = 'button_' + eventName;
             button.innerText = eventName;
             button.addEventListener('click', () => {
-                addHistoryRow(new Date().toLocaleTimeString(), "Dispatched " + eventName);
+                addHistoryRow(new Date(), "Dispatched " + eventName);
                 sm.dispatchEvent(LightSm.EventId[eventName]); 
             });
             document.getElementById('buttons').appendChild(button);

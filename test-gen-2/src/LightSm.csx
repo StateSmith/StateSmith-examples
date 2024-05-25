@@ -32,7 +32,7 @@ mocksWriter.WriteLine(
 foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
 {
     mocksWriter.WriteLine(
-        $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date().toLocaleTimeString(), "Called {{funcAttempt}}()");};""");
+        $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date(), "Called {{funcAttempt}}()");};""");
 }
 
 using(StreamWriter htmlWriter = new StreamWriter($"LightSm.html")) {
@@ -92,11 +92,19 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
 
 {{mocksCode}}
 
+        // Convert a date to a string in the format HH:MM:SS.sss
+        function formatTime(date) {
+            return date.getHours().toString().padStart(2, '0') + ':' +
+                date.getMinutes().toString().padStart(2, '0') + ':' +
+                date.getSeconds().toString().padStart(2, '0') + '.' +
+                date.getMilliseconds().toString().padStart(3, '0');
+        }
+
         // Add a row to the history table.
         function addHistoryRow(time, event) {
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
-            timeCell.innerText = time;
+            timeCell.innerText = formatTime(time);
             var eventCell = document.createElement('td');
             eventCell.innerText = event;
             row.appendChild(timeCell);
@@ -114,7 +122,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             enterState: (stateId) => {
                 var name = {{smName}}.stateIdToString(stateId);
                 document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
-                addHistoryRow(new Date().toLocaleTimeString(), "Entered " + name);
+                addHistoryRow(new Date(), "Entered " + name);
             },
             exitState: (stateId) => {
                 var name = {{smName}}.stateIdToString(stateId);
@@ -128,7 +136,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             button.id = 'button_' + eventName;
             button.innerText = eventName;
             button.addEventListener('click', () => {
-                addHistoryRow(new Date().toLocaleTimeString(), "Dispatched " + eventName);
+                addHistoryRow(new Date(), "Dispatched " + eventName);
                 sm.dispatchEvent({{smName}}.EventId[eventName]); 
             });
             document.getElementById('buttons').appendChild(button);

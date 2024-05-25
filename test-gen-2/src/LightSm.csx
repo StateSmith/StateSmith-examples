@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet-script
 // This is a c# script file
 
-#r "nuget: StateSmith, 0.9.12-alpha" // this line specifies which version of StateSmith to use and download from c# nuget web service.
+#r "nuget: StateSmith, 0.9.13-alpha-tracking-expander-2" // this line specifies which version of StateSmith to use and download from c# nuget web service.
 
 using StateSmith.Input.Expansions;
 using StateSmith.Output.UserConfig;
@@ -9,9 +9,11 @@ using StateSmith.Runner;
 using StateSmith.SmGraph;  // Note using! This is required to access StateMachine and NamedVertex classes...
 using StateSmith.SmGraph.Visitors;
 using StateSmith.Common;
-
+var trackingExpander = new TrackingExpander();
 TextWriter mermaidCodeWriter = new StringWriter();
+TextWriter mocksWriter = new StringWriter();
 SmRunner htmlRunner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
+htmlRunner.GetExperimentalAccess().DiServiceProvider.AddSingletonT<IExpander>(trackingExpander); // must be done before AddPipelineStep();
 htmlRunner.SmTransformer.InsertBeforeFirstMatch(
     StandardSmTransformer.TransformationId.Standard_FinalValidation,
     new TransformationStep(id: "some string id", action: (sm) =>
@@ -19,11 +21,18 @@ htmlRunner.SmTransformer.InsertBeforeFirstMatch(
         var visitor = new MermaidGenerator(mermaidCodeWriter);
         sm.Accept(visitor);
         visitor.Print(); // print the mermaid code to the mermaidcodewriter
-        using(StreamWriter htmlWriter = new StreamWriter($"{sm.Name}.html")) {
-            PrintHtml(htmlWriter,sm, mermaidCodeWriter.ToString());
-        }
     }));
 htmlRunner.Run();
+
+foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
+{
+    mocksWriter.WriteLine($"globalThis.{funcAttempt} = ()=>{{}};");
+}
+
+using(StreamWriter htmlWriter = new StreamWriter($"LightSm.html")) {
+    PrintHtml(htmlWriter,"LightSm", mocksWriter.ToString(), mermaidCodeWriter.ToString());
+}
+
 
 
 // HACK order is important, the jsRunner must run after the htmlRunner, because the htmlRunner
@@ -35,7 +44,7 @@ jsRunner.Run();
 
 
 
-void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
+void PrintHtml(TextWriter writer,  string smName, string mocksCode, string mermaidCode) {
 
     string htmlTemplate = $$"""
 <!-- 
@@ -44,8 +53,8 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
   -- It also serves as an interactive console that you can use to validate the
   -- state machine's behavior.
   --
-  -- Using {{sm.Name}}.js generally looks like:
-  --   var sm = new {{sm.Name}}();
+  -- Using {{smName}}.js generally looks like:
+  --   var sm = new {{smName}}();
   --   sm.start();
   --
   -- And then using sm.dispatchEvent() to dispatch events to the state machine.
@@ -69,21 +78,23 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
       </tbody>
     </table>
 
-    <script src="{{sm.Name}}.js"></script>
+    <script src="{{smName}}.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: false });
         await mermaid.run();
 
-        var sm = new {{sm.Name}}();
+{{mocksCode}}
+
+        var sm = new {{smName}}();
 
         // The simulator uses a tracer callback to perform operations such as 
         // state highlighting and logging. You do not need this functionality
-        // when using {{sm.Name}}.js in your own applications, although you may
+        // when using {{smName}}.js in your own applications, although you may
         // choose to implement a tracer for debugging purposes.
         sm.tracer = {
             enterState: (stateId) => {
-                var name = {{sm.Name}}.stateIdToString(stateId);
+                var name = {{smName}}.stateIdToString(stateId);
                 console.log("--> Entered " + name);
                 document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
 
@@ -97,18 +108,18 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
                 document.querySelector('tbody').appendChild(row);
             },
             exitState: (stateId) => {
-                console.log("<-- Exited " + {{sm.Name}}.stateIdToString(stateId));
-                var name = {{sm.Name}}.stateIdToString(stateId);
+                console.log("<-- Exited " + {{smName}}.stateIdToString(stateId));
+                var name = {{smName}}.stateIdToString(stateId);
                 document.querySelector('g[data-id=' + name + ']')?.classList.remove('active');
             }
         };
 
         // Wire up the buttons that dispatch events for the state machine.
-        for (const eventName in {{sm.Name}}.EventId) {
+        for (const eventName in {{smName}}.EventId) {
             var button = document.createElement('button');
             button.id = 'button_' + eventName;
             button.innerText = eventName;
-            button.addEventListener('click', () => sm.dispatchEvent({{sm.Name}}.EventId[eventName]));
+            button.addEventListener('click', () => sm.dispatchEvent({{smName}}.EventId[eventName]));
             document.getElementById('buttons').appendChild(button);
         }
 

@@ -71,6 +71,15 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
 
         var sm = new {{sm.Name}}();
 
+        sm.tracer = {
+            enterState: (stateId) => {
+                console.log("--> Entered " + {{sm.Name}}.stateIdToString(stateId));
+            },
+            exitState: (stateId) => {
+                console.log("<-- Exited " + {{sm.Name}}.stateIdToString(stateId));
+            }
+        };
+
         for (const eventName in {{sm.Name}}.EventId) {
             var button = document.createElement('button');
             button.id = 'button_' + eventName;
@@ -99,23 +108,26 @@ void LoggingTransformationStep(StateMachine sm)
     // The below code will visit all states in the state machine and add custom enter and exit behaviors.
     sm.VisitTypeRecursively<State>((State state) =>
     {
-        state.AddEnterAction($"console.log(\"--> Entered {state.Name}.\");", index:0); // use index to insert at start
-        state.AddExitAction($"console.log(\"<-- Exited {state.Name}.\");"); // behavior added to end
+        // state.AddEnterAction($"console.log(\"--> Entered {state.Name}.\");", index:0); // use index to insert at start
+        // state.AddExitAction($"console.log(\"<-- Exited {state.Name}.\");"); // behavior added to end
 
         // TODO how to handle escaping state names
-        state.AddEnterAction($"document.querySelector('g[data-id={state.Name}]')?.classList.add('active');", index:0); // use index to insert at start
-        state.AddExitAction($"document.querySelector('g[data-id={state.Name}]')?.classList.remove('active');");
+        // state.AddEnterAction($"document.querySelector('g[data-id={state.Name}]')?.classList.add('active');", index:0); // use index to insert at start
+        // state.AddExitAction($"document.querySelector('g[data-id={state.Name}]')?.classList.remove('active');");
 
-        state.AddEnterAction($"""
-            var row = document.createElement('tr');
-            var timeCell = document.createElement('td');
-            timeCell.innerText = new Date().toLocaleTimeString();
-            var eventCell = document.createElement('td');
-            eventCell.innerText = 'Enter {state.Name}';
-            row.appendChild(timeCell);
-            row.appendChild(eventCell);
-            document.querySelector('tbody').appendChild(row);
-            """);
+        // state.AddEnterAction($"""
+        //     var row = document.createElement('tr');
+        //     var timeCell = document.createElement('td');
+        //     timeCell.innerText = new Date().toLocaleTimeString();
+        //     var eventCell = document.createElement('td');
+        //     eventCell.innerText = 'Enter {state.Name}';
+        //     row.appendChild(timeCell);
+        //     row.appendChild(eventCell);
+        //     document.querySelector('tbody').appendChild(row);
+        //     """);
+
+        state.AddEnterAction($"this.tracer?.enterState({sm.Name}.StateId.{state.Name});", index:0); // use index to insert at start
+        state.AddExitAction($"this.tracer?.exitState({sm.Name}.StateId.{state.Name});");
     });
 }
 
@@ -339,15 +351,16 @@ class MermaidGenerator : IVertexVisitor
 
 
 
-// This class gives StateSmith the info it needs to generate working C code.
-// It adds user code to the generated .c/.h files, declares user variables,
-// and provides diagram code expansions. This class can have any name.
 public class LightSmRenderConfig : IRenderConfigJavaScript
 {
 
     string IRenderConfig.AutoExpandedVars => """
         count: 0 // variable for state machine
         """;
+
+    string IRenderConfigJavaScript.ClassCode => """        
+        // var tracer = null;
+    """;
 
 
     // This nested class creates expansions. It can have any name.

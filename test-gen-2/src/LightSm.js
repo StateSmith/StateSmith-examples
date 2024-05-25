@@ -4,6 +4,7 @@
 // Generated state machine
 class LightSm
 {
+// var tracer = null;
     static EventId = 
     {
         DIM : 0,
@@ -128,17 +129,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.INCREASE] = this.#OFF_increase;
         
         // OFF behavior
-        // uml: enter / { document.querySelector('g[data-id=OFF]')?.classList.add('active'); }
+        // uml: enter / { this.tracer?.enterState(LightSm.StateId.OFF); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=OFF]')?.classList.add('active');`
-            document.querySelector('g[data-id=OFF]')?.classList.add('active');
-        } // end of behavior for OFF
-        
-        // OFF behavior
-        // uml: enter / { console.log("--> Entered OFF."); }
-        {
-            // Step 1: execute action `console.log("--> Entered OFF.");`
-            console.log("--> Entered OFF.");
+            // Step 1: execute action `this.tracer?.enterState(LightSm.StateId.OFF);`
+            this.tracer?.enterState(LightSm.StateId.OFF);
         } // end of behavior for OFF
         
         // OFF behavior
@@ -147,36 +141,15 @@ class LightSm
             // Step 1: execute action `console.log( "OFF\n");`
             console.log( "OFF\n");
         } // end of behavior for OFF
-        
-        // OFF behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter OFF';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
-        {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter OFF';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
-            var row = document.createElement('tr');
-            var timeCell = document.createElement('td');
-            timeCell.innerText = new Date().toLocaleTimeString();
-            var eventCell = document.createElement('td');
-            eventCell.innerText = 'Enter OFF';
-            row.appendChild(timeCell);
-            row.appendChild(eventCell);
-            document.querySelector('tbody').appendChild(row);
-        } // end of behavior for OFF
     }
     
     #OFF_exit()
     {
         // OFF behavior
-        // uml: exit / { console.log("<-- Exited OFF."); }
+        // uml: exit / { this.tracer?.exitState(LightSm.StateId.OFF); }
         {
-            // Step 1: execute action `console.log("<-- Exited OFF.");`
-            console.log("<-- Exited OFF.");
-        } // end of behavior for OFF
-        
-        // OFF behavior
-        // uml: exit / { document.querySelector('g[data-id=OFF]')?.classList.remove('active'); }
-        {
-            // Step 1: execute action `document.querySelector('g[data-id=OFF]')?.classList.remove('active');`
-            document.querySelector('g[data-id=OFF]')?.classList.remove('active');
+            // Step 1: execute action `this.tracer?.exitState(LightSm.StateId.OFF);`
+            this.tracer?.exitState(LightSm.StateId.OFF);
         } // end of behavior for OFF
         
         // adjust function pointers for this state's exit
@@ -219,48 +192,20 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.OFF] = this.#ON_GROUP_off;
         
         // ON_GROUP behavior
-        // uml: enter / { document.querySelector('g[data-id=ON_GROUP]')?.classList.add('active'); }
+        // uml: enter / { this.tracer?.enterState(LightSm.StateId.ON_GROUP); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON_GROUP]')?.classList.add('active');`
-            document.querySelector('g[data-id=ON_GROUP]')?.classList.add('active');
-        } // end of behavior for ON_GROUP
-        
-        // ON_GROUP behavior
-        // uml: enter / { console.log("--> Entered ON_GROUP."); }
-        {
-            // Step 1: execute action `console.log("--> Entered ON_GROUP.");`
-            console.log("--> Entered ON_GROUP.");
-        } // end of behavior for ON_GROUP
-        
-        // ON_GROUP behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_GROUP';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
-        {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_GROUP';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
-            var row = document.createElement('tr');
-            var timeCell = document.createElement('td');
-            timeCell.innerText = new Date().toLocaleTimeString();
-            var eventCell = document.createElement('td');
-            eventCell.innerText = 'Enter ON_GROUP';
-            row.appendChild(timeCell);
-            row.appendChild(eventCell);
-            document.querySelector('tbody').appendChild(row);
+            // Step 1: execute action `this.tracer?.enterState(LightSm.StateId.ON_GROUP);`
+            this.tracer?.enterState(LightSm.StateId.ON_GROUP);
         } // end of behavior for ON_GROUP
     }
     
     #ON_GROUP_exit()
     {
         // ON_GROUP behavior
-        // uml: exit / { console.log("<-- Exited ON_GROUP."); }
+        // uml: exit / { this.tracer?.exitState(LightSm.StateId.ON_GROUP); }
         {
-            // Step 1: execute action `console.log("<-- Exited ON_GROUP.");`
-            console.log("<-- Exited ON_GROUP.");
-        } // end of behavior for ON_GROUP
-        
-        // ON_GROUP behavior
-        // uml: exit / { document.querySelector('g[data-id=ON_GROUP]')?.classList.remove('active'); }
-        {
-            // Step 1: execute action `document.querySelector('g[data-id=ON_GROUP]')?.classList.remove('active');`
-            document.querySelector('g[data-id=ON_GROUP]')?.classList.remove('active');
+            // Step 1: execute action `this.tracer?.exitState(LightSm.StateId.ON_GROUP);`
+            this.tracer?.exitState(LightSm.StateId.ON_GROUP);
         } // end of behavior for ON_GROUP
         
         // adjust function pointers for this state's exit
@@ -302,17 +247,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.DIM] = this.#ON_HOT_dim;
         
         // ON_HOT behavior
-        // uml: enter / { document.querySelector('g[data-id=ON_HOT]')?.classList.add('active'); }
+        // uml: enter / { this.tracer?.enterState(LightSm.StateId.ON_HOT); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON_HOT]')?.classList.add('active');`
-            document.querySelector('g[data-id=ON_HOT]')?.classList.add('active');
-        } // end of behavior for ON_HOT
-        
-        // ON_HOT behavior
-        // uml: enter / { console.log("--> Entered ON_HOT."); }
-        {
-            // Step 1: execute action `console.log("--> Entered ON_HOT.");`
-            console.log("--> Entered ON_HOT.");
+            // Step 1: execute action `this.tracer?.enterState(LightSm.StateId.ON_HOT);`
+            this.tracer?.enterState(LightSm.StateId.ON_HOT);
         } // end of behavior for ON_HOT
         
         // ON_HOT behavior
@@ -321,36 +259,15 @@ class LightSm
             // Step 1: execute action `light_red();`
             light_red();
         } // end of behavior for ON_HOT
-        
-        // ON_HOT behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_HOT';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
-        {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON_HOT';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
-            var row = document.createElement('tr');
-            var timeCell = document.createElement('td');
-            timeCell.innerText = new Date().toLocaleTimeString();
-            var eventCell = document.createElement('td');
-            eventCell.innerText = 'Enter ON_HOT';
-            row.appendChild(timeCell);
-            row.appendChild(eventCell);
-            document.querySelector('tbody').appendChild(row);
-        } // end of behavior for ON_HOT
     }
     
     #ON_HOT_exit()
     {
         // ON_HOT behavior
-        // uml: exit / { console.log("<-- Exited ON_HOT."); }
+        // uml: exit / { this.tracer?.exitState(LightSm.StateId.ON_HOT); }
         {
-            // Step 1: execute action `console.log("<-- Exited ON_HOT.");`
-            console.log("<-- Exited ON_HOT.");
-        } // end of behavior for ON_HOT
-        
-        // ON_HOT behavior
-        // uml: exit / { document.querySelector('g[data-id=ON_HOT]')?.classList.remove('active'); }
-        {
-            // Step 1: execute action `document.querySelector('g[data-id=ON_HOT]')?.classList.remove('active');`
-            document.querySelector('g[data-id=ON_HOT]')?.classList.remove('active');
+            // Step 1: execute action `this.tracer?.exitState(LightSm.StateId.ON_HOT);`
+            this.tracer?.exitState(LightSm.StateId.ON_HOT);
         } // end of behavior for ON_HOT
         
         // adjust function pointers for this state's exit
@@ -393,17 +310,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.INCREASE] = this.#ON1_increase;
         
         // ON1 behavior
-        // uml: enter / { document.querySelector('g[data-id=ON1]')?.classList.add('active'); }
+        // uml: enter / { this.tracer?.enterState(LightSm.StateId.ON1); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON1]')?.classList.add('active');`
-            document.querySelector('g[data-id=ON1]')?.classList.add('active');
-        } // end of behavior for ON1
-        
-        // ON1 behavior
-        // uml: enter / { console.log("--> Entered ON1."); }
-        {
-            // Step 1: execute action `console.log("--> Entered ON1.");`
-            console.log("--> Entered ON1.");
+            // Step 1: execute action `this.tracer?.enterState(LightSm.StateId.ON1);`
+            this.tracer?.enterState(LightSm.StateId.ON1);
         } // end of behavior for ON1
         
         // ON1 behavior
@@ -412,36 +322,15 @@ class LightSm
             // Step 1: execute action `light_blue();`
             light_blue();
         } // end of behavior for ON1
-        
-        // ON1 behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON1';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
-        {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON1';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
-            var row = document.createElement('tr');
-            var timeCell = document.createElement('td');
-            timeCell.innerText = new Date().toLocaleTimeString();
-            var eventCell = document.createElement('td');
-            eventCell.innerText = 'Enter ON1';
-            row.appendChild(timeCell);
-            row.appendChild(eventCell);
-            document.querySelector('tbody').appendChild(row);
-        } // end of behavior for ON1
     }
     
     #ON1_exit()
     {
         // ON1 behavior
-        // uml: exit / { console.log("<-- Exited ON1."); }
+        // uml: exit / { this.tracer?.exitState(LightSm.StateId.ON1); }
         {
-            // Step 1: execute action `console.log("<-- Exited ON1.");`
-            console.log("<-- Exited ON1.");
-        } // end of behavior for ON1
-        
-        // ON1 behavior
-        // uml: exit / { document.querySelector('g[data-id=ON1]')?.classList.remove('active'); }
-        {
-            // Step 1: execute action `document.querySelector('g[data-id=ON1]')?.classList.remove('active');`
-            document.querySelector('g[data-id=ON1]')?.classList.remove('active');
+            // Step 1: execute action `this.tracer?.exitState(LightSm.StateId.ON1);`
+            this.tracer?.exitState(LightSm.StateId.ON1);
         } // end of behavior for ON1
         
         // adjust function pointers for this state's exit
@@ -507,17 +396,10 @@ class LightSm
         this.#currentEventHandlers[LightSm.EventId.INCREASE] = this.#ON2_increase;
         
         // ON2 behavior
-        // uml: enter / { document.querySelector('g[data-id=ON2]')?.classList.add('active'); }
+        // uml: enter / { this.tracer?.enterState(LightSm.StateId.ON2); }
         {
-            // Step 1: execute action `document.querySelector('g[data-id=ON2]')?.classList.add('active');`
-            document.querySelector('g[data-id=ON2]')?.classList.add('active');
-        } // end of behavior for ON2
-        
-        // ON2 behavior
-        // uml: enter / { console.log("--> Entered ON2."); }
-        {
-            // Step 1: execute action `console.log("--> Entered ON2.");`
-            console.log("--> Entered ON2.");
+            // Step 1: execute action `this.tracer?.enterState(LightSm.StateId.ON2);`
+            this.tracer?.enterState(LightSm.StateId.ON2);
         } // end of behavior for ON2
         
         // ON2 behavior
@@ -533,36 +415,15 @@ class LightSm
             // Step 1: execute action `count = 0;`
             this.vars.count = 0;
         } // end of behavior for ON2
-        
-        // ON2 behavior
-        // uml: enter / { var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON2';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row); }
-        {
-            // Step 1: execute action `var row = document.createElement('tr');\nvar timeCell = document.createElement('td');\ntimeCell.innerText = new Date().toLocaleTimeString();\nvar eventCell = document.createElement('td');\neventCell.innerText = 'Enter ON2';\nrow.appendChild(timeCell);\nrow.appendChild(eventCell);\ndocument.querySelector('tbody').appendChild(row);`
-            var row = document.createElement('tr');
-            var timeCell = document.createElement('td');
-            timeCell.innerText = new Date().toLocaleTimeString();
-            var eventCell = document.createElement('td');
-            eventCell.innerText = 'Enter ON2';
-            row.appendChild(timeCell);
-            row.appendChild(eventCell);
-            document.querySelector('tbody').appendChild(row);
-        } // end of behavior for ON2
     }
     
     #ON2_exit()
     {
         // ON2 behavior
-        // uml: exit / { console.log("<-- Exited ON2."); }
+        // uml: exit / { this.tracer?.exitState(LightSm.StateId.ON2); }
         {
-            // Step 1: execute action `console.log("<-- Exited ON2.");`
-            console.log("<-- Exited ON2.");
-        } // end of behavior for ON2
-        
-        // ON2 behavior
-        // uml: exit / { document.querySelector('g[data-id=ON2]')?.classList.remove('active'); }
-        {
-            // Step 1: execute action `document.querySelector('g[data-id=ON2]')?.classList.remove('active');`
-            document.querySelector('g[data-id=ON2]')?.classList.remove('active');
+            // Step 1: execute action `this.tracer?.exitState(LightSm.StateId.ON2);`
+            this.tracer?.exitState(LightSm.StateId.ON2);
         } // end of behavior for ON2
         
         // adjust function pointers for this state's exit

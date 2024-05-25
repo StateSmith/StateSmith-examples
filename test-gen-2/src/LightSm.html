@@ -66,6 +66,15 @@ state ON_GROUP {
 
         var sm = new LightSm();
 
+        sm.tracer = {
+            enterState: (stateId) => {
+                console.log("--> Entered " + LightSm.stateIdToString(stateId));
+            },
+            exitState: (stateId) => {
+                console.log("<-- Exited " + LightSm.stateIdToString(stateId));
+            }
+        };
+
         for (const eventName in LightSm.EventId) {
             var button = document.createElement('button');
             button.id = 'button_' + eventName;

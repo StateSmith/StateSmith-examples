@@ -107,8 +107,8 @@ void LoggingTransformationStep(StateMachine sm)
 // TODO it might be more straightforward to iterate over the graph directly instead of using a visitor
 class MermaidGenerator : IVertexVisitor
 {
-    private HashSet<Vertex> leafNodes = new HashSet<Vertex>();
-    private HashSet<Vertex> compositeNodes = new HashSet<Vertex>();      
+    private HashSet<Vertex> leafNodes = new();
+    private HashSet<Vertex> compositeNodes = new();
     private TextWriter writer;
 
     public MermaidGenerator(TextWriter writer)

@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet-script
 // This is a c# script file
 
-#r "nuget: StateSmith, 0.9.12-alpha" // this line specifies which version of StateSmith to use and download from c# nuget web service.
+#r "nuget: StateSmith, 0.9.14-alpha" // this line specifies which version of StateSmith to use and download from c# nuget web service.
 
 using StateSmith.Input.Expansions;
 using StateSmith.Output.UserConfig;
@@ -9,21 +9,38 @@ using StateSmith.Runner;
 using StateSmith.SmGraph;  // Note using! This is required to access StateMachine and NamedVertex classes...
 using StateSmith.SmGraph.Visitors;
 using StateSmith.Common;
+using System.Text.RegularExpressions;
 
+var trackingExpander = new TrackingExpander();
 TextWriter mermaidCodeWriter = new StringWriter();
+TextWriter mocksWriter = new StringWriter();
 SmRunner htmlRunner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
+htmlRunner.GetExperimentalAccess().DiServiceProvider.AddSingletonT<IExpander>(trackingExpander); // must be done before AddPipelineStep();
 htmlRunner.SmTransformer.InsertBeforeFirstMatch(
     StandardSmTransformer.TransformationId.Standard_FinalValidation,
     new TransformationStep(id: "some string id", action: (sm) =>
     {
-        var visitor = new MermaidGenerator(mermaidCodeWriter);
-        sm.Accept(visitor);
-        visitor.Print(); // print the mermaid code to the mermaidcodewriter
-        using(StreamWriter htmlWriter = new StreamWriter($"{sm.Name}.html")) {
-            PrintHtml(htmlWriter,sm, mermaidCodeWriter.ToString());
-        }
+        var visitor = new MermaidGenerator();
+        visitor.RenderAll(sm);
+        mermaidCodeWriter.WriteLine(visitor.GetMermaidCode());
     }));
 htmlRunner.Run();
+
+mocksWriter.WriteLine(
+    """
+    // Mocks of functions referenced by your state machine.
+    """
+);
+foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
+{
+    mocksWriter.WriteLine(
+        $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date(), "Called mock {{funcAttempt}}()");};""");
+}
+
+using(StreamWriter htmlWriter = new StreamWriter($"LightSm.html")) {
+    PrintHtml(htmlWriter,"LightSm", mocksWriter.ToString(), mermaidCodeWriter.ToString());
+}
+
 
 
 // HACK order is important, the jsRunner must run after the htmlRunner, because the htmlRunner
@@ -35,7 +52,7 @@ jsRunner.Run();
 
 
 
-void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
+void PrintHtml(TextWriter writer,  string smName, string mocksCode, string mermaidCode) {
 
     string htmlTemplate = $$"""
 <!-- 
@@ -43,28 +60,187 @@ void PrintHtml(TextWriter writer,  StateMachine sm, string mermaidCode) {
   -- It serves as an example of how to use the generated state machine in a web page.
   -- It also serves as an interactive console that you can use to validate the
   -- state machine's behavior.
+  --
+  -- Using {{smName}}.js generally looks like:
+  --   var sm = new {{smName}}();
+  --   sm.start();
+  --
+  -- And then using sm.dispatchEvent() to dispatch events to the state machine.
   -->
 <html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .main {
+        flex: 1;
+        overflow: auto;
+        padding: 10px;
+      }
+
+      .sidebar {
+        background-color: #f0f0f0;
+        border-left: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+      }
+
+      #buttons {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .titlebar {
+        background-color: #ddd;
+        border-bottom: 1px solid #ccc;
+        font-weight: bold;
+        padding: 5px;
+      }
+
+      .console {
+        border-collapse: collapse;
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      .console th {
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ccc;
+        font-weight: normal;
+        padding: 5px;
+        text-align: left;
+      }
+
+      .console tbody {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+
+      .console td {
+        border-bottom: 1px solid #ccc;
+        padding: 5px;
+      }
+
+      .history {
+        margin-top: 30px;
+        overflow: scroll;    
+      }
+
+      .console tr:last-child td {
+        border-bottom: none;
+      }
+
+      button {
+        margin: 5px;
+      }
+    </style>
+  </head>
+
   <body>
-    <div id="buttons"></div>
-
-    <pre class="mermaid">
+    <div class="main">
+        <pre class="mermaid">
 {{mermaidCode}}
-    </pre>
+        </pre>
+    </div>
 
-    <script src="{{sm.Name}}.js"></script>
+    <div class="sidebar">
+        <div id="buttons">
+            <div class="titlebar">Actions</div>
+        </div>
+
+        <div class="history">
+            <div class="titlebar">History</div>
+            <table class="console">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{{smName}}.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        import svgPanZoom from 'https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/+esm' ;
         mermaid.initialize({ startOnLoad: false });
         await mermaid.run();
 
-        var sm = new {{sm.Name}}();
+        // svg-pan-zoom doesn't like the mermaid viewbox
+        document.querySelector('svg').removeAttribute('viewBox');
+        document.querySelector('svg').setAttribute('width', '100%');
+        document.querySelector('svg').setAttribute('height', '100%');
+        document.querySelector('svg').style["max-width"] = '';
 
-        for (const eventName in {{sm.Name}}.EventId) {
+        svgPanZoom(document.querySelector('svg'), {
+            zoomEnabled: true,
+            controlIconsEnabled: true,
+            fit: true,
+            center: true
+        });
+
+{{mocksCode}}
+
+        // Convert a date to a string in the format HH:MM:SS.sss
+        function formatTime(date) {
+            return date.getHours().toString().padStart(2, '0') + ':' +
+                date.getMinutes().toString().padStart(2, '0') + ':' +
+                date.getSeconds().toString().padStart(2, '0') + '.' +
+                date.getMilliseconds().toString().padStart(3, '0');
+        }
+
+        // Add a row to the history table.
+        function addHistoryRow(time, event) {
+            var row = document.createElement('tr');
+            var timeCell = document.createElement('td');
+            timeCell.innerText = formatTime(time);
+            var eventCell = document.createElement('td');
+            eventCell.innerText = event;
+            row.appendChild(timeCell);
+            row.appendChild(eventCell);
+            document.querySelector('tbody').appendChild(row);
+        }
+
+        var sm = new {{smName}}();
+
+        // prompt the user to evaluate guards manually
+        sm.evaluateGuard = (guard) => {
+            return confirm('Evaluate guard: ' + guard);
+        }; 
+
+        // The simulator uses a tracer callback to perform operations such as 
+        // state highlighting and logging. You do not need this functionality
+        // when using {{smName}}.js in your own applications, although you may
+        // choose to implement a tracer for debugging purposes.
+        sm.tracer = {
+            enterState: (stateId) => {
+                var name = {{smName}}.stateIdToString(stateId);
+                document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
+                addHistoryRow(new Date(), "Entered " + name);
+            },
+            exitState: (stateId) => {
+                var name = {{smName}}.stateIdToString(stateId);
+                document.querySelector('g[data-id=' + name + ']')?.classList.remove('active');
+            }
+        };
+
+        // Wire up the buttons that dispatch events for the state machine.
+        for (const eventName in {{smName}}.EventId) {
             var button = document.createElement('button');
             button.id = 'button_' + eventName;
             button.innerText = eventName;
-            button.addEventListener('click', () => sm.dispatchEvent({{sm.Name}}.EventId[eventName]));
+            button.addEventListener('click', () => {
+                addHistoryRow(new Date(), "Dispatched " + eventName);
+                sm.dispatchEvent({{smName}}.EventId[eventName]); 
+            });
             document.getElementById('buttons').appendChild(button);
         }
 
@@ -88,12 +264,16 @@ void LoggingTransformationStep(StateMachine sm)
     // The below code will visit all states in the state machine and add custom enter and exit behaviors.
     sm.VisitTypeRecursively<State>((State state) =>
     {
-        state.AddEnterAction($"console.log(\"--> Entered {state.Name}.\");", index:0); // use index to insert at start
-        state.AddExitAction($"console.log(\"<-- Exited {state.Name}.\");"); // behavior added to end
+        state.AddEnterAction($"this.tracer?.enterState({sm.Name}.StateId.{state.Name});", index:0); // use index to insert at start
+        state.AddExitAction($"this.tracer?.exitState({sm.Name}.StateId.{state.Name});");
+    });
 
-        // TODO how to handle escaping state names
-        state.AddEnterAction($"document.querySelector('g[data-id={state.Name}]')?.classList.add('active');", index:0); // use index to insert at start
-        state.AddExitAction($"document.querySelector('g[data-id={state.Name}]')?.classList.remove('active');");
+    sm.VisitTypeRecursively<Vertex>((Vertex vertex) =>
+    {
+        foreach (var behavior in vertex.Behaviors.Where( b => b.TransitionTarget!=null && b.HasGuardCode() ))
+        {
+            behavior.guardCode = $"this.evaluateGuard!=null ? this.evaluateGuard('{behavior.guardCode}') : {behavior.guardCode}";
+        }
     });
 }
 
@@ -101,61 +281,126 @@ void LoggingTransformationStep(StateMachine sm)
 
 
 
-// TODO it might be more straightforward to iterate over the graph directly instead of using a visitor
 class MermaidGenerator : IVertexVisitor
 {
-    private int indentCount = 0;
-    private HashSet<Vertex> leafNodes = new();
-    private HashSet<Vertex> compositeNodes = new();
-    private TextWriter writer;
+    int indentLevel = 0;
+    StringBuilder sb = new();
 
-    public MermaidGenerator(TextWriter writer)
+    public void RenderAll(StateMachine sm)
     {
-        this.writer = writer;
+        sm.Accept(this);
+        RenderEdges(sm);
     }
 
+    public string GetMermaidCode()
+    {
+        return sb.ToString();
+    }
 
-    // Format for regular state:
-    //   OFF : title
-    //   OFF : first line
-    //   OFF : second line
-    //
-    // Format for composite state (multiple lines not supported):
-    //   state OFF {
-    //    ...
-    //   }
-    //
-    // Transitions must be first
-    // Then regular states
-    // Then composite states
-    //
-    // At least that the order that seems to be working best on my test models
-    // https://github.com/mermaid-js/mermaid/issues/5522
-    public void Print() {
-        Print("stateDiagram");
-        Print("classDef active fill:yellow,stroke-width:2px;");
-        Print("");
-        foreach (var node in leafNodes.Concat(compositeNodes)) {
-            PrintTransitions(node);
+    public void Visit(StateMachine v)
+    {
+        AppendLn("stateDiagram");
+        AppendLn("classDef active fill:yellow,stroke-width:2px;");
+        indentLevel--; // don't indent the state machine contents
+        VisitChildren(v);
+    }
+
+    public void Visit(State v)
+    {
+        if (v.Children.Count <= 0)
+        {
+            VisitLeafState(v);
         }
-        foreach (var node in leafNodes) {
-            PrintLeafNode(node);
-        }
-        foreach (var node in compositeNodes) {
-            PrintCompositeNode(node);
+        else
+        {
+            VisitCompoundState(v);
         }
     }
 
+    private void VisitCompoundState(State v)
+    {
+        AppendLn($$"""state {{v.Name}} {""");
+        // FIXME - add behavior code here when supported by mermaid
+        // https://github.com/StateSmith/StateSmith/issues/268#issuecomment-2111432194
+        VisitChildren(v);
+        AppendLn("}");
+    }
 
-    private void PrintLeafNode(Vertex v) {
-        if( v is NamedVertex ) {
-            string name = ((NamedVertex)v).Name;
-            Print($"{name} : {name}");
-            foreach(var b in v.Behaviors.Where(b => b.TransitionTarget==null)) {
-                string text = MermaidEscape(b.ToString());
-                Print($"{name} : {text}");
+    private void VisitLeafState(State v)
+    {
+        string name = v.Name;
+        AppendLn(name);
+        AppendLn($"{name} : {name}");
+        foreach (var b in v.Behaviors.Where(b => b.TransitionTarget == null))
+        {
+            string text = b.ToString();
+            text = MermaidEscape(text);
+            AppendLn($"{name} : {text}");
+        }
+    }
+
+    public void Visit(InitialState initialState)
+    {
+        string initialStateId = MakeVertexDiagramId(initialState);
+
+        AppendLn($"[*] --> {initialStateId}");
+        AppendLn($"""state "$initial_state" as {initialStateId}""");
+    }
+
+    public void Visit(ChoicePoint v)
+    {
+        AppendLn($"""state {MakeVertexDiagramId(v)} <<choice>>""");
+    }
+
+    public void Visit(EntryPoint v)
+    {
+        AppendLn($"""state "$entry_pt.{v.label}" as {MakeVertexDiagramId(v)}""");
+    }
+
+    public void Visit(ExitPoint v)
+    {
+        AppendLn($"""state "$exit_pt.{v.label}" as {MakeVertexDiagramId(v)}""");
+    }
+
+    public void Visit(HistoryVertex v)
+    {
+        AppendLn($"""state "$H" as {MakeVertexDiagramId(v)}""");
+    }
+
+    public void Visit(HistoryContinueVertex v)
+    {
+        AppendLn($"""state "$HC" as {MakeVertexDiagramId(v)}""");
+    }
+
+
+    public void RenderEdges(StateMachine sm)
+    {
+        sm.VisitRecursively((Vertex v) =>
+        {
+            string vertexDiagramId = MakeVertexDiagramId(v);
+
+            foreach (var behavior in v.Behaviors)
+            {
+                if (behavior.TransitionTarget != null)
+                {
+                    var text = behavior.ToString();
+                    text = Regex.Replace(text, @"\s*TransitionTo[(].*[)]", ""); // bit of a hack to remove the `TransitionTo(SOME_STATE)` text
+                    text = MermaidEscape(text);
+                    sb.AppendLine($"{vertexDiagramId} --> {MakeVertexDiagramId(behavior.TransitionTarget)} : {text}");
+                }
             }
-            Print("");
+        });
+    }
+
+    public static string MakeVertexDiagramId(Vertex v)
+    {
+        switch (v)
+        {
+            case NamedVertex namedVertex:
+                return namedVertex.Name;
+            default:
+                // see https://github.com/StateSmith/StateSmith/blob/04955e5df7d5eb6654a048dccb35d6402751e4c6/src/StateSmithTest/VertexDescribeTests.cs
+                return Vertex.Describe(v).Replace("<", "(").Replace(">", ")");
         }
     }
 
@@ -168,125 +413,22 @@ class MermaidGenerator : IVertexVisitor
         return text;
     }
 
-    private void PrintCompositeNode(Vertex v) {
-        if( !(v is NamedVertex) ) {
-            throw new Exception("Composite node must be named");
-        }
-
-        Print($"state {((NamedVertex)v).Name} {{");
-        indentCount++;
-        foreach (var child in v.Children)
-        {
-            if(child is NamedVertex) {
-                Print(((NamedVertex)child).Name);
-            }
-        }
-        indentCount--;
-        Print("}");
-        Print("");
-    }
-
-    private void PrintTransitions(Vertex v) {
-        foreach (var behavior in v.Behaviors)
-        {
-            if(behavior.TransitionTarget!=null) {
-                string start = v is NamedVertex ? ((NamedVertex)v).Name : "[*]";
-                string end = behavior.TransitionTarget is NamedVertex ? ((NamedVertex)behavior.TransitionTarget).Name : "[*]";
-                Print($"{start} --> {end}");
-            }
-        }
-        Print("");
-    }
-
-    private void Print(string message)
+    private void AppendLn(string message)
     {
-        for (int i = 0; i < indentCount; i++)
-        {
-            writer.Write("  ");
-        }
-        writer.WriteLine(message);
+        for (int i = 0; i < indentLevel; i++)
+            sb.Append("        ");
+
+        sb.AppendLine(message);
     }
 
     private void VisitChildren(Vertex v)
     {
+        indentLevel++;
         foreach (var child in v.Children)
         {
             child.Accept(this);
         }
-    }
-
-    private void AssertNoChildren(Vertex v)
-    {
-        if (v.Children.Count > 0)
-        {
-            throw new Exception($"Vertex `{Vertex.Describe(v)}` not expected to have children");
-        }
-    }
-
-    public void Visit(Vertex v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(StateMachine v)
-    {
-        VisitChildren(v);
-    }
-
-    public void Visit(NamedVertex v)
-    {
-        VisitChildren(v);
-    }
-
-    public void Visit(State v)
-    {
-        if(v.Children.Count > 0) {
-            compositeNodes.Add(v);
-            VisitChildren(v);
-        } else {
-            leafNodes.Add(v);
-        }
-    }
-
-    // orthogonal states are not yet implemented, but will be one day
-    public void Visit(OrthoState v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(NotesVertex v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(InitialState v)
-    {
-        AssertNoChildren(v);
-    }
-
-    public void Visit(ChoicePoint v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(EntryPoint v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(ExitPoint v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(HistoryVertex v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(HistoryContinueVertex v)
-    {
-        throw new NotImplementedException();
+        indentLevel--;
     }
 
     public void Visit(RenderConfigVertex v)
@@ -299,17 +441,25 @@ class MermaidGenerator : IVertexVisitor
         // just ignore config option and any children
     }
 
-    private void VisitBehaviors(Vertex v)
+    // orthogonal states are not yet implemented, but will be one day
+    public void Visit(OrthoState v)
     {
-        foreach (var behavior in v.Behaviors)
-        {
-            if(behavior.TransitionTarget!=null) {
-                string start = v is NamedVertex ? ((NamedVertex)v).Name : "[*]";
-                string end = behavior.TransitionTarget is NamedVertex ? ((NamedVertex)behavior.TransitionTarget).Name : "[*]";
-                
-                Print($"{start} --> {end}");
-            }
-        }
+        throw new NotImplementedException();
+    }
+
+    public void Visit(NotesVertex v)
+    {
+        // just ignore notes and any children
+    }
+
+    public void Visit(NamedVertex v)
+    {
+        throw new NotImplementedException(); // should not be called
+    }
+
+    public void Visit(Vertex v)
+    {
+        throw new NotImplementedException(); // should not be called
     }
 }
 
@@ -317,15 +467,18 @@ class MermaidGenerator : IVertexVisitor
 
 
 
-// This class gives StateSmith the info it needs to generate working C code.
-// It adds user code to the generated .c/.h files, declares user variables,
-// and provides diagram code expansions. This class can have any name.
 public class LightSmRenderConfig : IRenderConfigJavaScript
 {
 
     string IRenderConfig.AutoExpandedVars => """
         count: 0 // variable for state machine
         """;
+
+    string IRenderConfigJavaScript.ClassCode => """        
+        // Null by default.
+        // May be overridden to override guard evaluation (eg. in a simulator)
+        evaluateGuard = null;
+    """;
 
 
     // This nested class creates expansions. It can have any name.

@@ -92,6 +92,13 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         flex-direction: column;
       }
 
+      .titlebar {
+        background-color: #ddd;
+        border-bottom: 1px solid #ccc;
+        font-weight: bold;
+        padding: 5px;
+      }
+
       .console {
         border-collapse: collapse;
         margin-top: 10px;
@@ -109,6 +116,10 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
       .console td {
         border-bottom: 1px solid #ccc;
         padding: 5px;
+      }
+
+      .history {
+        margin-top: 20px;
       }
 
       .console tr:last-child td {
@@ -129,18 +140,23 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
     </div>
 
     <div class="sidebar">
-        <div id="buttons"></div>
+        <div id="buttons">
+            <div class="titlebar">Actions</div>
+        </div>
 
-        <table class="console">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Event</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        </table>
+        <div class="history">
+            <div class="titlebar">History</div>
+            <table class="console">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            </table>
+        </div>
     </div>
 
     <script src="{{smName}}.js"></script>

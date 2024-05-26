@@ -32,7 +32,7 @@ mocksWriter.WriteLine(
 foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
 {
     mocksWriter.WriteLine(
-        $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date(), "Called {{funcAttempt}}()");};""");
+        $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date(), "Called mock {{funcAttempt}}()");};""");
 }
 
 using(StreamWriter htmlWriter = new StreamWriter($"LightSm.html")) {

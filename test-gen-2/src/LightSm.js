@@ -4,7 +4,6 @@
 // Generated state machine
 class LightSm
 {
-// var tracer = null;
     static EventId = 
     {
         DIM : 0,

@@ -9,6 +9,8 @@ using StateSmith.Runner;
 using StateSmith.SmGraph;  // Note using! This is required to access StateMachine and NamedVertex classes...
 using StateSmith.SmGraph.Visitors;
 using StateSmith.Common;
+using System.Text.RegularExpressions;
+
 var trackingExpander = new TrackingExpander();
 TextWriter mermaidCodeWriter = new StringWriter();
 TextWriter mocksWriter = new StringWriter();
@@ -18,9 +20,9 @@ htmlRunner.SmTransformer.InsertBeforeFirstMatch(
     StandardSmTransformer.TransformationId.Standard_FinalValidation,
     new TransformationStep(id: "some string id", action: (sm) =>
     {
-        var visitor = new MermaidGenerator(mermaidCodeWriter);
-        sm.Accept(visitor);
-        visitor.Print(); // print the mermaid code to the mermaidcodewriter
+        var visitor = new MermaidGenerator();
+        visitor.RenderAll(sm);
+        mermaidCodeWriter.WriteLine(visitor.GetMermaidCode());
     }));
 htmlRunner.Run();
 
@@ -266,61 +268,126 @@ void LoggingTransformationStep(StateMachine sm)
 
 
 
-// TODO it might be more straightforward to iterate over the graph directly instead of using a visitor
 class MermaidGenerator : IVertexVisitor
 {
-    private int indentCount = 0;
-    private HashSet<Vertex> leafNodes = new();
-    private HashSet<Vertex> compositeNodes = new();
-    private TextWriter writer;
+    int indentLevel = 0;
+    StringBuilder sb = new();
 
-    public MermaidGenerator(TextWriter writer)
+    public void RenderAll(StateMachine sm)
     {
-        this.writer = writer;
+        sm.Accept(this);
+        RenderEdges(sm);
     }
 
+    public string GetMermaidCode()
+    {
+        return sb.ToString();
+    }
 
-    // Format for regular state:
-    //   OFF : title
-    //   OFF : first line
-    //   OFF : second line
-    //
-    // Format for composite state (multiple lines not supported):
-    //   state OFF {
-    //    ...
-    //   }
-    //
-    // Transitions must be first
-    // Then regular states
-    // Then composite states
-    //
-    // At least that the order that seems to be working best on my test models
-    // https://github.com/mermaid-js/mermaid/issues/5522
-    public void Print() {
-        Print("stateDiagram");
-        Print("classDef active fill:yellow,stroke-width:2px;");
-        Print("");
-        foreach (var node in leafNodes.Concat(compositeNodes)) {
-            PrintTransitions(node);
+    public void Visit(StateMachine v)
+    {
+        AppendLn("stateDiagram");
+        AppendLn("classDef active fill:yellow,stroke-width:2px;");
+        indentLevel--; // don't indent the state machine contents
+        VisitChildren(v);
+    }
+
+    public void Visit(State v)
+    {
+        if (v.Children.Count <= 0)
+        {
+            VisitLeafState(v);
         }
-        foreach (var node in leafNodes) {
-            PrintLeafNode(node);
-        }
-        foreach (var node in compositeNodes) {
-            PrintCompositeNode(node);
+        else
+        {
+            VisitCompoundState(v);
         }
     }
 
+    private void VisitCompoundState(State v)
+    {
+        AppendLn($$"""state {{v.Name}} {""");
+        // FIXME - add behavior code here when supported by mermaid
+        // https://github.com/StateSmith/StateSmith/issues/268#issuecomment-2111432194
+        VisitChildren(v);
+        AppendLn("}");
+    }
 
-    private void PrintLeafNode(Vertex v) {
-        if( v is NamedVertex ) {
-            string name = ((NamedVertex)v).Name;
-            Print($"{name} : {name}");
-            foreach(var b in v.Behaviors.Where(b => b.TransitionTarget==null)) {
-                string text = MermaidEscape(b.ToString());
-                Print($"{name} : {text}");
+    private void VisitLeafState(State v)
+    {
+        string name = v.Name;
+        AppendLn(name);
+        AppendLn($"{name} : {name}");
+        foreach (var b in v.Behaviors.Where(b => b.TransitionTarget == null))
+        {
+            string text = b.ToString();
+            text = MermaidEscape(text);
+            AppendLn($"{name} : {text}");
+        }
+    }
+
+    public void Visit(InitialState initialState)
+    {
+        string initialStateId = MakeVertexDiagramId(initialState);
+
+        AppendLn($"[*] --> {initialStateId}");
+        AppendLn($"""state "$initial_state" as {initialStateId}""");
+    }
+
+    public void Visit(ChoicePoint v)
+    {
+        AppendLn($"""state {MakeVertexDiagramId(v)} <<choice>>""");
+    }
+
+    public void Visit(EntryPoint v)
+    {
+        AppendLn($"""state "$entry_pt.{v.label}" as {MakeVertexDiagramId(v)}""");
+    }
+
+    public void Visit(ExitPoint v)
+    {
+        AppendLn($"""state "$exit_pt.{v.label}" as {MakeVertexDiagramId(v)}""");
+    }
+
+    public void Visit(HistoryVertex v)
+    {
+        AppendLn($"""state "$H" as {MakeVertexDiagramId(v)}""");
+    }
+
+    public void Visit(HistoryContinueVertex v)
+    {
+        AppendLn($"""state "$HC" as {MakeVertexDiagramId(v)}""");
+    }
+
+
+    public void RenderEdges(StateMachine sm)
+    {
+        sm.VisitRecursively((Vertex v) =>
+        {
+            string vertexDiagramId = MakeVertexDiagramId(v);
+
+            foreach (var behavior in v.Behaviors)
+            {
+                if (behavior.TransitionTarget != null)
+                {
+                    var text = behavior.ToString();
+                    text = Regex.Replace(text, @"\s*TransitionTo[(].*[)]", ""); // bit of a hack to remove the `TransitionTo(SOME_STATE)` text
+                    text = MermaidEscape(text);
+                    sb.AppendLine($"{vertexDiagramId} --> {MakeVertexDiagramId(behavior.TransitionTarget)} : {text}");
+                }
             }
-            Print("");
+        });
+    }
+
+    public static string MakeVertexDiagramId(Vertex v)
+    {
+        switch (v)
+        {
+            case NamedVertex namedVertex:
+                return namedVertex.Name;
+            default:
+                // see https://github.com/StateSmith/StateSmith/blob/04955e5df7d5eb6654a048dccb35d6402751e4c6/src/StateSmithTest/VertexDescribeTests.cs
+                return Vertex.Describe(v).Replace("<", "(").Replace(">", ")");
         }
     }
 
@@ -333,125 +400,22 @@ class MermaidGenerator : IVertexVisitor
         return text;
     }
 
-    private void PrintCompositeNode(Vertex v) {
-        if( !(v is NamedVertex) ) {
-            throw new Exception("Composite node must be named");
-        }
-
-        Print($"state {((NamedVertex)v).Name} {{");
-        indentCount++;
-        foreach (var child in v.Children)
-        {
-            if(child is NamedVertex) {
-                Print(((NamedVertex)child).Name);
-            }
-        }
-        indentCount--;
-        Print("}");
-        Print("");
-    }
-
-    private void PrintTransitions(Vertex v) {
-        foreach (var behavior in v.Behaviors)
-        {
-            if(behavior.TransitionTarget!=null) {
-                string start = v is NamedVertex ? ((NamedVertex)v).Name : "[*]";
-                string end = behavior.TransitionTarget is NamedVertex ? ((NamedVertex)behavior.TransitionTarget).Name : "[*]";
-                Print($"{start} --> {end}");
-            }
-        }
-        Print("");
-    }
-
-    private void Print(string message)
+    private void AppendLn(string message)
     {
-        for (int i = 0; i < indentCount; i++)
-        {
-            writer.Write("  ");
-        }
-        writer.WriteLine(message);
+        for (int i = 0; i < indentLevel; i++)
+            sb.Append("        ");
+
+        sb.AppendLine(message);
     }
 
     private void VisitChildren(Vertex v)
     {
+        indentLevel++;
         foreach (var child in v.Children)
         {
             child.Accept(this);
         }
-    }
-
-    private void AssertNoChildren(Vertex v)
-    {
-        if (v.Children.Count > 0)
-        {
-            throw new Exception($"Vertex `{Vertex.Describe(v)}` not expected to have children");
-        }
-    }
-
-    public void Visit(Vertex v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(StateMachine v)
-    {
-        VisitChildren(v);
-    }
-
-    public void Visit(NamedVertex v)
-    {
-        VisitChildren(v);
-    }
-
-    public void Visit(State v)
-    {
-        if(v.Children.Count > 0) {
-            compositeNodes.Add(v);
-            VisitChildren(v);
-        } else {
-            leafNodes.Add(v);
-        }
-    }
-
-    // orthogonal states are not yet implemented, but will be one day
-    public void Visit(OrthoState v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(NotesVertex v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(InitialState v)
-    {
-        AssertNoChildren(v);
-    }
-
-    public void Visit(ChoicePoint v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(EntryPoint v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(ExitPoint v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(HistoryVertex v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Visit(HistoryContinueVertex v)
-    {
-        throw new NotImplementedException();
+        indentLevel--;
     }
 
     public void Visit(RenderConfigVertex v)
@@ -464,17 +428,25 @@ class MermaidGenerator : IVertexVisitor
         // just ignore config option and any children
     }
 
-    private void VisitBehaviors(Vertex v)
+    // orthogonal states are not yet implemented, but will be one day
+    public void Visit(OrthoState v)
     {
-        foreach (var behavior in v.Behaviors)
-        {
-            if(behavior.TransitionTarget!=null) {
-                string start = v is NamedVertex ? ((NamedVertex)v).Name : "[*]";
-                string end = behavior.TransitionTarget is NamedVertex ? ((NamedVertex)behavior.TransitionTarget).Name : "[*]";
-                
-                Print($"{start} --> {end}");
-            }
-        }
+        throw new NotImplementedException();
+    }
+
+    public void Visit(NotesVertex v)
+    {
+        // just ignore notes and any children
+    }
+
+    public void Visit(NamedVertex v)
+    {
+        throw new NotImplementedException(); // should not be called
+    }
+
+    public void Visit(Vertex v)
+    {
+        throw new NotImplementedException(); // should not be called
     }
 }
 
@@ -488,10 +460,6 @@ public class LightSmRenderConfig : IRenderConfigJavaScript
     string IRenderConfig.AutoExpandedVars => """
         count: 0 // variable for state machine
         """;
-
-    string IRenderConfigJavaScript.ClassCode => """        
-        // var tracer = null;
-    """;
 
 
     // This nested class creates expansions. It can have any name.

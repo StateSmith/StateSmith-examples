@@ -71,6 +71,11 @@ state ON_GROUP {
         mermaid.initialize({ startOnLoad: false });
         await mermaid.run();
 
+        // svg-pan-zoom doesn't like the mermaid viewbox
+        document.querySelector('svg').removeAttribute('viewBox');
+        document.querySelector('svg').setAttribute('width', '100%');
+        document.querySelector('svg').setAttribute('height', '100%');
+
         svgPanZoom(document.querySelector('svg'), {
             zoomEnabled: true,
             controlIconsEnabled: true,

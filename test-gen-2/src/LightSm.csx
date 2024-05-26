@@ -120,6 +120,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
 
       .history {
         margin-top: 30px;
+        overflow: scroll;
       }
 
       .console tr:last-child td {

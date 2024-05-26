@@ -87,8 +87,21 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
     <script src="{{smName}}.js"></script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        import svgPanZoom from 'https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/+esm' ;
         mermaid.initialize({ startOnLoad: false });
         await mermaid.run();
+
+        // svg-pan-zoom doesn't like the mermaid viewbox
+        document.querySelector('svg').removeAttribute('viewBox');
+        document.querySelector('svg').setAttribute('width', '100%');
+        document.querySelector('svg').setAttribute('height', '100%');
+
+        svgPanZoom(document.querySelector('svg'), {
+            zoomEnabled: true,
+            controlIconsEnabled: true,
+            fit: true,
+            center: true
+        });
 
 {{mocksCode}}
 

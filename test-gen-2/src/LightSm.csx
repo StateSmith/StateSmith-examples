@@ -1,7 +1,7 @@
 #!/usr/bin/env dotnet-script
 // This is a c# script file
 
-#r "nuget: StateSmith, 0.9.13-alpha-tracking-expander-2" // this line specifies which version of StateSmith to use and download from c# nuget web service.
+#r "nuget: StateSmith, 0.9.14-alpha" // this line specifies which version of StateSmith to use and download from c# nuget web service.
 
 using StateSmith.Input.Expansions;
 using StateSmith.Output.UserConfig;
@@ -119,7 +119,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
       }
 
       .history {
-        margin-top: 20px;
+        margin-top: 30px;
       }
 
       .console tr:last-child td {

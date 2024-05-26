@@ -64,7 +64,7 @@
       }
 
       .history {
-        margin-top: 20px;
+        margin-top: 30px;
       }
 
       .console tr:last-child td {
@@ -160,9 +160,9 @@ state ON_GROUP {
         });
 
 // Mocks of functions referenced by your state machine.
-globalThis.light_red = ()=>{ addHistoryRow(new Date(), "Called light_red()");};
-globalThis.light_blue = ()=>{ addHistoryRow(new Date(), "Called light_blue()");};
-globalThis.light_yellow = ()=>{ addHistoryRow(new Date(), "Called light_yellow()");};
+globalThis.light_red = ()=>{ addHistoryRow(new Date(), "Called mock light_red()");};
+globalThis.light_blue = ()=>{ addHistoryRow(new Date(), "Called mock light_blue()");};
+globalThis.light_yellow = ()=>{ addHistoryRow(new Date(), "Called mock light_yellow()");};
 
 
         // Convert a date to a string in the format HH:MM:SS.sss

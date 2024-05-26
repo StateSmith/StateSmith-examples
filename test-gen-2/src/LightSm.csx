@@ -82,8 +82,14 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
       .sidebar {
         background-color: #f0f0f0;
         border-left: 1px solid #ccc;
+        display: flex;
         flex-direction: column;
         width: 300px;
+      }
+
+      #buttons {
+        display: flex;
+        flex-direction: column;
       }
 
       .console {
@@ -114,8 +120,8 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
       }
     </style>
   </head>
-  <body>
 
+  <body>
     <div class="main">
         <pre class="mermaid">
 {{mermaidCode}}

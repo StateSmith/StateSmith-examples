@@ -11,10 +11,58 @@
   -- And then using sm.dispatchEvent() to dispatch events to the state machine.
   -->
 <html>
-  <body>
-    <div id="buttons"></div>
+  <head>
+    <style>
+      body {
+        display: flex;
+        flex-direction: row;
+      }
 
-    <pre class="mermaid">
+      .main {
+        flex: 1;
+        overflow: auto;
+        padding: 10px;
+      }
+
+      .sidebar {
+        background-color: #f0f0f0;
+        border-left: 1px solid #ccc;
+        flex-direction: column;
+        width: 300px;
+      }
+
+      .console {
+        border-collapse: collapse;
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      .console th {
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ccc;
+        font-weight: normal;
+        padding: 5px;
+        text-align: left;
+      }
+
+      .console td {
+        border-bottom: 1px solid #ccc;
+        padding: 5px;
+      }
+
+      .console tr:last-child td {
+        border-bottom: none;
+      }
+
+      button {
+        margin: 5px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="main">
+        <pre class="mermaid">
 stateDiagram
 classDef active fill:yellow,stroke-width:2px;
 
@@ -51,18 +99,23 @@ state ON_GROUP {
 }
 
 
-    </pre>
+        </pre>
+    </div>
 
-    <table class="console">
-      <thead>
-          <tr>
-              <th>Time</th>
-              <th>Event</th>
-          </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+    <div class="sidebar">
+        <div id="buttons"></div>
+
+        <table class="console">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+    </div>
 
     <script src="LightSm.js"></script>
     <script type="module">

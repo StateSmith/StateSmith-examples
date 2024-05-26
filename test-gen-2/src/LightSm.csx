@@ -66,23 +66,76 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
   -- And then using sm.dispatchEvent() to dispatch events to the state machine.
   -->
 <html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .main {
+        flex: 1;
+        overflow: auto;
+        padding: 10px;
+      }
+
+      .sidebar {
+        background-color: #f0f0f0;
+        border-left: 1px solid #ccc;
+        flex-direction: column;
+        width: 300px;
+      }
+
+      .console {
+        border-collapse: collapse;
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      .console th {
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ccc;
+        font-weight: normal;
+        padding: 5px;
+        text-align: left;
+      }
+
+      .console td {
+        border-bottom: 1px solid #ccc;
+        padding: 5px;
+      }
+
+      .console tr:last-child td {
+        border-bottom: none;
+      }
+
+      button {
+        margin: 5px;
+      }
+    </style>
+  </head>
   <body>
-    <div id="buttons"></div>
 
-    <pre class="mermaid">
+    <div class="main">
+        <pre class="mermaid">
 {{mermaidCode}}
-    </pre>
+        </pre>
+    </div>
 
-    <table class="console">
-      <thead>
-          <tr>
-              <th>Time</th>
-              <th>Event</th>
-          </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+    <div class="sidebar">
+        <div id="buttons"></div>
+
+        <table class="console">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+    </div>
 
     <script src="{{smName}}.js"></script>
     <script type="module">

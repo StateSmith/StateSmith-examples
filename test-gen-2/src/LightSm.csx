@@ -113,6 +113,11 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         text-align: left;
       }
 
+      .console tbody {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+
       .console td {
         border-bottom: 1px solid #ccc;
         padding: 5px;
@@ -120,7 +125,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
 
       .history {
         margin-top: 30px;
-        overflow: scroll;
+        overflow: scroll;    
       }
 
       .console tr:last-child td {

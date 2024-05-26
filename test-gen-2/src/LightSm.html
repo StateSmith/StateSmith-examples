@@ -58,6 +58,11 @@
         text-align: left;
       }
 
+      .console tbody {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+
       .console td {
         border-bottom: 1px solid #ccc;
         padding: 5px;
@@ -65,7 +70,7 @@
 
       .history {
         margin-top: 30px;
-        overflow: scroll;
+        overflow: scroll;    
       }
 
       .console tr:last-child td {

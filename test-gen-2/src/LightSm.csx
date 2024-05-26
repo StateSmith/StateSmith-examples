@@ -210,6 +210,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         }
 
         var sm = new {{smName}}();
+        sm.mockGuards = true; // prompt the user to evaluate guards
 
         // The simulator uses a tracer callback to perform operations such as 
         // state highlighting and logging. You do not need this functionality
@@ -261,6 +262,14 @@ void LoggingTransformationStep(StateMachine sm)
     {
         state.AddEnterAction($"this.tracer?.enterState({sm.Name}.StateId.{state.Name});", index:0); // use index to insert at start
         state.AddExitAction($"this.tracer?.exitState({sm.Name}.StateId.{state.Name});");
+    });
+
+    sm.VisitTypeRecursively<Vertex>((Vertex vertex) =>
+    {
+        foreach (var behavior in vertex.Behaviors.Where( b => b.TransitionTarget!=null && b.HasGuardCode() ))
+        {
+            behavior.guardCode = $"this.mockGuards ? this.evaluateGuard('{behavior.guardCode}') : {behavior.guardCode}";
+        }
     });
 }
 
@@ -460,6 +469,17 @@ public class LightSmRenderConfig : IRenderConfigJavaScript
     string IRenderConfig.AutoExpandedVars => """
         count: 0 // variable for state machine
         """;
+
+    string IRenderConfigJavaScript.ClassCode => """
+        // Evalutes guards when set to false. Calls evaulateGuard() with the guard code string when set to true.
+        mockGuards = false;
+
+        // Prompts the user to manually evaluate the guard. Useful for debugging.
+        // TODO window.confirm doesn't belong in the SM.
+        evaluateGuard(guardCode) {
+            return window.confirm("Evaluating guard code: " + guardCode);
+        }
+    """;
 
 
     // This nested class creates expansions. It can have any name.

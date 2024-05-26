@@ -186,7 +186,11 @@ globalThis.light_yellow = ()=>{ addHistoryRow(new Date(), "Called mock light_yel
         }
 
         var sm = new LightSm();
-        sm.mockGuards = true; // prompt the user to evaluate guards
+
+        // prompt the user to evaluate guards manually
+        sm.evaluateGuard = (guard) => {
+            return confirm('Evaluate guard: ' + guard);
+        }; 
 
         // The simulator uses a tracer callback to perform operations such as 
         // state highlighting and logging. You do not need this functionality

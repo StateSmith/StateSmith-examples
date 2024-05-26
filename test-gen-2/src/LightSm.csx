@@ -210,7 +210,11 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         }
 
         var sm = new {{smName}}();
-        sm.mockGuards = true; // prompt the user to evaluate guards
+
+        // prompt the user to evaluate guards manually
+        sm.evaluateGuard = (guard) => {
+            return confirm('Evaluate guard: ' + guard);
+        }; 
 
         // The simulator uses a tracer callback to perform operations such as 
         // state highlighting and logging. You do not need this functionality
@@ -268,7 +272,7 @@ void LoggingTransformationStep(StateMachine sm)
     {
         foreach (var behavior in vertex.Behaviors.Where( b => b.TransitionTarget!=null && b.HasGuardCode() ))
         {
-            behavior.guardCode = $"this.mockGuards ? this.evaluateGuard('{behavior.guardCode}') : {behavior.guardCode}";
+            behavior.guardCode = $"this.evaluateGuard!=null ? this.evaluateGuard('{behavior.guardCode}') : {behavior.guardCode}";
         }
     });
 }
@@ -470,15 +474,10 @@ public class LightSmRenderConfig : IRenderConfigJavaScript
         count: 0 // variable for state machine
         """;
 
-    string IRenderConfigJavaScript.ClassCode => """
-        // Evalutes guards when set to false. Calls evaulateGuard() with the guard code string when set to true.
-        mockGuards = false;
-
-        // Prompts the user to manually evaluate the guard. Useful for debugging.
-        // TODO window.confirm doesn't belong in the SM.
-        evaluateGuard(guardCode) {
-            return window.confirm("Evaluating guard code: " + guardCode);
-        }
+    string IRenderConfigJavaScript.ClassCode => """        
+        // Null by default.
+        // May be overridden to override guard evaluation (eg. in a simulator)
+        evaluateGuard = null;
     """;
 
 

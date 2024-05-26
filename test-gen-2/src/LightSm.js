@@ -4,10 +4,9 @@
 // Generated state machine
 class LightSm
 {
-mockGuards = false;
-evaluateGuard(guardCode) {
-    return window.confirm("Evaluating guard code: " + guardCode);
-}
+// Null by default.
+// May be overridden to override guard evaluation (eg. in a simulator)
+evaluateGuard = null;
     static EventId = 
     {
         DIM : 0,
@@ -472,8 +471,8 @@ evaluateGuard(guardCode) {
         } // end of behavior for ON2
         
         // ON2 behavior
-        // uml: 2. INCREASE [this.mockGuards ? this.evaluateGuard('count >= 3') : count >= 3] TransitionTo(ON_HOT)
-        if (this.mockGuards ? this.evaluateGuard('count >= 3') : this.vars.count >= 3)
+        // uml: 2. INCREASE [this.evaluateGuard!=null ? this.evaluateGuard('count >= 3') : count >= 3] TransitionTo(ON_HOT)
+        if (this.evaluateGuard!=null ? this.evaluateGuard('count >= 3') : this.vars.count >= 3)
         {
             // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
             this.#ON2_exit();

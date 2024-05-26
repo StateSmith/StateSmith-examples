@@ -148,6 +148,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         document.querySelector('svg').removeAttribute('viewBox');
         document.querySelector('svg').setAttribute('width', '100%');
         document.querySelector('svg').setAttribute('height', '100%');
+        document.querySelector('svg').style["max-width"] = '';
 
         svgPanZoom(document.querySelector('svg'), {
             zoomEnabled: true,

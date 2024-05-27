@@ -517,11 +517,19 @@ class MermaidGenerator : IVertexVisitor
     {
         string initialStateId = MakeVertexDiagramId(initialState);
 
-        // Mermaid and PlantUML don't have a syntax that allows transitions to an initial state.
-        // If you do `someState --> [*]`, it means transition to a final state.
-        // StateSmith, however, does allow transitions to initial states so we add a dummy state to represent the initial state.
-        AppendLn($"[*] --> {initialStateId}");
-        mermaidEdgeTracker.AdvanceId();  // we skip this "work around" edge for now. We can improve this later.
+        bool showInitialStateDot = false;
+        // disabled for now because we then need to change edge highlighting.
+        // @emmby: can we we potentially style the `$initial_state` so that it looks somewhat like an initial state black filled circle? Thoughts?
+
+        if (showInitialStateDot)
+        {
+            // Mermaid and PlantUML don't have a syntax that allows transitions to an initial state.
+            // If you do `someState --> [*]`, it means transition to a final state.
+            // StateSmith, however, does allow transitions to initial states so we add a dummy state to represent the initial state.
+            AppendLn($"[*] --> {initialStateId}");
+            mermaidEdgeTracker.AdvanceId();  // we skip this "work around" edge for now. We can improve this later.
+        }
+
         AppendLn($"""state "$initial_state" as {initialStateId}""");
     }
 

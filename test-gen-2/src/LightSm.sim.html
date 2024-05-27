@@ -90,7 +90,6 @@ stateDiagram
 classDef active fill:yellow,stroke-width:2px;
 state ORDER_MENU {
         state BEVERAGE {
-                [*] --> BEVERAGE.(InitialState)
                 state "$initial_state" as BEVERAGE.(InitialState)
                 WATER
                 WATER : WATER
@@ -102,7 +101,6 @@ state ORDER_MENU {
                 state "$HC" as BEVERAGE.(HistoryContinue)
         }
         state FOOD {
-                [*] --> FOOD.(InitialState)
                 state "$initial_state" as FOOD.(InitialState)
                 JUNK
                 JUNK : JUNK
@@ -118,7 +116,6 @@ state ORDER_MENU {
 }
 WAITING
 WAITING : WAITING
-[*] --> ROOT.(InitialState)
 state "$initial_state" as ROOT.(InitialState)
 ORDER_MENU --> WAITING : EV3
 ORDER_MENU --> WAITING : via exit 1
@@ -250,12 +247,12 @@ evaluateGuard = null;
             // ROOT.<InitialState> is a pseudo state and cannot have an `enter` trigger.
             
             // ROOT.<InitialState> behavior
-            // uml: / { this.tracer.edgeTransition("edge22"); } TransitionTo(WAITING)
+            // uml: / { this.tracer.edgeTransition("edge19"); } TransitionTo(WAITING)
             {
                 // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
-                // Step 2: Transition action: `this.tracer.edgeTransition("edge22");`.
-                this.tracer.edgeTransition("edge22");
+                // Step 2: Transition action: `this.tracer.edgeTransition("edge19");`.
+                this.tracer.edgeTransition("edge19");
                 
                 // Step 3: Enter/move towards transition target `WAITING`.
                 this.#WAITING_enter();
@@ -344,13 +341,13 @@ evaluateGuard = null;
         // No ancestor state handles `ev3` event.
         
         // ORDER_MENU behavior
-        // uml: EV3 / { this.tracer.edgeTransition("edge3"); } TransitionTo(WAITING)
+        // uml: EV3 / { this.tracer.edgeTransition("edge0"); } TransitionTo(WAITING)
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ROOT_exit);
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge3");`.
-            this.tracer.edgeTransition("edge3");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge0");`.
+            this.tracer.edgeTransition("edge0");
             
             // Step 3: Enter/move towards transition target `WAITING`.
             this.#WAITING_enter();
@@ -407,13 +404,13 @@ evaluateGuard = null;
         // No ancestor state handles `ev2` event.
         
         // BEVERAGE behavior
-        // uml: EV2 / { this.tracer.edgeTransition("edge5"); } TransitionTo(FOOD)
+        // uml: EV2 / { this.tracer.edgeTransition("edge2"); } TransitionTo(FOOD)
         {
             // Step 1: Exit states until we reach `ORDER_MENU` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ORDER_MENU_exit);
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge5");`.
-            this.tracer.edgeTransition("edge5");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge2");`.
+            this.tracer.edgeTransition("edge2");
             
             // Step 3: Enter/move towards transition target `FOOD`.
             this.#FOOD_enter();
@@ -427,12 +424,12 @@ evaluateGuard = null;
     #BEVERAGE_InitialState_transition()
     {
         // BEVERAGE.<InitialState> behavior
-        // uml: / { this.tracer.edgeTransition("edge6"); } TransitionTo(WATER)
+        // uml: / { this.tracer.edgeTransition("edge3"); } TransitionTo(WATER)
         {
             // Step 1: Exit states until we reach `BEVERAGE` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge6");`.
-            this.tracer.edgeTransition("edge6");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge3");`.
+            this.tracer.edgeTransition("edge3");
             
             // Step 3: Enter/move towards transition target `WATER`.
             this.#WATER_enter();
@@ -496,13 +493,13 @@ evaluateGuard = null;
         // No ancestor state handles `ev1` event.
         
         // COFFEE behavior
-        // uml: EV1 / { this.tracer.edgeTransition("edge8"); } TransitionTo(TEA)
+        // uml: EV1 / { this.tracer.edgeTransition("edge5"); } TransitionTo(TEA)
         {
             // Step 1: Exit states until we reach `BEVERAGE` state (Least Common Ancestor for transition).
             this.#COFFEE_exit();
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge8");`.
-            this.tracer.edgeTransition("edge8");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge5");`.
+            this.tracer.edgeTransition("edge5");
             
             // Step 3: Enter/move towards transition target `TEA`.
             this.#TEA_enter();
@@ -561,13 +558,13 @@ evaluateGuard = null;
         // No ancestor state handles `ev1` event.
         
         // TEA behavior
-        // uml: EV1 / { this.tracer.edgeTransition("edge9"); } TransitionTo(COFFEE)
+        // uml: EV1 / { this.tracer.edgeTransition("edge6"); } TransitionTo(COFFEE)
         {
             // Step 1: Exit states until we reach `BEVERAGE` state (Least Common Ancestor for transition).
             this.#TEA_exit();
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge9");`.
-            this.tracer.edgeTransition("edge9");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge6");`.
+            this.tracer.edgeTransition("edge6");
             
             // Step 3: Enter/move towards transition target `COFFEE`.
             this.#COFFEE_enter();
@@ -585,13 +582,13 @@ evaluateGuard = null;
         this.#ancestorEventHandler = this.#BEVERAGE_ev2;
         
         // TEA behavior
-        // uml: EV2 / { this.tracer.edgeTransition("edge10"); } TransitionTo(BEVERAGE.<InitialState>)
+        // uml: EV2 / { this.tracer.edgeTransition("edge7"); } TransitionTo(BEVERAGE.<InitialState>)
         {
             // Step 1: Exit states until we reach `BEVERAGE` state (Least Common Ancestor for transition).
             this.#TEA_exit();
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge10");`.
-            this.tracer.edgeTransition("edge10");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge7");`.
+            this.tracer.edgeTransition("edge7");
             
             // Step 3: Enter/move towards transition target `BEVERAGE.<InitialState>`.
             // BEVERAGE.<InitialState> is a pseudo state and cannot have an `enter` trigger.
@@ -647,13 +644,13 @@ evaluateGuard = null;
         // No ancestor state handles `ev1` event.
         
         // WATER behavior
-        // uml: EV1 / { this.tracer.edgeTransition("edge7"); } TransitionTo(COFFEE)
+        // uml: EV1 / { this.tracer.edgeTransition("edge4"); } TransitionTo(COFFEE)
         {
             // Step 1: Exit states until we reach `BEVERAGE` state (Least Common Ancestor for transition).
             this.#WATER_exit();
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge7");`.
-            this.tracer.edgeTransition("edge7");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge4");`.
+            this.tracer.edgeTransition("edge4");
             
             // Step 3: Enter/move towards transition target `COFFEE`.
             this.#COFFEE_enter();
@@ -712,25 +709,25 @@ evaluateGuard = null;
         // No ancestor state handles `escape` event.
         
         // FOOD behavior
-        // uml: ESCAPE / { this.tracer.edgeTransition("edge12"); } TransitionTo(ORDER_MENU.<ExitPoint>(1))
+        // uml: ESCAPE / { this.tracer.edgeTransition("edge9"); } TransitionTo(ORDER_MENU.<ExitPoint>(1))
         {
             // Step 1: Exit states until we reach `ORDER_MENU` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ORDER_MENU_exit);
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge12");`.
-            this.tracer.edgeTransition("edge12");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge9");`.
+            this.tracer.edgeTransition("edge9");
             
             // Step 3: Enter/move towards transition target `ORDER_MENU.<ExitPoint>(1)`.
             // ORDER_MENU.<ExitPoint>(1) is a pseudo state and cannot have an `enter` trigger.
             
             // ORDER_MENU.<ExitPoint>(1) behavior
-            // uml: / { this.tracer.edgeTransition("edge4"); } TransitionTo(WAITING)
+            // uml: / { this.tracer.edgeTransition("edge1"); } TransitionTo(WAITING)
             {
                 // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
                 this.#ORDER_MENU_exit();
                 
-                // Step 2: Transition action: `this.tracer.edgeTransition("edge4");`.
-                this.tracer.edgeTransition("edge4");
+                // Step 2: Transition action: `this.tracer.edgeTransition("edge1");`.
+                this.tracer.edgeTransition("edge1");
                 
                 // Step 3: Enter/move towards transition target `WAITING`.
                 this.#WAITING_enter();
@@ -748,25 +745,25 @@ evaluateGuard = null;
         // No ancestor state handles `ev2` event.
         
         // FOOD behavior
-        // uml: EV2 / { this.tracer.edgeTransition("edge11"); } TransitionTo(ORDER_MENU.<ChoicePoint>(bev_choice))
+        // uml: EV2 / { this.tracer.edgeTransition("edge8"); } TransitionTo(ORDER_MENU.<ChoicePoint>(bev_choice))
         {
             // Step 1: Exit states until we reach `ORDER_MENU` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ORDER_MENU_exit);
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge11");`.
-            this.tracer.edgeTransition("edge11");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge8");`.
+            this.tracer.edgeTransition("edge8");
             
             // Step 3: Enter/move towards transition target `ORDER_MENU.<ChoicePoint>(bev_choice)`.
             // ORDER_MENU.<ChoicePoint>(bev_choice) is a pseudo state and cannot have an `enter` trigger.
             
             // ORDER_MENU.<ChoicePoint>(bev_choice) behavior
-            // uml: [addHistoryRow(new Date(), "User evaluating guard: " + "a > b") || this.evaluateGuard("a > b")] / { this.tracer.edgeTransition("edge19"); } TransitionTo(TEA)
+            // uml: [addHistoryRow(new Date(), "User evaluating guard: " + "a > b") || this.evaluateGuard("a > b")] / { this.tracer.edgeTransition("edge16"); } TransitionTo(TEA)
             if (addHistoryRow(new Date(), "User evaluating guard: " + "a > b") || this.evaluateGuard("a > b"))
             {
                 // Step 1: Exit states until we reach `ORDER_MENU` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
-                // Step 2: Transition action: `this.tracer.edgeTransition("edge19");`.
-                this.tracer.edgeTransition("edge19");
+                // Step 2: Transition action: `this.tracer.edgeTransition("edge16");`.
+                this.tracer.edgeTransition("edge16");
                 
                 // Step 3: Enter/move towards transition target `TEA`.
                 this.#BEVERAGE_enter();
@@ -779,12 +776,12 @@ evaluateGuard = null;
             } // end of behavior for ORDER_MENU.<ChoicePoint>(bev_choice)
             
             // ORDER_MENU.<ChoicePoint>(bev_choice) behavior
-            // uml: else / { this.tracer.edgeTransition("edge20"); } TransitionTo(BEVERAGE)
+            // uml: else / { this.tracer.edgeTransition("edge17"); } TransitionTo(BEVERAGE)
             {
                 // Step 1: Exit states until we reach `ORDER_MENU` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
-                // Step 2: Transition action: `this.tracer.edgeTransition("edge20");`.
-                this.tracer.edgeTransition("edge20");
+                // Step 2: Transition action: `this.tracer.edgeTransition("edge17");`.
+                this.tracer.edgeTransition("edge17");
                 
                 // Step 3: Enter/move towards transition target `BEVERAGE`.
                 this.#BEVERAGE_enter();
@@ -799,12 +796,12 @@ evaluateGuard = null;
     #FOOD_InitialState_transition()
     {
         // FOOD.<InitialState> behavior
-        // uml: / { this.tracer.edgeTransition("edge13"); } TransitionTo(JUNK)
+        // uml: / { this.tracer.edgeTransition("edge10"); } TransitionTo(JUNK)
         {
             // Step 1: Exit states until we reach `FOOD` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge13");`.
-            this.tracer.edgeTransition("edge13");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge10");`.
+            this.tracer.edgeTransition("edge10");
             
             // Step 3: Enter/move towards transition target `JUNK`.
             this.#JUNK_enter();
@@ -854,13 +851,13 @@ evaluateGuard = null;
         // No ancestor state handles `ev1` event.
         
         // JUNK behavior
-        // uml: EV1 / { this.tracer.edgeTransition("edge14"); } TransitionTo(POTATO)
+        // uml: EV1 / { this.tracer.edgeTransition("edge11"); } TransitionTo(POTATO)
         {
             // Step 1: Exit states until we reach `FOOD` state (Least Common Ancestor for transition).
             this.#JUNK_exit();
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge14");`.
-            this.tracer.edgeTransition("edge14");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge11");`.
+            this.tracer.edgeTransition("edge11");
             
             // Step 3: Enter/move towards transition target `POTATO`.
             this.#POTATO_enter();
@@ -910,13 +907,13 @@ evaluateGuard = null;
         // No ancestor state handles `ev1` event.
         
         // POTATO behavior
-        // uml: EV1 / { this.tracer.edgeTransition("edge15"); } TransitionTo(SUSHI)
+        // uml: EV1 / { this.tracer.edgeTransition("edge12"); } TransitionTo(SUSHI)
         {
             // Step 1: Exit states until we reach `FOOD` state (Least Common Ancestor for transition).
             this.#POTATO_exit();
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge15");`.
-            this.tracer.edgeTransition("edge15");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge12");`.
+            this.tracer.edgeTransition("edge12");
             
             // Step 3: Enter/move towards transition target `SUSHI`.
             this.#SUSHI_enter();
@@ -966,13 +963,13 @@ evaluateGuard = null;
         // No ancestor state handles `ev1` event.
         
         // SUSHI behavior
-        // uml: EV1 / { this.tracer.edgeTransition("edge16"); } TransitionTo(JUNK)
+        // uml: EV1 / { this.tracer.edgeTransition("edge13"); } TransitionTo(JUNK)
         {
             // Step 1: Exit states until we reach `FOOD` state (Least Common Ancestor for transition).
             this.#SUSHI_exit();
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge16");`.
-            this.tracer.edgeTransition("edge16");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge13");`.
+            this.tracer.edgeTransition("edge13");
             
             // Step 3: Enter/move towards transition target `JUNK`.
             this.#JUNK_enter();
@@ -1022,25 +1019,25 @@ evaluateGuard = null;
         // No ancestor state handles `ev3` event.
         
         // WAITING behavior
-        // uml: EV3 / { this.tracer.edgeTransition("edge21"); } TransitionTo(ORDER_MENU.<EntryPoint>(to_history))
+        // uml: EV3 / { this.tracer.edgeTransition("edge18"); } TransitionTo(ORDER_MENU.<EntryPoint>(to_history))
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#WAITING_exit();
             
-            // Step 2: Transition action: `this.tracer.edgeTransition("edge21");`.
-            this.tracer.edgeTransition("edge21");
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge18");`.
+            this.tracer.edgeTransition("edge18");
             
             // Step 3: Enter/move towards transition target `ORDER_MENU.<EntryPoint>(to_history)`.
             this.#ORDER_MENU_enter();
             // ORDER_MENU.<EntryPoint>(to_history) is a pseudo state and cannot have an `enter` trigger.
             
             // ORDER_MENU.<EntryPoint>(to_history) behavior
-            // uml: / { this.tracer.edgeTransition("edge17"); } TransitionTo(ORDER_MENU.<History>)
+            // uml: / { this.tracer.edgeTransition("edge14"); } TransitionTo(ORDER_MENU.<History>)
             {
                 // Step 1: Exit states until we reach `ORDER_MENU` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
-                // Step 2: Transition action: `this.tracer.edgeTransition("edge17");`.
-                this.tracer.edgeTransition("edge17");
+                // Step 2: Transition action: `this.tracer.edgeTransition("edge14");`.
+                this.tracer.edgeTransition("edge14");
                 
                 // Step 3: Enter/move towards transition target `ORDER_MENU.<History>`.
                 // ORDER_MENU.<History> is a pseudo state and cannot have an `enter` trigger.
@@ -1116,12 +1113,12 @@ evaluateGuard = null;
                 } // end of behavior for ORDER_MENU.<History>
                 
                 // ORDER_MENU.<History> behavior
-                // uml: else / { addHistoryRow(new Date(), "History state taking default transition.");this.tracer.edgeTransition("edge18"); } TransitionTo(BEVERAGE)
+                // uml: else / { addHistoryRow(new Date(), "History state taking default transition.");this.tracer.edgeTransition("edge15"); } TransitionTo(BEVERAGE)
                 {
                     // Step 1: Exit states until we reach `ORDER_MENU` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                     
-                    // Step 2: Transition action: `addHistoryRow(new Date(), "History state taking default transition.");this.tracer.edgeTransition("edge18");`.
-                    addHistoryRow(new Date(), "History state taking default transition.");this.tracer.edgeTransition("edge18");
+                    // Step 2: Transition action: `addHistoryRow(new Date(), "History state taking default transition.");this.tracer.edgeTransition("edge15");`.
+                    addHistoryRow(new Date(), "History state taking default transition.");this.tracer.edgeTransition("edge15");
                     
                     // Step 3: Enter/move towards transition target `BEVERAGE`.
                     this.#BEVERAGE_enter();

@@ -340,9 +340,13 @@ void LoggingTransformationStep(StateMachine sm)
 
         foreach (var b in vertex.TransitionBehaviors())
         {
-            var domId = "edge" + mermaidEdgeTracker.GetEdgeId(b);
-            // NOTE! Avoid single quotes in ss guard/action code until bug fixed: https://github.com/StateSmith/StateSmith/issues/282
-            b.actionCode += $"""this.tracer.edgeTransition("{domId}");""";
+            if (mermaidEdgeTracker.ContainsEdge(b))
+            {
+                // Note: most history behaviors will not be shown in the mermaid diagram
+                var domId = "edge" + mermaidEdgeTracker.GetEdgeId(b);
+                // NOTE! Avoid single quotes in ss guard/action code until bug fixed: https://github.com/StateSmith/StateSmith/issues/282
+                b.actionCode += $"""this.tracer.edgeTransition("{domId}");""";
+            }
         }
     });
 }

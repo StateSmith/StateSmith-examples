@@ -11,20 +11,19 @@ using StateSmith.SmGraph.Visitors;
 using StateSmith.Common;
 using System.Text.RegularExpressions;
 
+MermaidEdgeTracker mermaidEdgeTracker = new();
+
 var trackingExpander = new TrackingExpander();
 TextWriter mermaidCodeWriter = new StringWriter();
 TextWriter mocksWriter = new StringWriter();
-SmRunner htmlRunner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
-htmlRunner.GetExperimentalAccess().DiServiceProvider.AddSingletonT<IExpander>(trackingExpander); // must be done before AddPipelineStep();
-htmlRunner.SmTransformer.InsertBeforeFirstMatch(
-    StandardSmTransformer.TransformationId.Standard_FinalValidation,
-    new TransformationStep(id: "some string id", action: (sm) =>
-    {
-        var visitor = new MermaidGenerator();
-        visitor.RenderAll(sm);
-        mermaidCodeWriter.WriteLine(visitor.GetMermaidCode());
-    }));
-htmlRunner.Run();
+
+SmRunner runner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
+runner.GetExperimentalAccess().DiServiceProvider.AddSingletonT<IExpander>(trackingExpander); // must be done before accessing `runner.SmTransformer`.
+// Note! For `MermaidEdgeTracker` to function correctly, both below transformations must occur in the same `SmRunner`.
+// This allows us to easily map an SS behavior to its corresponding mermaid edge ID.
+runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_RemoveNotesVertices, new TransformationStep(id: "some string id", GenerateMermaidCode));
+runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
+runner.Run();
 
 mocksWriter.WriteLine(
     """
@@ -37,19 +36,17 @@ foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
         $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date(), "Called mock {{funcAttempt}}()");};""");
 }
 
-using(StreamWriter htmlWriter = new StreamWriter($"LightSm.html")) {
+using(StreamWriter htmlWriter = new($"LightSm.html")) {
     PrintHtml(htmlWriter,"LightSm", mocksWriter.ToString(), mermaidCodeWriter.ToString());
 }
 
 
-
-// HACK order is important, the jsRunner must run after the htmlRunner, because the htmlRunner
-// also generate js (but without the logging transforms), and the jsRunner must be the last to write
-SmRunner jsRunner = new(diagramPath: "LightSm.drawio.svg", new LightSmRenderConfig(), transpilerId: TranspilerId.JavaScript);
-jsRunner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, 
-                                            new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
-jsRunner.Run();
-
+void GenerateMermaidCode(StateMachine sm)
+{
+    var visitor = new MermaidGenerator(mermaidEdgeTracker);
+    visitor.RenderAll(sm);
+    mermaidCodeWriter.WriteLine(visitor.GetMermaidCode());
+}
 
 
 void PrintHtml(TextWriter writer,  string smName, string mocksCode, string mermaidCode) {
@@ -216,6 +213,28 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             return confirm('Evaluate guard: ' + guard);
         }; 
 
+        const highlightedEdges = new Set();
+        function highlightEdge(edgeId) {
+            var edge = document.getElementById(edgeId);
+            if (edge) {
+                edge.style.stroke = 'red';
+                highlightedEdges.add(edge);
+            }
+        }
+
+        function clearHighlightedEdges() {
+            for (const edge of highlightedEdges) {
+                const showOldTraversal = true;
+                if (showOldTraversal) {
+                    // shows that the edge was traversed. Optional, but kinda nice.
+                    edge.style.stroke = 'green';
+                } else {
+                    edge.style.stroke = '';
+                }
+            }
+            highlightedEdges.clear();
+        }
+
         // The simulator uses a tracer callback to perform operations such as 
         // state highlighting and logging. You do not need this functionality
         // when using {{smName}}.js in your own applications, although you may
@@ -229,6 +248,9 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             exitState: (stateId) => {
                 var name = {{smName}}.stateIdToString(stateId);
                 document.querySelector('g[data-id=' + name + ']')?.classList.remove('active');
+            },
+            edgeTransition: (edgeId) => {
+                highlightEdge(edgeId);
             }
         };
 
@@ -238,6 +260,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             button.id = 'button_' + eventName;
             button.innerText = eventName;
             button.addEventListener('click', () => {
+                clearHighlightedEdges();
                 addHistoryRow(new Date(), "Dispatched " + eventName);
                 sm.dispatchEvent({{smName}}.EventId[eventName]); 
             });
@@ -274,6 +297,13 @@ void LoggingTransformationStep(StateMachine sm)
         {
             behavior.guardCode = $"this.evaluateGuard!=null ? this.evaluateGuard('{behavior.guardCode}') : {behavior.guardCode}";
         }
+
+        foreach (var b in vertex.TransitionBehaviors())
+        {
+            var domId = "edge" + mermaidEdgeTracker.GetEdgeId(b);
+            // NOTE! Avoid single quotes in ss guard/action code until bug fixed: https://github.com/StateSmith/StateSmith/issues/282
+            b.actionCode += $"""this.tracer.edgeTransition("{domId}");""";
+        }
     });
 }
 
@@ -285,6 +315,12 @@ class MermaidGenerator : IVertexVisitor
 {
     int indentLevel = 0;
     StringBuilder sb = new();
+    MermaidEdgeTracker mermaidEdgeTracker;
+
+    public MermaidGenerator(MermaidEdgeTracker edgeOrderTracker)
+    {
+        this.mermaidEdgeTracker = edgeOrderTracker;
+    }
 
     public void RenderAll(StateMachine sm)
     {
@@ -343,7 +379,11 @@ class MermaidGenerator : IVertexVisitor
     {
         string initialStateId = MakeVertexDiagramId(initialState);
 
+        // Mermaid and PlantUML don't have a syntax that allows transitions to an initial state.
+        // If you do `someState --> [*]`, it means transition to a final state.
+        // StateSmith, however, does allow transitions to initial states so we add a dummy state to represent the initial state.
         AppendLn($"[*] --> {initialStateId}");
+        mermaidEdgeTracker.AdvanceId();  // we skip this "work around" edge for now. We can improve this later.
         AppendLn($"""state "$initial_state" as {initialStateId}""");
     }
 
@@ -387,6 +427,7 @@ class MermaidGenerator : IVertexVisitor
                     text = Regex.Replace(text, @"\s*TransitionTo[(].*[)]", ""); // bit of a hack to remove the `TransitionTo(SOME_STATE)` text
                     text = MermaidEscape(text);
                     sb.AppendLine($"{vertexDiagramId} --> {MakeVertexDiagramId(behavior.TransitionTarget)} : {text}");
+                    mermaidEdgeTracker.AddEdge(behavior);
                 }
             }
         });
@@ -490,3 +531,38 @@ public class LightSmRenderConfig : IRenderConfigJavaScript
     }
 }
 
+
+
+
+/// <summary>
+/// This class maps a behavior to its corresponding mermaid edge ID.
+/// </summary>
+public class MermaidEdgeTracker
+{
+    Dictionary<Behavior, int> edgeIdMap = new();
+    int nextId = 0;
+
+    public int AddEdge(Behavior b)
+    {
+        int id = nextId;
+        AdvanceId();
+        edgeIdMap.Add(b, id);
+        return id;
+    }
+
+    // use when a non-behavior edge is added
+    public int AdvanceId()
+    {
+        return nextId++;
+    }
+
+    public bool ContainsEdge(Behavior b)
+    {
+        return edgeIdMap.ContainsKey(b);
+    }
+
+    public int GetEdgeId(Behavior b)
+    {
+        return edgeIdMap[b];
+    }
+}

@@ -64,11 +64,12 @@ evaluateGuard = null;
             // ROOT.<InitialState> is a pseudo state and cannot have an `enter` trigger.
             
             // ROOT.<InitialState> behavior
-            // uml: TransitionTo(OFF)
+            // uml: / { this.tracer.edgeTransition("edge7"); } TransitionTo(OFF)
             {
                 // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
-                // Step 2: Transition action: ``.
+                // Step 2: Transition action: `this.tracer.edgeTransition("edge7");`.
+                this.tracer.edgeTransition("edge7");
                 
                 // Step 3: Enter/move towards transition target `OFF`.
                 this.#OFF_enter();
@@ -164,12 +165,13 @@ evaluateGuard = null;
         // No ancestor state handles `increase` event.
         
         // OFF behavior
-        // uml: INCREASE TransitionTo(ON1)
+        // uml: INCREASE / { this.tracer.edgeTransition("edge8"); } TransitionTo(ON1)
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#OFF_exit();
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge8");`.
+            this.tracer.edgeTransition("edge8");
             
             // Step 3: Enter/move towards transition target `ON1`.
             this.#ON_GROUP_enter();
@@ -220,12 +222,13 @@ evaluateGuard = null;
         // No ancestor state handles `off` event.
         
         // ON_GROUP behavior
-        // uml: OFF TransitionTo(OFF)
+        // uml: OFF / { this.tracer.edgeTransition("edge1"); } TransitionTo(OFF)
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ROOT_exit);
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge1");`.
+            this.tracer.edgeTransition("edge1");
             
             // Step 3: Enter/move towards transition target `OFF`.
             this.#OFF_enter();
@@ -282,12 +285,13 @@ evaluateGuard = null;
         // No ancestor state handles `dim` event.
         
         // ON_HOT behavior
-        // uml: DIM TransitionTo(ON2)
+        // uml: DIM / { this.tracer.edgeTransition("edge4"); } TransitionTo(ON2)
         {
             // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
             this.#ON_HOT_exit();
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge4");`.
+            this.tracer.edgeTransition("edge4");
             
             // Step 3: Enter/move towards transition target `ON2`.
             this.#ON2_enter();
@@ -346,12 +350,13 @@ evaluateGuard = null;
         // No ancestor state handles `dim` event.
         
         // ON1 behavior
-        // uml: DIM TransitionTo(OFF)
+        // uml: DIM / { this.tracer.edgeTransition("edge3"); } TransitionTo(OFF)
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ROOT_exit);
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge3");`.
+            this.tracer.edgeTransition("edge3");
             
             // Step 3: Enter/move towards transition target `OFF`.
             this.#OFF_enter();
@@ -368,12 +373,13 @@ evaluateGuard = null;
         // No ancestor state handles `increase` event.
         
         // ON1 behavior
-        // uml: INCREASE TransitionTo(ON2)
+        // uml: INCREASE / { this.tracer.edgeTransition("edge2"); } TransitionTo(ON2)
         {
             // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
             this.#ON1_exit();
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge2");`.
+            this.tracer.edgeTransition("edge2");
             
             // Step 3: Enter/move towards transition target `ON2`.
             this.#ON2_enter();
@@ -439,12 +445,13 @@ evaluateGuard = null;
         // No ancestor state handles `dim` event.
         
         // ON2 behavior
-        // uml: DIM TransitionTo(ON1)
+        // uml: DIM / { this.tracer.edgeTransition("edge5"); } TransitionTo(ON1)
         {
             // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
             this.#ON2_exit();
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge5");`.
+            this.tracer.edgeTransition("edge5");
             
             // Step 3: Enter/move towards transition target `ON1`.
             this.#ON1_enter();
@@ -471,13 +478,14 @@ evaluateGuard = null;
         } // end of behavior for ON2
         
         // ON2 behavior
-        // uml: 2. INCREASE [this.evaluateGuard!=null ? this.evaluateGuard('count >= 3') : count >= 3] TransitionTo(ON_HOT)
+        // uml: 2. INCREASE [this.evaluateGuard!=null ? this.evaluateGuard('count >= 3') : count >= 3] / { this.tracer.edgeTransition("edge6"); } TransitionTo(ON_HOT)
         if (this.evaluateGuard!=null ? this.evaluateGuard('count >= 3') : this.vars.count >= 3)
         {
             // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
             this.#ON2_exit();
             
-            // Step 2: Transition action: ``.
+            // Step 2: Transition action: `this.tracer.edgeTransition("edge6");`.
+            this.tracer.edgeTransition("edge6");
             
             // Step 3: Enter/move towards transition target `ON_HOT`.
             this.#ON_HOT_enter();

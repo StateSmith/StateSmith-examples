@@ -57,7 +57,8 @@ diServiceProvider.AddSingletonT<IConsolePrinter>(new DiscardingConsolePrinter())
 // Note! For `MermaidEdgeTracker` to function correctly, both below transformations must occur in the same `SmRunner`.
 // This allows us to easily map an SS behavior to its corresponding mermaid edge ID.
 runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_RemoveNotesVertices, new TransformationStep(id: "some string id", GenerateMermaidCode));
-runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
+// runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, new TransformationStep(id: "my custom step blah", LoggingTransformationStep));
+runner.SmTransformer.InsertBeforeFirstMatch(StandardSmTransformer.TransformationId.Standard_Validation1, new TransformationStep(id: "my custom step blah", V1LoggingTransformationStep));
 var stateMachineProvider = diServiceProvider.GetInstanceOf<StateMachineProvider>();
 runner.Run();
 var smName = stateMachineProvider.GetStateMachine().Name;
@@ -67,11 +68,13 @@ mocksWriter.WriteLine(
     // Mocks of functions referenced by your state machine.
     """
 );
-foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
-{
-    mocksWriter.WriteLine(
-        $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date(), "Called mock {{funcAttempt}}()");};""");
-}
+
+// Have to disable for now. It is picking up tracing functions. It started to mock `new Date()` and `addHistoryRow()`.
+// foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
+// {
+//     mocksWriter.WriteLine(
+//         $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date(), "Called mock {{funcAttempt}}()");};""");
+// }
 
 using (StreamWriter htmlWriter = new($"{smName}.sim.html")) {
     PrintHtml(htmlWriter, smName: smName, mocksCode: mocksWriter.ToString(), mermaidCode: mermaidCodeWriter.ToString(), jsCode: fileCapturer.CapturedCode);
@@ -245,6 +248,7 @@ static void PrintHtml(TextWriter writer,  string smName, string mocksCode, strin
             row.appendChild(eventCell);
             document.querySelector('tbody').appendChild(row);
         }
+        window.addHistoryRow = addHistoryRow;   // dirty hack for now. FIXME
 
         var sm = new {{smName}}();
 
@@ -352,6 +356,96 @@ void LoggingTransformationStep(StateMachine sm)
 }
 
 
+
+
+
+void V1LoggingTransformationStep(StateMachine sm)
+{
+    sm.VisitRecursively((Vertex vertex) =>
+    {
+        foreach (var behavior in vertex.Behaviors)
+        {
+            V1ModBehaviorsForSimulation(vertex, behavior);
+        }
+
+        V1AddEntryExitTracing(sm, vertex);
+        V1AddEdgeTracing(vertex);
+    });
+}
+
+void V1AddEdgeTracing(Vertex vertex)
+{
+    foreach (var b in vertex.TransitionBehaviors())
+    {
+        if (mermaidEdgeTracker.ContainsEdge(b))
+        {
+            // Note: most history behaviors will not be shown in the mermaid diagram
+            var domId = "edge" + mermaidEdgeTracker.GetEdgeId(b);
+            // NOTE! Avoid single quotes in ss guard/action code until bug fixed: https://github.com/StateSmith/StateSmith/issues/282
+            b.actionCode += $"""this.tracer.edgeTransition("{domId}");""";
+        }
+    }
+}
+
+static void V1AddEntryExitTracing(StateMachine sm, Vertex vertex)
+{
+    // we purposely don't want to trace the entry/exit of the state machine itself.
+    // That's why we use `State` instead of `NamedVertex`.
+    if (vertex is State state)
+    {
+        var id = $"{sm.Name}.StateId.{state.Name}";
+        state.AddEnterAction($"""this.tracer?.enterState({id});""", index: 0);
+        state.AddExitAction($"""this.tracer?.exitState({id});""");
+    }
+}
+
+void V1ModBehaviorsForSimulation(Vertex vertex, Behavior behavior)
+{
+    if (behavior.HasActionCode())
+    {
+        // GIL is Generic Intermediary Language. It is used by history vertices and other special cases.
+        if (behavior.actionCode.Contains("$gil("))
+        {
+            // keep actual code
+            behavior.actionCode += $"""addHistoryRow(new Date(), "Executed action: " + {EscapeFsmCode(behavior.actionCode)});""";
+        }
+        else
+        {
+            // we don't want to execute the action, just log it.
+            behavior.actionCode = $"""addHistoryRow(new Date(), "FSM would execute action: " + {EscapeFsmCode(behavior.actionCode)});""";
+        }
+    }
+
+    if (vertex is HistoryVertex)
+    {
+        if (behavior.HasGuardCode())
+        {
+            // we want the history vertex to work as is without prompting the user to evaluate those guards.
+            var logCode = $"""addHistoryRow(new Date(), "History state evaluating guard: " + {EscapeFsmCode(behavior.guardCode)})""";
+            var actualCode = behavior.guardCode;
+            behavior.guardCode = $"""{logCode} || {actualCode}""";
+        }
+        else
+        {
+            behavior.actionCode += $"""addHistoryRow(new Date(), "History state taking default transition.");""";
+        }
+    }
+    else
+    {
+        if (behavior.HasGuardCode())
+        {
+            var logCode = $"""addHistoryRow(new Date(), "User evaluating guard: " + {EscapeFsmCode(behavior.guardCode)})""";
+            var confirmCode = $"""this.evaluateGuard({EscapeFsmCode(behavior.guardCode)})""";
+            behavior.guardCode = $"""{logCode} || {confirmCode}""";
+            // NOTE! logCode doesn't return a value, so the confirm code will always be evaluated.
+        }
+    }
+}
+
+string EscapeFsmCode(string code)
+{
+    return "\"" + code.Replace("\"", "\\\"") + "\"";
+}
 
 
 

@@ -281,10 +281,10 @@ static void COFFEE_enter(LightSm* sm)
     sm->current_event_handlers[LightSm_EventId_EV1] = COFFEE_ev1;
     
     // COFFEE behavior
-    // uml: enter / { /*do_x();*/ }
+    // uml: enter / { do_x(); }
     {
-        // Step 1: execute action `/*do_x();*/`
-        /*do_x();*/
+        // Step 1: execute action `do_x();`
+        do_x();
     } // end of behavior for COFFEE
     
     // COFFEE behavior

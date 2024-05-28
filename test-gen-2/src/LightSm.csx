@@ -75,18 +75,40 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         flex-direction: row;
       }
 
+      .wrapper {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+      }
+
+      .pane {
+        padding: 1em;
+        min-width: 200px;
+      }
+
+      .gutter {
+        width: 10px;
+        height: 100%;
+        background: #ccc;
+        position: absolute;
+        top: 0;
+        left: 0;
+        cursor: col-resize;
+      }
+
       .main {
-        flex: 1;
+        width: 100%;
         overflow: auto;
         padding: 10px;
       }
 
       .sidebar {
+        flex: 1;
+        position: relative;
         background-color: #f0f0f0;
         border-left: 1px solid #ccc;
         display: flex;
         flex-direction: column;
-        width: 300px;
       }
 
       #buttons {
@@ -141,13 +163,14 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
   </head>
 
   <body>
-    <div class="main">
+    <div class="wrapper">
+    <div class="pane main">
         <pre class="mermaid">
 {{mermaidCode}}
         </pre>
     </div>
 
-    <div class="sidebar">
+    <div class="pane sidebar">
         <div id="buttons">
             <div class="titlebar">Actions</div>
         </div>
@@ -165,6 +188,9 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             </tbody>
             </table>
         </div>
+
+        <div class="gutter"></div>
+    </div>
     </div>
 
     <script src="{{smName}}.js"></script>
@@ -186,6 +212,31 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             fit: true,
             center: true
         });
+
+
+        const leftPane = document.querySelector(".main");
+        const rightPane = document.querySelector(".sidebar");
+        const gutter = document.querySelector(".gutter");
+
+        function resizer(e) {          
+          window.addEventListener('mousemove', mousemove);
+          window.addEventListener('mouseup', mouseup);          
+          let prevX = e.x;
+          const leftPanel = leftPane.getBoundingClientRect();
+                    
+          function mousemove(e) {
+            let newX = prevX - e.x;
+            leftPane.style.width = leftPanel.width - newX + "px";
+          }
+          
+          function mouseup() {
+            window.removeEventListener('mousemove', mousemove);
+            window.removeEventListener('mouseup', mouseup);
+            
+          }                  
+        }
+
+        gutter.addEventListener('mousedown', resizer);
 
 {{mocksCode}}
 

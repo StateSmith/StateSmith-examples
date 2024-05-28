@@ -206,7 +206,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         document.querySelector('svg').setAttribute('height', '100%');
         document.querySelector('svg').style["max-width"] = '';
 
-        svgPanZoom(document.querySelector('svg'), {
+        var panZoom = window.panZoom = svgPanZoom(document.querySelector('svg'), {
             zoomEnabled: true,
             controlIconsEnabled: true,
             fit: true,
@@ -227,6 +227,9 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
           function mousemove(e) {
             let newX = prevX - e.x;
             leftPane.style.width = leftPanel.width - newX + "px";
+            window.panZoom.resize();
+            window.panZoom.fit();
+            window.panZoom.center();
           }
           
           function mouseup() {

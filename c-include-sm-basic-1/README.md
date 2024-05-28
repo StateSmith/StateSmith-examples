@@ -8,3 +8,6 @@ Pattern works best when only a single instance of the state machine is needed.
 ss.cli run -h
 gcc *.c && ./a.out
 ```
+
+# More Info
+![](README.drawio.svg)

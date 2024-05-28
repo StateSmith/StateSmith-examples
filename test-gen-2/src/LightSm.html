@@ -120,9 +120,9 @@ state ON_GROUP {
         ON_HOT : enter / #123; light_red()#59; #125;
         ON2
         ON2 : ON2
-        ON2 : 1. INCREASE / #123; count++#59; #125;
         ON2 : enter / #123; light_yellow()#59; #125;
         ON2 : enter / #123; count = 0#59; #125;
+        ON2 : 1. INCREASE / #123; count++#59; #125;
 }
 [*] --> ROOT.(InitialState)
 state "$initial_state" as ROOT.(InitialState)
@@ -133,8 +133,8 @@ ON_GROUP --> OFF : OFF
 ON1 --> ON2 : INCREASE
 ON1 --> OFF : DIM
 ON_HOT --> ON2 : DIM
-ON2 --> ON_HOT : 2. INCREASE [count >= 3]
 ON2 --> ON1 : DIM
+ON2 --> ON_HOT : 2. INCREASE [count >= 3]
 ROOT.(InitialState) --> OFF : 
 OFF --> ON1 : INCREASE
 
@@ -246,6 +246,28 @@ globalThis.light_yellow = ()=>{ addHistoryRow(new Date(), "Called mock light_yel
             return confirm('Evaluate guard: ' + guard);
         }; 
 
+        const highlightedEdges = new Set();
+        function highlightEdge(edgeId) {
+            var edge = document.getElementById(edgeId);
+            if (edge) {
+                edge.style.stroke = 'red';
+                highlightedEdges.add(edge);
+            }
+        }
+
+        function clearHighlightedEdges() {
+            for (const edge of highlightedEdges) {
+                const showOldTraversal = true;
+                if (showOldTraversal) {
+                    // shows that the edge was traversed. Optional, but kinda nice.
+                    edge.style.stroke = 'green';
+                } else {
+                    edge.style.stroke = '';
+                }
+            }
+            highlightedEdges.clear();
+        }
+
         // The simulator uses a tracer callback to perform operations such as 
         // state highlighting and logging. You do not need this functionality
         // when using LightSm.js in your own applications, although you may
@@ -259,6 +281,9 @@ globalThis.light_yellow = ()=>{ addHistoryRow(new Date(), "Called mock light_yel
             exitState: (stateId) => {
                 var name = LightSm.stateIdToString(stateId);
                 document.querySelector('g[data-id=' + name + ']')?.classList.remove('active');
+            },
+            edgeTransition: (edgeId) => {
+                highlightEdge(edgeId);
             }
         };
 
@@ -268,6 +293,7 @@ globalThis.light_yellow = ()=>{ addHistoryRow(new Date(), "Called mock light_yel
             button.id = 'button_' + eventName;
             button.innerText = eventName;
             button.addEventListener('click', () => {
+                clearHighlightedEdges();
                 addHistoryRow(new Date(), "Dispatched " + eventName);
                 sm.dispatchEvent(LightSm.EventId[eventName]); 
             });

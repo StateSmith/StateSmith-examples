@@ -1,0 +1,13 @@
+{
+  "hediet.vscode-drawio.plugins": [
+    {
+      "file": "${workspaceFolder}/.vscode/StateSmith-drawio-plugin-v0.6.0.js"
+    }
+  ],
+  "files.associations": {
+    "lightsm.h": "c",
+    "stdio.h": "c",
+    "*.inc": "c",
+    "lightcontroller.h": "c"
+  }
+}

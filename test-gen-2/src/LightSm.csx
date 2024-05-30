@@ -94,13 +94,13 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
       }
 
       .main {
-        width: 100%;
+        flex: 1;
         overflow: auto;
         padding: 10px;
       }
 
       .sidebar {
-        flex: 1;
+        width: 300px;
         position: relative;
         background-color: #f0f0f0;
         border-left: 1px solid #ccc;
@@ -137,11 +137,20 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
       .console tbody {
         display: flex;
         flex-direction: column-reverse;
+        font-family: monospace;
       }
 
       .console td {
         border-bottom: 1px solid #ccc;
         padding: 5px;
+      }
+
+      .console td.timestamp {
+        font-size: small;
+      }
+
+      .console td.emphasis {
+        font-weight: bold;
       }
 
       .history {
@@ -169,18 +178,12 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
 
     <div class="pane sidebar">
         <div id="buttons">
-            <div class="titlebar">Actions</div>
+            <div class="titlebar">Events</div>
         </div>
 
         <div class="history">
-            <div class="titlebar">History</div>
+            <div class="titlebar">Log</div>
             <table class="console">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Event</th>
-                </tr>
-            </thead>
             <tbody>
             </tbody>
             </table>
@@ -219,11 +222,11 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
           window.addEventListener('mousemove', mousemove);
           window.addEventListener('mouseup', mouseup);          
           let prevX = e.x;
-          const leftPanel = leftPane.getBoundingClientRect();
+          const rightPanel = rightPane.getBoundingClientRect();
                     
           function mousemove(e) {
             let newX = prevX - e.x;
-            leftPane.style.width = leftPanel.width - newX + "px";
+            rightPane.style.width = rightPanel.width + newX + "px";
             window.panZoom.resize();
             window.panZoom.fit();
             window.panZoom.center();
@@ -249,11 +252,15 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         }
 
         // Add a row to the history table.
-        function addHistoryRow(time, event) {
+        function addHistoryRow(time, event, emphasis = false) {
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
+            timeCell.classList.add('timestamp');
             timeCell.innerText = formatTime(time);
             var eventCell = document.createElement('td');
+            if(emphasis) {
+                eventCell.classList.add('emphasis');                
+            }
             eventCell.innerText = event;
             row.appendChild(timeCell);
             row.appendChild(eventCell);
@@ -315,7 +322,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             button.innerText = eventName;
             button.addEventListener('click', () => {
                 clearHighlightedEdges();
-                addHistoryRow(new Date(), "Dispatched " + eventName);
+                addHistoryRow(new Date(), "Dispatched " + eventName, true);
                 sm.dispatchEvent({{smName}}.EventId[eventName]); 
             });
             document.getElementById('buttons').appendChild(button);

@@ -137,11 +137,16 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
       .console tbody {
         display: flex;
         flex-direction: column-reverse;
+        font-family: monospace;
       }
 
       .console td {
         border-bottom: 1px solid #ccc;
         padding: 5px;
+      }
+
+      .console td.timestamp {
+        font-size: small;
       }
 
       .history {
@@ -246,6 +251,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         function addHistoryRow(time, event) {
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
+            timeCell.classList.add('timestamp');
             timeCell.innerText = formatTime(time);
             var eventCell = document.createElement('td');
             eventCell.innerText = event;

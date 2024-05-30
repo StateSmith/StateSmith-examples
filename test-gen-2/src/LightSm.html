@@ -83,11 +83,16 @@
       .console tbody {
         display: flex;
         flex-direction: column-reverse;
+        font-family: monospace;
       }
 
       .console td {
         border-bottom: 1px solid #ccc;
         padding: 5px;
+      }
+
+      .console td.timestamp {
+        font-size: small;
       }
 
       .history {
@@ -225,6 +230,7 @@ globalThis.light_yellow = ()=>{ addHistoryRow(new Date(), "Called mock light_yel
         function addHistoryRow(time, event) {
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
+            timeCell.classList.add('timestamp');
             timeCell.innerText = formatTime(time);
             var eventCell = document.createElement('td');
             eventCell.innerText = event;

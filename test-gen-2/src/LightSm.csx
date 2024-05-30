@@ -169,18 +169,12 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
 
     <div class="pane sidebar">
         <div id="buttons">
-            <div class="titlebar">Actions</div>
+            <div class="titlebar">Events</div>
         </div>
 
         <div class="history">
-            <div class="titlebar">History</div>
+            <div class="titlebar">Log</div>
             <table class="console">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Event</th>
-                </tr>
-            </thead>
             <tbody>
             </tbody>
             </table>

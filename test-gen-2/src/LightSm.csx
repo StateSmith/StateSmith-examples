@@ -149,6 +149,10 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         font-size: small;
       }
 
+      .console td.emphasis {
+        font-weight: bold;
+      }
+
       .history {
         margin-top: 30px;
         overflow: scroll;    
@@ -248,12 +252,15 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
         }
 
         // Add a row to the history table.
-        function addHistoryRow(time, event) {
+        function addHistoryRow(time, event, emphasis = false) {
             var row = document.createElement('tr');
             var timeCell = document.createElement('td');
             timeCell.classList.add('timestamp');
             timeCell.innerText = formatTime(time);
             var eventCell = document.createElement('td');
+            if(emphasis) {
+                eventCell.classList.add('emphasis');                
+            }
             eventCell.innerText = event;
             row.appendChild(timeCell);
             row.appendChild(eventCell);
@@ -315,7 +322,7 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
             button.innerText = eventName;
             button.addEventListener('click', () => {
                 clearHighlightedEdges();
-                addHistoryRow(new Date(), "Dispatched " + eventName);
+                addHistoryRow(new Date(), "Dispatched " + eventName, true);
                 sm.dispatchEvent({{smName}}.EventId[eventName]); 
             });
             document.getElementById('buttons').appendChild(button);

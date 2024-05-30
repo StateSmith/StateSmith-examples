@@ -94,13 +94,13 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
       }
 
       .main {
-        width: 100%;
+        flex: 1;
         overflow: auto;
         padding: 10px;
       }
 
       .sidebar {
-        flex: 1;
+        width: 300px;
         position: relative;
         background-color: #f0f0f0;
         border-left: 1px solid #ccc;
@@ -222,11 +222,11 @@ void PrintHtml(TextWriter writer,  string smName, string mocksCode, string merma
           window.addEventListener('mousemove', mousemove);
           window.addEventListener('mouseup', mouseup);          
           let prevX = e.x;
-          const leftPanel = leftPane.getBoundingClientRect();
+          const rightPanel = rightPane.getBoundingClientRect();
                     
           function mousemove(e) {
             let newX = prevX - e.x;
-            leftPane.style.width = leftPanel.width - newX + "px";
+            rightPane.style.width = rightPanel.width + newX + "px";
             window.panZoom.resize();
             window.panZoom.fit();
             window.panZoom.center();

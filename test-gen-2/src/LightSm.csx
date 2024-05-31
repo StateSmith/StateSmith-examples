@@ -73,7 +73,7 @@ mocksWriter.WriteLine(
 // foreach (var funcAttempt in trackingExpander.AttemptedFunctionExpansions)
 // {
 //     mocksWriter.WriteLine(
-//         $$"""globalThis.{{funcAttempt}} = ()=>{ addHistoryRow(new Date(), "Called mock {{funcAttempt}}()");};""");
+//         $$"""globalThis.{{funcAttempt}} = ()=>{ this.tracer.log("Called mock {{funcAttempt}}()");};""");
 // }
 
 using (StreamWriter htmlWriter = new($"{smName}.sim.html")) {
@@ -302,7 +302,6 @@ static void PrintHtml(TextWriter writer,  string smName, string mocksCode, strin
             row.appendChild(eventCell);
             document.querySelector('tbody').appendChild(row);
         }
-        window.addHistoryRow = addHistoryRow;   // dirty hack for now. FIXME
 
         var sm = new {{smName}}();
 
@@ -341,7 +340,7 @@ static void PrintHtml(TextWriter writer,  string smName, string mocksCode, strin
             enterState: (stateId) => {
                 var name = {{smName}}.stateIdToString(stateId);
                 document.querySelector('g[data-id=' + name + ']')?.classList.add('active');
-                addHistoryRow(new Date(), "Entered " + name);
+                sm.tracer.log("Entered " + name);
             },
             exitState: (stateId) => {
                 var name = {{smName}}.stateIdToString(stateId);
@@ -349,6 +348,9 @@ static void PrintHtml(TextWriter writer,  string smName, string mocksCode, strin
             },
             edgeTransition: (edgeId) => {
                 highlightEdge(edgeId);
+            },
+            log: (message) => {
+                addHistoryRow(new Date(), message);
             }
         };
 
@@ -359,7 +361,7 @@ static void PrintHtml(TextWriter writer,  string smName, string mocksCode, strin
             button.innerText = eventName;
             button.addEventListener('click', () => {
                 clearHighlightedEdges();
-                addHistoryRow(new Date(), "Dispatched " + eventName);
+                sm.tracer.log("Dispatched " + eventName);
                 sm.dispatchEvent({{smName}}.EventId[eventName]); 
             });
             document.getElementById('buttons').appendChild(button);
@@ -461,12 +463,12 @@ void V1ModBehaviorsForSimulation(Vertex vertex, Behavior behavior)
         if (behavior.actionCode.Contains("$gil("))
         {
             // keep actual code
-            behavior.actionCode += $"""addHistoryRow(new Date(), "Executed action: " + {EscapeFsmCode(behavior.actionCode)});""";
+            behavior.actionCode += $"""this.tracer.log("Executed action: " + {EscapeFsmCode(behavior.actionCode)});""";
         }
         else
         {
             // we don't want to execute the action, just log it.
-            behavior.actionCode = $"""addHistoryRow(new Date(), "FSM would execute action: " + {EscapeFsmCode(behavior.actionCode)});""";
+            behavior.actionCode = $"""this.tracer.log("FSM would execute action: " + {EscapeFsmCode(behavior.actionCode)});""";
         }
     }
 
@@ -475,20 +477,20 @@ void V1ModBehaviorsForSimulation(Vertex vertex, Behavior behavior)
         if (behavior.HasGuardCode())
         {
             // we want the history vertex to work as is without prompting the user to evaluate those guards.
-            var logCode = $"""addHistoryRow(new Date(), "History state evaluating guard: " + {EscapeFsmCode(behavior.guardCode)})""";
+            var logCode = $"""this.tracer.log("History state evaluating guard: " + {EscapeFsmCode(behavior.guardCode)})""";
             var actualCode = behavior.guardCode;
             behavior.guardCode = $"""{logCode} || {actualCode}""";
         }
         else
         {
-            behavior.actionCode += $"""addHistoryRow(new Date(), "History state taking default transition.");""";
+            behavior.actionCode += $"""this.tracer.log("History state taking default transition.");""";
         }
     }
     else
     {
         if (behavior.HasGuardCode())
         {
-            var logCode = $"""addHistoryRow(new Date(), "User evaluating guard: " + {EscapeFsmCode(behavior.guardCode)})""";
+            var logCode = $"""this.tracer.log("User evaluating guard: " + {EscapeFsmCode(behavior.guardCode)})""";
             var confirmCode = $"""this.evaluateGuard({EscapeFsmCode(behavior.guardCode)})""";
             behavior.guardCode = $"""{logCode} || {confirmCode}""";
             // NOTE! logCode doesn't return a value, so the confirm code will always be evaluated.

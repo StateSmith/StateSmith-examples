@@ -1,3 +1,6 @@
+# A simpler example
+Is available in [c-include-sm-basic-1](../c-include-sm-basic-1/README.md). Maybe start there first.
+
 # Works For C/C++
 Utilizes the preprocessor instead of StateSmith features.
 

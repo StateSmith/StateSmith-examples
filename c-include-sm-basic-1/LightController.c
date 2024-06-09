@@ -1,3 +1,4 @@
+// hand written file
 #include "LightController.h"
 #include "LightSm.h"
 #include <stdio.h>
@@ -25,6 +26,10 @@ void LightController_key_press(void)
 
 
 //////////////////////////////////////////// STATE MACHINE SECTION ////////////////////////////////////////////
+
+// Use this section to define things you want to provide for the state machine.
+// The beauty of this is that you are using regular C code and can do anything you want.
+// You don't need to learn special StateSmith expansions or anything like that.
 
 //------------------------------------------------------------------------------
 // defines for the state machine

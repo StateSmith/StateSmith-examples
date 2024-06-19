@@ -17,6 +17,7 @@
 
 static void setup_terminal(void);
 static bool is_key_pressed(void);
+static uint64_t get_ms(void);
 
 
 //------------------------------------------------------------------------------
@@ -30,23 +31,35 @@ int main(void)
 
     while (true)
     {
-        uint64_t time = clock() / (CLOCKS_PER_SEC / 1000);
+        uint64_t time = get_ms();
         LightController_step((uint32_t)time);
 
         if (is_key_pressed()) {
             LightController_key_press();
         }
+
+        // NOTE! Your control loop would normally want some kind of sleep here to avoid excessive CPU usage.
+        // I couldn't get WSL2 to work properly with nanosleep(), so omitting for now.
+        // sleep_ms(10);
     }
 
     return 0;
 }
 
 
+
 //------------------------------------------------------------------------------
-// terminal functions - UNIX only! (Linux, macOS).
-// If on Windows, use WSL2 or change the terminal functions.
+// UNIX only! (Linux, macOS).
+// If on Windows, use WSL2 or implement equivalent functions.
 //------------------------------------------------------------------------------
 
+static uint64_t get_ms(void)
+{
+    const uint16_t MILLISECONDS_PER_SECOND = 1000;
+    return clock() / (CLOCKS_PER_SEC / MILLISECONDS_PER_SECOND);
+}
+
+// this allows the terminal to see if a key was pressed without blocking
 static void setup_terminal(void)
 {
     struct termios ttystate;

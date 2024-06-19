@@ -1,0 +1,58 @@
+@startuml LightSm
+
+'######## state organization ######
+[*] -> off
+
+state on_group {
+    [*] -> [H]
+    [H] -> on1
+    state on1
+    state on2
+    state on3
+}
+
+
+'######## state handlers ######
+
+'OFF
+off: enter / leds(0);
+off --> on1 : inc
+off --> on_group: toggle
+
+'ON_GROUP
+on_group --> off: toggle
+
+'ON1
+on1: enter / leds(1);
+on1 --> on2 : inc
+on1 --> off : dim
+
+'ON2
+on2: enter / leds(2);
+on2 --> on3 : inc
+on2 --> on1 : dim
+
+'ON3
+on3: enter / leds(3);
+on3: enter / count = 0;
+on3: 1. inc / count++;
+on3 --> on2 : dim
+on3 --> off : 2. inc [count >= 3]
+
+
+'################## StateSmith render config ###################
+' The below block comment specifies render config for StateSmith
+' More info: https://github.com/StateSmith/StateSmith/issues/335
+
+/'! $CONFIG : toml
+    [RenderConfig]
+    FileTop = """
+        // License: MIT
+        // Copyright blah blah blah
+        """
+
+    [RenderConfig.C]
+    CFileExtension = ".inc"
+'/
+
+@enduml

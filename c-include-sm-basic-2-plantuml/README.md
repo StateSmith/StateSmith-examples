@@ -4,7 +4,7 @@ A very nice and clean way to add a state machine into a larger "controller".
 # NO EXPANSIONS NEEDED!
 This is really nice. It feels more natural and is more developer friendly.
 
-This pattern is inspired by hand coded state machines in C. Typically, a hand coded state machine in C includes a number of things beyond just the state machine itself. There is a public API, some utility functions, and then the hand code state machine at the bottom of the .c file.
+This pattern is inspired by hand coded state machines in C. Typically, a hand coded state machine in C includes a number of things beyond just the state machine itself. There is a public API, some utility functions, and then the hand coded state machine at the bottom of the .c file.
 
 This is what we are recreating here, but with a StateSmith generated state machine.
 
@@ -29,7 +29,7 @@ Technically it works like below. The C preprocessor is used to essentially bring
 ![image](https://github.com/StateSmith/StateSmith-examples/assets/274012/8229cfab-8fa5-4702-bbf2-818c6b853dfa)
 
 # If you don't like it
-That's OK. Check out [README.drawio.svg](README.drawio.svg) for a comparison of different patterns.
+That's OK. Check out [README.drawio.svg](README.drawio.svg) for a comparison of different patterns you can use with StateSmith.
 
 Pattern works best when only a single instance of the state machine is needed, but can be adapted to multiple instances.
 
@@ -47,5 +47,5 @@ ss.cli run -h --lang C99
 gcc *.c && ./a.out
 ```
 
-# More details
-See [c-include-sm example](../c-include-sm/README.md) for a more advanced example and additional details.
+# Going further
+See [c-include-sm example](../c-include-sm/README.md) for a slightly more advanced example that uses the C preprocessor and additional details.

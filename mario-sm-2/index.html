@@ -1,0 +1,100 @@
+<!-- This is a hand written file. It is written to be easy to follow. -->
+<html>
+    <body>
+        <p>
+            An example hierarchical state machine for Mario. Press the buttons below to exercise the state machine.<br>
+            If you see a broken image below, you still need to follow the <code>README.md</code> in this directory.
+        </p>
+        <div id="mario">
+            <img src="">
+        </div>
+        <button onclick="myMarioSm.dispatchEvent(MarioSm.EventId.HIT)"><img src="img/goomba.webp"></button>
+        <button onclick="myMarioSm.dispatchEvent(MarioSm.EventId.MUSHROOM)"><img src="img/mushroom.webp"></button>
+        <button onclick="myMarioSm.dispatchEvent(MarioSm.EventId.FIRE_FLOWER)"><img src="img/fire-flower.png"></button>
+        <button onclick="myMarioSm.dispatchEvent(MarioSm.EventId.FEATHER)"><img src="img/feather.webp"></button>
+        <button onclick="myMarioSm.dispatchEvent(MarioSm.EventId.STAR)"><img src="img/Super_Star.png"></button>
+    </body>
+
+    <!-- JavaScript below html body so that we don't need to wait for body to load -->
+
+    <!-- Include generated state machine file -->
+    <script src="MarioSm.js"></script>
+
+    <script>
+        // Get mario image element so that we can change the image with state changes
+        const marioImg = document.querySelector("#mario img");
+
+        // Create a new instance (you could have multiple) of our Mario state machine and start it
+        let myMarioSm = new MarioSm();
+        myMarioSm.start();
+
+        window.setInterval(() => {
+            myMarioSm.dispatchEvent(MarioSm.EventId.DO);
+        }, 16);
+
+        // Below are global functions/vars that are called by the state machine.
+        // You don't have to use global functions/vars with StateSmith.
+        // We will cover various alternatives in a later lesson (composition, inheritance, etc.).
+
+        let startTimeoutAtMs = 0;
+
+        function startStarTimer() {
+            startTimeoutAtMs = Date.now() + 2000;
+        }
+
+        function isStarExpired() {
+            return Date.now() > startTimeoutAtMs;
+        }
+
+        // switch Mario image to small mario gif
+        function smallMario() {
+            marioImg.src = "img/small-mario-dance.gif"
+        }
+
+        function defeatedMario() {
+            marioImg.src = "img/defeated-2.gif"
+        }
+
+        function superMario() {
+            marioImg.src = "img/big-mario-dance.gif"
+        }
+
+        function fireMario() {
+            marioImg.src = "img/fire-mario-dance.gif"
+        }
+
+        function capeMario() {
+            marioImg.src = "img/cape-mario-walking.gif"
+        }
+
+        function starMario() {
+            marioImg.src = "img/star.gif"
+        }
+    </script>
+
+
+    <!-- Don't worry about the below CSS styling -->
+    <style>
+        body {
+            background-color: #444749;
+            color: white;
+        }
+
+        button img {
+            padding: 10px;
+            width: 20vw;
+            max-width: 100px;
+        }
+
+        button:hover {
+            background-color: #f7d514;
+            cursor: pointer;
+        }
+
+        #mario img {
+            height: 60vh;
+            padding-bottom: 5vh;
+        }
+    </style>
+
+</html>

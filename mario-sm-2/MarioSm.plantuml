@@ -1,0 +1,80 @@
+@startuml MarioSm
+
+'############################ styles ############################
+' Define some colors for the states. Totally optional.
+skinparam state {
+    ' red style:
+    BackgroundColor<<red>> a20025
+    FontColor<<red>> white
+    ' blue style:
+    BackgroundColor<<blue>> 1ba1e2
+    FontColor<<blue>> white
+    ' gold style:
+    BackgroundColor<<gold>> f0a30a
+    ' dark style:
+    BackgroundColor<<dark>> 545454
+    FontColor<<dark>> white
+}
+
+
+'############################ state organization ############################
+
+' Define a state with a dark style. Style is optional.
+state DEFEAT <<dark>>
+
+' Define a super state (composite state) with substates
+state REGULAR {
+    state SMALL
+    state SUPER <<blue>>
+    state FIRE  <<red>>
+    state CAPE  <<gold>>
+    [*] -> [H]
+    [H] -> SMALL
+}
+
+state INVINCIBLE
+
+'############################ handlers ############################
+
+' Define the initial transition that is taken when the state machine starts.
+[*] -> REGULAR
+
+REGULAR --> INVINCIBLE: STAR
+
+INVINCIBLE: enter / starMario();
+INVINCIBLE: enter / startStarTimer();
+INVINCIBLE --> REGULAR: do [isStarExpired()]
+
+SMALL: enter / smallMario();
+SMALL --> SUPER: MUSHROOM
+SMALL --> FIRE: FIRE_FLOWER
+SMALL --> CAPE: FEATHER
+SMALL --> DEFEAT: HIT
+
+DEFEAT: enter / defeatedMario();
+DEFEAT --> SMALL: MUSHROOM
+
+SUPER: enter / superMario();
+SUPER --> FIRE: FIRE_FLOWER
+SUPER --> CAPE: FEATHER
+SUPER --> SMALL: HIT
+
+FIRE: enter / fireMario();
+FIRE --> CAPE: FEATHER
+FIRE --> SUPER: HIT
+
+CAPE: enter / capeMario();
+CAPE --> FIRE: FIRE_FLOWER
+CAPE --> SUPER: HIT
+
+'######################## StateSmith config ########################
+' The below special comment block sets the StateSmith configuration.
+' More info: https://github.com/StateSmith/StateSmith/issues/335
+' Feel free to remove or modify it as needed.
+
+/'! $CONFIG : toml
+[SmRunnerSettings]
+transpilerId = "JavaScript"
+'/
+
+@enduml

@@ -17,7 +17,7 @@ We can handle this easily.
 # Problematic Client Request 1
 HOWEVER, the client has now requested that the user can also command a specific color.
 
-Every on state now has to be able to transition to every other on state.
+Every `ON` state now has to be able to transition to every other `ON` state.
 
 Ugh. We can do this, but it's getting a bit messy.
 
@@ -58,7 +58,7 @@ Here's a quick example:
     - Note that `ON_GROUP` is not exited or entered
 - we are now in the `ON4` state.
 - the user sends the same event `GO_4` (because we all know users are like this).
-- `ON4` has a blank handler for `GO_4`, so it "eats" the event and prevents it from bubbling up to `ON_GROUP`.
+- `ON4` has a handler (that does nothing) for `GO_4`, so it "eats" the event and prevents it from bubbling up to `ON_GROUP`.
     - If we didn't have this, it would still work, but `ON4` would exit and then re-enter itself.
 
 Our state machine has **exactly** reproduced the behavior of the other designs, but in a much more elegant way.

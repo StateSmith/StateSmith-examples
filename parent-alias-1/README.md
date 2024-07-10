@@ -8,7 +8,7 @@ Let's assume that we have a light controller with 3 ON states:
 - ON2 (yellow light)
 - ON3 (red light)
 
-The user can press buttons to INCREASE (towards red) or DECREASE (towards blue) the light color.
+The user can press buttons to INCREASE (towards red) or DIM (towards blue) the light color.
 
 We can handle this easily.
 

@@ -1,0 +1,67 @@
+@startuml NoAlias4
+
+' //////////////////////// STATE ORGANIZATION ///////////////////////
+' Note: StateSmith treats state names and events as case insensitive.
+' More info: https://github.com/StateSmith/StateSmith/wiki/PlantUML
+
+state OFF
+
+state ON_GROUP<<on_style>> {
+    state ON1
+    state ON2
+    state ON3
+    state ON4
+}
+
+' ///////////////////////// STATE HANDLERS /////////////////////////
+' Syntax: https://github.com/StateSmith/StateSmith/wiki/Behaviors
+
+[*] -> OFF
+
+OFF: enter / outputText("OFF");
+OFF --> ON1 : INCREASE
+
+ON_GROUP --> OFF : OFF
+
+ON1: enter / lightBlue();
+ON1 --> ON2 : INCREASE
+ON1 --> OFF : DIM
+ON1 --> ON2 : GO_2
+ON1 --> ON3 : GO_3
+ON1 --> ON4 : GO_4
+
+ON2: enter / lightYellow();
+ON2 --> ON3 : INCREASE
+ON2 --> ON1 : DIM
+ON2 --> ON1 : GO_1
+ON2 --> ON3 : GO_3
+ON2 --> ON4 : GO_4
+
+ON3: enter / lightRed();
+ON3 --> ON2 : DIM
+ON3 --> ON4 : INCREASE
+ON3 --> ON1 : GO_1
+ON3 --> ON2 : GO_2
+ON3 --> ON4 : GO_4
+
+ON4: enter / lightPurple();
+ON4 --> ON3 : DIM
+ON4 --> ON1 : GO_1
+ON4 --> ON2 : GO_2
+ON4 --> ON3 : GO_3
+
+
+' ////////////////////////////// STYLES /////////////////////////////
+skinparam state {
+ BackgroundColor<<parent_alias>> #f8ff95
+}
+
+
+' //////////////////////// StateSmith config ////////////////////////
+' More info: https://github.com/StateSmith/StateSmith/issues/335
+
+/'! $CONFIG : toml
+RenderConfig.FileTop = "// Ignore the generated files. See simulator instead."
+SmRunnerSettings.transpilerId = "JavaScript"
+'/
+@enduml

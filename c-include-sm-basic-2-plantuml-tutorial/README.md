@@ -101,7 +101,7 @@ Open `LightSm.plantuml` in a text editor and replace the diagram contents with t
 
 '//////////////////// STATE ORGANIZATION ////////////////////
 
-[*] -> off
+state off
 
 state on_group {
     [*] -> [H]
@@ -112,6 +112,8 @@ state on_group {
 }
 
 '//////////////////// STATE HANDLERS ////////////////////
+
+[*] -> off
 
 'OFF
 off: enter / leds(0);

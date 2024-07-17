@@ -1,5 +1,9 @@
 > Assumes that you have gone through basic StateSmith tutorials already.
 
+![](docs/interact.png)
+
+![](docs/design.png)
+
 # Things to notice
 - video game example that responds to events and also timeouts
 - uses history to go back to previous state after star wears off

@@ -76,10 +76,10 @@ PRESSED_REPEAT --> PRESSED_REPEAT: [timer_ms > 250]
 SmRunnerSettings.transpilerId = "C99"
 
 RenderConfig.C.HFileIncludes = """
-    #include <stdint.h> // for uint8_t
+    #include <stdint.h> // for state machine variables
     """
 RenderConfig.C.CFileExtension = ".cpp"
-RenderConfig.VariableDeclarations = """
+RenderConfig.AutoExpandedVars = """
     // you need to add your loop time to this variable in your main loop.
     uint16_t timer_ms;
 
@@ -98,7 +98,6 @@ RenderConfig.VariableDeclarations = """
     uint8_t output_long: 1;
     uint8_t output_repeat: 1;
     """
-RenderConfig.DefaultAnyExpTemplate = "{VarsPath}{AutoNameCopy()}"
 
 RenderConfig.C.CEnumDeclarer = "typedef enum __attribute__((packed)) {enumName}" # smaller enumerations for gcc
 '/

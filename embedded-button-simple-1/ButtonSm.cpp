@@ -153,17 +153,17 @@ static void PRESSED_DEBOUNCE_enter(ButtonSm* sm)
     } // end of behavior for PRESSED_DEBOUNCE
     
     // PRESSED_DEBOUNCE behavior
-    // uml: enter / { output_press = 1; }
+    // uml: enter / { output_press = true; }
     {
-        // Step 1: execute action `output_press = 1;`
-        sm->vars.output_press = 1;
+        // Step 1: execute action `output_press = true;`
+        sm->vars.output_press = true;
     } // end of behavior for PRESSED_DEBOUNCE
     
     // PRESSED_DEBOUNCE behavior
-    // uml: enter / { output_press_event = 1; }
+    // uml: enter / { output_press_event = true; }
     {
-        // Step 1: execute action `output_press_event = 1;`
-        sm->vars.output_press_event = 1;
+        // Step 1: execute action `output_press_event = true;`
+        sm->vars.output_press_event = true;
     } // end of behavior for PRESSED_DEBOUNCE
 }
 
@@ -223,17 +223,17 @@ static void PRESSED_STABLE_enter(ButtonSm* sm)
 static void PRESSED_STABLE_exit(ButtonSm* sm)
 {
     // PRESSED_STABLE behavior
-    // uml: exit / { output_long = 0; }
+    // uml: exit / { output_long = false; }
     {
-        // Step 1: execute action `output_long = 0;`
-        sm->vars.output_long = 0;
+        // Step 1: execute action `output_long = false;`
+        sm->vars.output_long = false;
     } // end of behavior for PRESSED_STABLE
     
     // PRESSED_STABLE behavior
-    // uml: exit / { output_repeat = 0; }
+    // uml: exit / { output_repeat = false; }
     {
-        // Step 1: execute action `output_repeat = 0;`
-        sm->vars.output_repeat = 0;
+        // Step 1: execute action `output_repeat = false;`
+        sm->vars.output_repeat = false;
     } // end of behavior for PRESSED_STABLE
     
     // adjust function pointers for this state's exit
@@ -246,14 +246,14 @@ static void PRESSED_STABLE_do(ButtonSm* sm)
     // No ancestor state handles `do` event.
     
     // PRESSED_STABLE behavior
-    // uml: do [! input_active] / { output_release_event = 1; } TransitionTo(RELEASED_DEBOUNCE)
+    // uml: do [! input_active] / { output_release_event = true; } TransitionTo(RELEASED_DEBOUNCE)
     if (! sm->vars.input_active)
     {
         // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
         exit_up_to_state_handler(sm, ROOT_exit);
         
-        // Step 2: Transition action: `output_release_event = 1;`.
-        sm->vars.output_release_event = 1;
+        // Step 2: Transition action: `output_release_event = true;`.
+        sm->vars.output_release_event = true;
         
         // Step 3: Enter/move towards transition target `RELEASED_DEBOUNCE`.
         RELEASED_DEBOUNCE_enter(sm);
@@ -334,17 +334,17 @@ static void PRESSED_LONG_enter(ButtonSm* sm)
     } // end of behavior for PRESSED_LONG
     
     // PRESSED_LONG behavior
-    // uml: enter / { output_long = 1; }
+    // uml: enter / { output_long = true; }
     {
-        // Step 1: execute action `output_long = 1;`
-        sm->vars.output_long = 1;
+        // Step 1: execute action `output_long = true;`
+        sm->vars.output_long = true;
     } // end of behavior for PRESSED_LONG
     
     // PRESSED_LONG behavior
-    // uml: enter / { output_long_event = 1; }
+    // uml: enter / { output_long_event = true; }
     {
-        // Step 1: execute action `output_long_event = 1;`
-        sm->vars.output_long_event = 1;
+        // Step 1: execute action `output_long_event = true;`
+        sm->vars.output_long_event = true;
     } // end of behavior for PRESSED_LONG
 }
 
@@ -398,17 +398,17 @@ static void PRESSED_REPEAT_enter(ButtonSm* sm)
     } // end of behavior for PRESSED_REPEAT
     
     // PRESSED_REPEAT behavior
-    // uml: enter / { output_repeat = 1; }
+    // uml: enter / { output_repeat = true; }
     {
-        // Step 1: execute action `output_repeat = 1;`
-        sm->vars.output_repeat = 1;
+        // Step 1: execute action `output_repeat = true;`
+        sm->vars.output_repeat = true;
     } // end of behavior for PRESSED_REPEAT
     
     // PRESSED_REPEAT behavior
-    // uml: enter / { output_repeat_event = 1; }
+    // uml: enter / { output_repeat_event = true; }
     {
-        // Step 1: execute action `output_repeat_event = 1;`
-        sm->vars.output_repeat_event = 1;
+        // Step 1: execute action `output_repeat_event = true;`
+        sm->vars.output_repeat_event = true;
     } // end of behavior for PRESSED_REPEAT
 }
 
@@ -462,10 +462,10 @@ static void RELEASED_DEBOUNCE_enter(ButtonSm* sm)
     } // end of behavior for RELEASED_DEBOUNCE
     
     // RELEASED_DEBOUNCE behavior
-    // uml: enter / { output_press = 0; }
+    // uml: enter / { output_press = false; }
     {
-        // Step 1: execute action `output_press = 0;`
-        sm->vars.output_press = 0;
+        // Step 1: execute action `output_press = false;`
+        sm->vars.output_press = false;
     } // end of behavior for RELEASED_DEBOUNCE
 }
 

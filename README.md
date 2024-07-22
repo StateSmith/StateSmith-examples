@@ -49,6 +49,10 @@ Not recommended for beginners.
 ## 🌱 PlantUML
 * [plantuml-basic-1](./plantuml-basic-1/README.md)
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
+* [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md)
+* [mario-sm-2](./mario-sm-2/README.md)
+* [parent-alias-1](./parent-alias-1/README.md)
+* [esp32-status-led-1](./esp32-status-led-1/README.md)
 
 ## 🕹️ Buttons/Input
 * [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
@@ -66,6 +70,7 @@ Not recommended for beginners.
 * [example-drawio-1 repo](https://github.com/StateSmith/example-drawio-1)
 * [logging-simple-1](./logging-simple-1/README.md)
 * [logging-simple-script-2](./logging-simple-script-2/README.md)
+* [esp32-status-led-1](./esp32-status-led-1/README.md) - all coded in C, but runs on Arduino for easy sim.
 
 ## C#
 * [csharp-space-menu-1](csharp-space-menu-1/README.md)
@@ -77,6 +82,7 @@ Not recommended for beginners.
 ## C++ / Arduino
 * [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
+* [esp32-status-led-1](./esp32-status-led-1/README.md) - all coded in C, but could just as easily be C++.
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
 <br>

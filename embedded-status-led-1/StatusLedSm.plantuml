@@ -1,0 +1,134 @@
+@startuml StatusLedSm
+
+' //////////////////////// STATE ORGANIZATION ///////////////////////
+' More info: https://github.com/StateSmith/StateSmith/wiki/PlantUML
+
+state BOOT1
+state BOOT2
+
+state RUNNING_GROUP {
+    state RUNNING_OK <<green>>
+    ' sequence 2
+    state RUNNING_OK_SEQ2 <<green>>
+}
+state WARNING <<yellow>>
+' sequence 2
+state WARNING_SEQ2 <<yellow>>
+
+' helper choice states
+state ROUTE<<choice>>
+state ROUTE_BOOT1<<choice>>
+state ROUTE_BOOT2<<choice>>
+state ROUTE_RUNNING_OK<<choice>>
+state ROUTE_WARNING<<choice>>
+state ROUTE_ERROR<<choice>>
+state RETURN<<choice>>
+
+' blank led before blip
+state ERROR_SEQ1 <<red>>
+state ERROR_SEQ2 <<red>>
+state ERROR_SEQ3 <<red>>
+state ERROR_CHOICE<<choice>>
+
+
+' ///////////////////////// STATE HANDLERS /////////////////////////
+' Syntax: https://github.com/StateSmith/StateSmith/wiki/Behaviors
+
+[*] -> ROUTE
+
+' fast ramp up
+BOOT1: enter / ramp_init_up();
+BOOT1: do / ramp_up(FAST);
+BOOT1 --> RETURN: [is_ramp_done()]
+
+' medium ramp up
+BOOT2: enter / ramp_init_up();
+BOOT2: do / ramp_up(MEDIUM);
+BOOT2 --> RETURN: [is_ramp_done()]
+
+RUNNING_GROUP: enter / _ramp_bottom = 25;
+RUNNING_GROUP: exit / _ramp_bottom = 0;
+
+' triangle slow
+RUNNING_OK: enter / ramp_init_up();
+RUNNING_OK: do / ramp_up(SLOW);
+RUNNING_OK -down-> RUNNING_OK_SEQ2: [is_ramp_done()]
+RUNNING_OK_SEQ2: enter / ramp_init_down();
+RUNNING_OK_SEQ2: do / ramp_down(SLOW);
+RUNNING_OK_SEQ2 --> RETURN: [is_ramp_done()]
+
+' ramp down, pause
+WARNING: enter / ramp_init_down();
+WARNING: do / ramp_down(MEDIUM);
+WARNING -down-> WARNING_SEQ2: [is_ramp_done()]
+WARNING_SEQ2: enter / timer_reset();
+WARNING_SEQ2: enter / set_led_duty(0);
+WARNING_SEQ2 --> RETURN: [timer_get_ms() >= 500]
+
+' blank, fast blip, pause
+ERROR_SEQ1: enter / timer_reset();
+ERROR_SEQ1: enter / set_led_duty(0);
+ERROR_SEQ1 -down-> ERROR_SEQ2: [timer_get_ms() >= 100]
+' 
+ERROR_SEQ2: enter / timer_reset();
+ERROR_SEQ2: enter / set_led_duty(255);
+' ERROR_SEQ2: enter / count--;
+ERROR_SEQ2 -down-> ERROR_CHOICE: [timer_get_ms() >= 100] / count--;
+'
+ERROR_CHOICE -> ERROR_SEQ1: [count > 0]
+ERROR_CHOICE -> ERROR_SEQ3: else
+' 
+ERROR_SEQ3: enter / set_led_duty(0);
+ERROR_SEQ3: enter / timer_reset();
+ERROR_SEQ3 -down-> RETURN: [timer_get_ms() >= 1000]
+
+' choice routes
+ROUTE -right-> ROUTE_BOOT1
+ROUTE_BOOT1 -down-> BOOT1: [IS_STATUS(BOOT1)]
+ROUTE_BOOT1 -right-> ROUTE_BOOT2: else
+ROUTE_BOOT2 -down-> BOOT2: [IS_STATUS(BOOT2)]
+ROUTE_BOOT2 -right-> ROUTE_RUNNING_OK: else
+ROUTE_RUNNING_OK -down-> RUNNING_OK: [IS_STATUS(RUNNING_OK)]
+ROUTE_RUNNING_OK -right-> ROUTE_WARNING: else
+ROUTE_WARNING -down-> WARNING: [IS_STATUS(WARNING)]
+ROUTE_WARNING -right-> ROUTE_ERROR: else
+ROUTE_ERROR -down-> ERROR_SEQ1: / count = 3;
+
+RETURN --> ROUTE
+
+' //////////////////////// StateSmith config ////////////////////////
+' More info: https://github.com/StateSmith/StateSmith/issues/335
+
+/'! $CONFIG : toml
+RenderConfig.C.CFileExtension = ".tpp"
+SmRunnerSettings.transpilerId = "C99"
+'/
+
+'############################ styles ############################
+' Define some colors for the states. Totally optional.
+skinparam state {
+    ' green style:
+    BackgroundColor<<green>> 60a917
+    FontColor<<green>> white
+
+    ' yellow style:
+    BackgroundColor<<yellow>> fff200
+    FontColor<<yellow>> black
+
+    ' red style:
+    BackgroundColor<<red>> a20025
+    FontColor<<red>> white
+
+    ' blue style:
+    BackgroundColor<<blue>> 1ba1e2
+    FontColor<<blue>> white
+
+    ' gold style:
+    BackgroundColor<<gold>> f0a30a
+
+    ' dark style:
+    BackgroundColor<<dark>> 545454
+    FontColor<<dark>> white
+}
+
+@enduml

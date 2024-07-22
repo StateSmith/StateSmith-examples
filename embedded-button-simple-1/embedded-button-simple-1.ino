@@ -40,7 +40,7 @@ static struct ButtonSm g_buttons[BUTTON_COUNT];
 void setup()
 {
   Serial.begin(115200);
-  Serial.println("Keyboard keys 1,2,3,4 have a binding to switches above when simulation pane has focus.");
+  Serial.println("Keyboard keys left, up, down, right have a binding to switches above when simulation pane has focus.");
   Serial.println();
 
   for (uint8_t i = 0; i < BUTTON_COUNT; i++)

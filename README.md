@@ -49,6 +49,9 @@ Not recommended for beginners.
 ## 🌱 PlantUML
 * [plantuml-basic-1](./plantuml-basic-1/README.md)
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
+* [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md)
+* [mario-sm-2](./mario-sm-2/README.md)
+* [parent-alias-1](./parent-alias-1/README.md)
 
 ## 🕹️ Buttons/Input
 * [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.

@@ -1,7 +1,10 @@
 # Hello!
 Make sure you've already gone through a tutorial already as these example projects aren't tutorials. They generally highlight a few interesting features.
 
+## New vs Old
 Most of these examples use the older (but still good) .csx method of running StateSmith. You can search for `ss.cli` for newer examples. More will come.
+
+You can generally learn lots from these older examples even if you aren't setup to run the .csx files. There's good stuff in the diagram files and also how the generated files are connected to user code.
 
 Not all projects are listed here. Feel free to explore. A number of the projects in here are straight up experimental. See each project's readme.
 
@@ -47,16 +50,21 @@ Not recommended for beginners.
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
 ## 🌱 PlantUML
-* [plantuml-basic-1](./plantuml-basic-1/README.md)
-* [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
-* [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md)
-* [mario-sm-2](./mario-sm-2/README.md)
-* [parent-alias-1](./parent-alias-1/README.md)
+* [embedded-solar-1](https://github.com/StateSmith/StateSmith-examples/blob/main/embedded-solar-1/README.md) - uses `ss.cli`
+* [mario-sm-2](./mario-sm-2/README.md) - uses `ss.cli`
+* [parent-alias-1](./parent-alias-1/README.md) - uses `ss.cli`
+* [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md) - uses `ss.cli`
+* [plantuml-basic-1](./plantuml-basic-1/README.md) - uses .csx files.
+* [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md) - uses .csx files.
 
 ## 🕹️ Buttons/Input
 * [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
+
+## ⏚ Embedded
+* [embedded-solar-1](https://github.com/StateSmith/StateSmith-examples/blob/main/embedded-solar-1/README.md) - uses `ss.cli`
+* also most of C examples
 
 <br>
 

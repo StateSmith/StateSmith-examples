@@ -285,7 +285,7 @@ We are nearly there!
 # Add display code
 We want the LCD to be updated when each state is entered.
 
-For example, when the `SPLASH` screen is entered, we want our state machine to call `show_splash()` which is a function provided by `display.c/h`.
+For example, when the `SPLASH` screen is entered, we want our state machine to call `show_splash()` which is a function provided by `display.h`.
 
 Add this PlantUML:
 ```plantuml

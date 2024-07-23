@@ -2,6 +2,8 @@
 // Algorithm: Balanced1. See https://github.com/StateSmith/StateSmith/wiki/Algorithms
 
 #include "SolarUiSm.h"
+#include "display.h"
+
 #include <stdbool.h> // required for `consume_event` flag
 #include <string.h> // for memset
 

@@ -1,6 +1,6 @@
 #include <assert.h>
+#include "display.h"
 #include "SolarUiSm.h"
-#include <LiquidCrystal.h>
 #include <Bounce2.h>
 
 
@@ -9,8 +9,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static SolarUiSm solar_ui_sm;
-
-static LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
 
 static Bounce2::Button left_button = Bounce2::Button();
 static Bounce2::Button right_button = Bounce2::Button();
@@ -26,7 +24,7 @@ void setup()
   Serial.begin(115200);
   Serial.println(F("Keyboard arrow keys control buttons when simulation pane has focus."));
 
-  lcd.begin(16, 2);
+  display_init();
 
   // left button
   left_button.attach(5, INPUT_PULLUP);
@@ -81,92 +79,3 @@ void loop()
 
   delay(10);  // a small delay eases simulation CPU usage.
 }
-
-
-////////////////////////////////////////////////////////////////////////////////
-// methods to be called by state machine
-
-static void show_splash()
-{
-  lcd.clear();
-  lcd.print(F("Solar Charger"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("version 2.4.0"));
-}
-
-static void show_home()
-{
-  lcd.clear();
-  lcd.print(F("STATUS: charging"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("BATTERY: 80%"));
-}
-
-static void show_main_menu1()
-{
-  lcd.clear();
-  lcd.print(F("MAIN MENU 1/2"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("> solar stats"));
-}
-
-static void show_main_menu2()
-{
-  lcd.clear();
-  lcd.print(F("MAIN MENU 2/2"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("> battery stats"));
-}
-
-static void show_solar_stats1()
-{
-  lcd.clear();
-  lcd.print(F("SOLAR STATS 1/3"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("voltage: 14.5"));
-}
-
-static void show_solar_stats2()
-{
-  lcd.clear();
-  lcd.print(F("SOLAR STATS 2/3"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("amperage: 1.3"));
-}
-
-static void show_solar_stats3()
-{
-  lcd.clear();
-  lcd.print(F("SOLAR STATS 3/3"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("time: 3h 16min"));
-}
-
-static void show_battery_stats1()
-{
-  lcd.clear();
-  lcd.print(F("BATTERY STAT 1/3"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("voltage: 13.1"));
-}
-
-static void show_battery_stats2()
-{
-  lcd.clear();
-  lcd.print(F("BATTERY STAT 2/3"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("amperage: -1.3"));
-}
-
-static void show_battery_stats3()
-{
-  lcd.clear();
-  lcd.print(F("BATTERY STAT 3/3"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("amp hours: 35.1"));
-}
-
-/////////////////////////////////////////////////////////////////////////////////////
-// state machine source code included here so that it can access the above functions
-// Why .hpp file? https://github.com/StateSmith/StateSmith/issues/361
-#include "SolarUiSm.hpp"

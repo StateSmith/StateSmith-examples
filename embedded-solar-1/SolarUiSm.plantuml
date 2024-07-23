@@ -73,7 +73,10 @@ BATTERY_STATS_3: enter / show_battery_stats3();
 
 /'! $CONFIG : toml
 [RenderConfig.C]
-CFileExtension = ".hpp"  # Why .hpp file? https://github.com/StateSmith/StateSmith/issues/361
+CFileIncludes = """
+    #include "display.h"
+    """
+CFileExtension = ".cpp"
 
 [SmRunnerSettings]
 transpilerId = "C99"

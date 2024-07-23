@@ -6,7 +6,7 @@ Most of these examples use the older (but still good) .csx method of running Sta
 
 You can generally learn lots from these older examples even if you aren't setup to run the .csx files. There's good stuff in the diagram files and also how the generated files are connected to user code.
 
-Not all projects are listed here. Feel free to explore. A number of the projects in here are straight up experimental. See each project's readme.
+Not all projects are listed below. Feel free to explore. A number of the projects in here are straight up experimental. See each project's readme.
 
 <br>
 

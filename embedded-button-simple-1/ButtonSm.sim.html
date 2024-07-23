@@ -222,7 +222,7 @@ RELEASED_DEBOUNCE : RELEASED_DEBOUNCE
 
 RELEASED_DEBOUNCE : enter / #123; timer_ms = 0#59; #125;
 
-RELEASED_DEBOUNCE : enter / #123; output_press = 0#59; #125;
+RELEASED_DEBOUNCE : enter / #123; output_press = false#59; #125;
 
 RELEASED_STABLE
 
@@ -234,9 +234,9 @@ PRESSED_DEBOUNCE : PRESSED_DEBOUNCE
 
 PRESSED_DEBOUNCE : enter / #123; timer_ms = 0#59; #125;
 
-PRESSED_DEBOUNCE : enter / #123; output_press = 1#59; #125;
+PRESSED_DEBOUNCE : enter / #123; output_press = true#59; #125;
 
-PRESSED_DEBOUNCE : enter / #123; output_press_event = 1#59; #125;
+PRESSED_DEBOUNCE : enter / #123; output_press_event = true#59; #125;
 
 state PRESSED_STABLE {
 
@@ -254,9 +254,9 @@ state PRESSED_STABLE {
 
         PRESSED_LONG : enter / #123; timer_ms = 0#59; #125;
 
-        PRESSED_LONG : enter / #123; output_long = 1#59; #125;
+        PRESSED_LONG : enter / #123; output_long = true#59; #125;
 
-        PRESSED_LONG : enter / #123; output_long_event = 1#59; #125;
+        PRESSED_LONG : enter / #123; output_long_event = true#59; #125;
 
         PRESSED_REPEAT
 
@@ -264,9 +264,9 @@ state PRESSED_STABLE {
 
         PRESSED_REPEAT : enter / #123; timer_ms = 0#59; #125;
 
-        PRESSED_REPEAT : enter / #123; output_repeat = 1#59; #125;
+        PRESSED_REPEAT : enter / #123; output_repeat = true#59; #125;
 
-        PRESSED_REPEAT : enter / #123; output_repeat_event = 1#59; #125;
+        PRESSED_REPEAT : enter / #123; output_repeat_event = true#59; #125;
 
 }
 
@@ -278,7 +278,7 @@ RELEASED_STABLE --> PRESSED_DEBOUNCE : do [input_active]
 
 PRESSED_DEBOUNCE --> PRESSED_STABLE : do [timer_ms > 50]
 
-PRESSED_STABLE --> RELEASED_DEBOUNCE : do [! input_active] / #123; output_release_event = 1#59; #125;
+PRESSED_STABLE --> RELEASED_DEBOUNCE : do [! input_active] / #123; output_release_event = true#59; #125;
 
 PRESSED_STABLE.(InitialState) --> CONFIRM_LONG
 
@@ -465,17 +465,17 @@ evaluateGuard = null;
         } // end of behavior for PRESSED_DEBOUNCE
         
         // PRESSED_DEBOUNCE behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_press = 1;"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_press = true;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_press = 1;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_press = 1;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_press = true;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_press = true;");
         } // end of behavior for PRESSED_DEBOUNCE
         
         // PRESSED_DEBOUNCE behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_press_event = 1;"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_press_event = true;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_press_event = 1;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_press_event = 1;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_press_event = true;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_press_event = true;");
         } // end of behavior for PRESSED_DEBOUNCE
     }
     
@@ -551,17 +551,17 @@ evaluateGuard = null;
     #PRESSED_STABLE_exit()
     {
         // PRESSED_STABLE behavior
-        // uml: exit / { this.tracer?.log("⚡ FSM would execute action: " + "output_long = 0;"); }
+        // uml: exit / { this.tracer?.log("⚡ FSM would execute action: " + "output_long = false;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_long = 0;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_long = 0;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_long = false;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_long = false;");
         } // end of behavior for PRESSED_STABLE
         
         // PRESSED_STABLE behavior
-        // uml: exit / { this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = 0;"); }
+        // uml: exit / { this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = false;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = 0;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = 0;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = false;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = false;");
         } // end of behavior for PRESSED_STABLE
         
         // PRESSED_STABLE behavior
@@ -581,14 +581,14 @@ evaluateGuard = null;
         // No ancestor state handles `do` event.
         
         // PRESSED_STABLE behavior
-        // uml: do [this.tracer?.log("🛡️ User evaluating guard: " + "! input_active") || this.evaluateGuard("! input_active")] / { this.tracer?.log("⚡ FSM would execute action: " + "output_release_event = 1;");this.tracer?.edgeTransition("edge3"); } TransitionTo(RELEASED_DEBOUNCE)
+        // uml: do [this.tracer?.log("🛡️ User evaluating guard: " + "! input_active") || this.evaluateGuard("! input_active")] / { this.tracer?.log("⚡ FSM would execute action: " + "output_release_event = true;");this.tracer?.edgeTransition("edge3"); } TransitionTo(RELEASED_DEBOUNCE)
         if (this.tracer?.log("🛡️ User evaluating guard: " + "! input_active") || this.evaluateGuard("! input_active"))
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ROOT_exit);
             
-            // Step 2: Transition action: `this.tracer?.log("⚡ FSM would execute action: " + "output_release_event = 1;");this.tracer?.edgeTransition("edge3");`.
-            this.tracer?.log("⚡ FSM would execute action: " + "output_release_event = 1;");this.tracer?.edgeTransition("edge3");
+            // Step 2: Transition action: `this.tracer?.log("⚡ FSM would execute action: " + "output_release_event = true;");this.tracer?.edgeTransition("edge3");`.
+            this.tracer?.log("⚡ FSM would execute action: " + "output_release_event = true;");this.tracer?.edgeTransition("edge3");
             
             // Step 3: Enter/move towards transition target `RELEASED_DEBOUNCE`.
             this.#RELEASED_DEBOUNCE_enter();
@@ -691,17 +691,17 @@ evaluateGuard = null;
         } // end of behavior for PRESSED_LONG
         
         // PRESSED_LONG behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_long = 1;"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_long = true;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_long = 1;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_long = 1;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_long = true;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_long = true;");
         } // end of behavior for PRESSED_LONG
         
         // PRESSED_LONG behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_long_event = 1;"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_long_event = true;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_long_event = 1;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_long_event = 1;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_long_event = true;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_long_event = true;");
         } // end of behavior for PRESSED_LONG
     }
     
@@ -770,17 +770,17 @@ evaluateGuard = null;
         } // end of behavior for PRESSED_REPEAT
         
         // PRESSED_REPEAT behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = 1;"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = true;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = 1;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = 1;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = true;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_repeat = true;");
         } // end of behavior for PRESSED_REPEAT
         
         // PRESSED_REPEAT behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_repeat_event = 1;"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_repeat_event = true;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_repeat_event = 1;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_repeat_event = 1;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_repeat_event = true;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_repeat_event = true;");
         } // end of behavior for PRESSED_REPEAT
     }
     
@@ -849,10 +849,10 @@ evaluateGuard = null;
         } // end of behavior for RELEASED_DEBOUNCE
         
         // RELEASED_DEBOUNCE behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_press = 0;"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "output_press = false;"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_press = 0;");`
-            this.tracer?.log("⚡ FSM would execute action: " + "output_press = 0;");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "output_press = false;");`
+            this.tracer?.log("⚡ FSM would execute action: " + "output_press = false;");
         } // end of behavior for RELEASED_DEBOUNCE
     }
     

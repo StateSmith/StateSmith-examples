@@ -4,7 +4,7 @@
 #pragma once
 #include <stdint.h>
 
-#include <stdint.h> // for uint8_t
+#include <stdint.h> // for state machine variables
 
 typedef enum __attribute__((packed)) ButtonSm_EventId
 {

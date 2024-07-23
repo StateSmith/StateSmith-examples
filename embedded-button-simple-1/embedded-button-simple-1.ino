@@ -40,7 +40,7 @@ static struct ButtonSm g_buttons[BUTTON_COUNT];
 void setup()
 {
   Serial.begin(115200);
-  Serial.println("Keyboard keys 1,2,3,4 have a binding to switches above when simulation pane has focus.");
+  Serial.println("Keyboard keys left, up, down, right have a binding to switches above when simulation pane has focus.");
   Serial.println();
 
   for (uint8_t i = 0; i < BUTTON_COUNT; i++)
@@ -56,7 +56,7 @@ void setup()
 
 void loop()
 {
-  const uint8_t loop_delay_ms = 10;
+  const uint8_t loop_delay_ms = 10;  // better: calculate time since last loop.
 
   for (uint8_t button_index = 0; button_index < BUTTON_COUNT; button_index++)
   {
@@ -94,7 +94,7 @@ void loop()
     sm.vars.timer_ms += loop_delay_ms;
   }
 
-  delay(loop_delay_ms);
+  delay(loop_delay_ms);  // a small delay eases simulation CPU usage.
 }
 
 static void print_button_event(uint8_t button_index, const char *event)

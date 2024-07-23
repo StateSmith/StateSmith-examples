@@ -38,7 +38,7 @@ state PRESSED_STABLE {
 [*] -> RELEASED_DEBOUNCE
 
 RELEASED_DEBOUNCE: enter / timer_ms = 0;
-RELEASED_DEBOUNCE: enter / output_press = 0;
+RELEASED_DEBOUNCE: enter / output_press = false;
 RELEASED_DEBOUNCE -> RELEASED_STABLE: [timer_ms > 50]
 
 ' RELEASED_STABLE
@@ -46,25 +46,25 @@ RELEASED_DEBOUNCE -> RELEASED_STABLE: [timer_ms > 50]
 RELEASED_STABLE --> PRESSED_DEBOUNCE: [input_active]
 
 PRESSED_DEBOUNCE: enter / timer_ms = 0;
-PRESSED_DEBOUNCE: enter / output_press = 1;
-PRESSED_DEBOUNCE: enter / output_press_event = 1;
+PRESSED_DEBOUNCE: enter / output_press = true;
+PRESSED_DEBOUNCE: enter / output_press_event = true;
 PRESSED_DEBOUNCE --> PRESSED_STABLE: [timer_ms > 50]
 
-PRESSED_STABLE --> RELEASED_DEBOUNCE: [! input_active] / output_release_event = 1;
-PRESSED_STABLE: exit / output_long = 0;
-PRESSED_STABLE: exit / output_repeat = 0;
+PRESSED_STABLE --> RELEASED_DEBOUNCE: [! input_active] / output_release_event = true;
+PRESSED_STABLE: exit / output_long = false;
+PRESSED_STABLE: exit / output_repeat = false;
 
 CONFIRM_LONG: enter / timer_ms = 0;
 CONFIRM_LONG --> PRESSED_LONG: [timer_ms > 500]
 
 PRESSED_LONG: enter / timer_ms = 0;
-PRESSED_LONG: enter / output_long = 1;
-PRESSED_LONG: enter / output_long_event = 1;
+PRESSED_LONG: enter / output_long = true;
+PRESSED_LONG: enter / output_long_event = true;
 PRESSED_LONG --> PRESSED_REPEAT: [timer_ms > 350]
 
 PRESSED_REPEAT: enter / timer_ms = 0;
-PRESSED_REPEAT: enter / output_repeat = 1;
-PRESSED_REPEAT: enter / output_repeat_event = 1;
+PRESSED_REPEAT: enter / output_repeat = true;
+PRESSED_REPEAT: enter / output_repeat_event = true;
 PRESSED_REPEAT --> PRESSED_REPEAT: [timer_ms > 250]
 
 
@@ -76,10 +76,10 @@ PRESSED_REPEAT --> PRESSED_REPEAT: [timer_ms > 250]
 SmRunnerSettings.transpilerId = "C99"
 
 RenderConfig.C.HFileIncludes = """
-    #include <stdint.h> // for uint8_t
+    #include <stdint.h> // for state machine variables
     """
 RenderConfig.C.CFileExtension = ".cpp"
-RenderConfig.VariableDeclarations = """
+RenderConfig.AutoExpandedVars = """
     // you need to add your loop time to this variable in your main loop.
     uint16_t timer_ms;
 
@@ -98,7 +98,6 @@ RenderConfig.VariableDeclarations = """
     uint8_t output_long: 1;
     uint8_t output_repeat: 1;
     """
-RenderConfig.DefaultAnyExpTemplate = "{VarsPath}{AutoNameCopy()}"
 
 RenderConfig.C.CEnumDeclarer = "typedef enum __attribute__((packed)) {enumName}" # smaller enumerations for gcc
 '/

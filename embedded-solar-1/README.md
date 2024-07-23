@@ -30,23 +30,6 @@ MAIN MENU 2/2
 	amp hours: 35.1
 ```
 
-# States
-```
-SPLASH
-HOME
-MAIN_MENU
-MAIN_MENU_1
-MAIN_MENU_2
-SOLAR_STATS
-SOLAR_STATS_1
-SOLAR_STATS_2
-SOLAR_STATS_3
-BATTERY_STATS
-BATTERY_STATS_1
-BATTERY_STATS_2
-BATTERY_STATS_3
-```
-
 # Finished Design
 ![](docs/finished-design.png)
 

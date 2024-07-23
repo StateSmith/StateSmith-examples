@@ -32,7 +32,7 @@ state BATTERY_STATS {
 ' ///////////////////////// STATE HANDLERS /////////////////////////
 ' Syntax: https://github.com/StateSmith/StateSmith/wiki/Behaviors
 
-SPLASH -> HOME: RIGHT
+SPLASH -right-> HOME: RIGHT
 
 HOME -right-> MAIN_MENU: RIGHT
 MAIN_MENU -left-> HOME: LEFT
@@ -46,15 +46,15 @@ SOLAR_STATS -left-> MAIN_MENU_1: LEFT
 MAIN_MENU_2 -right-> BATTERY_STATS: RIGHT
 BATTERY_STATS -left-> MAIN_MENU_2: LEFT
 
-SOLAR_STATS_1 --> SOLAR_STATS_2: DOWN
-SOLAR_STATS_2 --> SOLAR_STATS_3: DOWN
-SOLAR_STATS_3 --> SOLAR_STATS_2: UP
-SOLAR_STATS_2 --> SOLAR_STATS_1: UP
+SOLAR_STATS_1 -down-> SOLAR_STATS_2: DOWN
+SOLAR_STATS_2 -down-> SOLAR_STATS_3: DOWN
+SOLAR_STATS_3 -up-> SOLAR_STATS_2: UP
+SOLAR_STATS_2 -up-> SOLAR_STATS_1: UP
 
-BATTERY_STATS_1 --> BATTERY_STATS_2: DOWN
-BATTERY_STATS_2 --> BATTERY_STATS_3: DOWN
-BATTERY_STATS_3 --> BATTERY_STATS_2: UP
-BATTERY_STATS_2 --> BATTERY_STATS_1: UP
+BATTERY_STATS_1 -down-> BATTERY_STATS_2: DOWN
+BATTERY_STATS_2 -down-> BATTERY_STATS_3: DOWN
+BATTERY_STATS_3 -up-> BATTERY_STATS_2: UP
+BATTERY_STATS_2 -up-> BATTERY_STATS_1: UP
 
 SPLASH: enter / show_splash();
 HOME: enter / show_home();
@@ -67,18 +67,19 @@ BATTERY_STATS_1: enter / show_battery_stats1();
 BATTERY_STATS_2: enter / show_battery_stats2();
 BATTERY_STATS_3: enter / show_battery_stats3();
 
+
 ' //////////////////////// StateSmith config ////////////////////////
 ' The below special comment block sets the StateSmith configuration.
 ' More info: https://github.com/StateSmith/StateSmith/issues/335
 
 /'! $CONFIG : toml
+[SmRunnerSettings]
+transpilerId = "C99"
+
 [RenderConfig.C]
+CFileExtension = ".cpp"
 CFileIncludes = """
     #include "display.h"
     """
-CFileExtension = ".cpp"
-
-[SmRunnerSettings]
-transpilerId = "C99"
 '/
 @enduml

@@ -227,6 +227,22 @@ Much nicer!
 
 ![](docs/mm1-after-fix.png)
 
+## PlantUML Arrows
+It is generally recommended to use `-->` or `->` most often and let PlantUML figure out the best way to draw the arrows and then only use the more specific arrows when necessary.
+
+Here's a full listing of what StateSmith supports:
+
+| Arrow Text           | Effect                  |
+| -------------------- | ----------------------- |
+| `->`                 | horizontal (left/right) |
+| `-->`                | vertical (up/down)      |
+| `-up->` or `-u->`    | pointing up             |
+| `-down->` or `-d->`  | pointing down           |
+| `-left->` or `-l->`  | pointing left           |
+| `-right->` or `-r->` | pointing right          |
+| `--->` ... `----->`  | longer vertical lines   |
+
+
 ## Connect `MAIN_MENU_2` and `BATTERY_STATS`
 ```plantuml
 MAIN_MENU_2 -right-> BATTERY_STATS: RIGHT
@@ -245,7 +261,7 @@ SOLAR_STATS_2 -> SOLAR_STATS_1: UP
 
 ![](docs/ss-pre.png)
 
-We want these to go up and down. We can do this one or two ways. We can tell PlantUML to use a longer arrow `-->` like below and let it figure it out.
+We want these to go up and down. We can do this one or two ways. We can tell PlantUML to use vertical arrows `-->` like below and let it figure it out.
 
 ```plantuml
 SOLAR_STATS_1 --> SOLAR_STATS_2: DOWN
@@ -254,7 +270,7 @@ SOLAR_STATS_3 --> SOLAR_STATS_2: UP
 SOLAR_STATS_2 --> SOLAR_STATS_1: UP
 ```
 
-But it is often best to just be explicit if we know what we want:
+or we can be explicit if we already know what we want:
 
 ```plantuml
 SOLAR_STATS_1 -down-> SOLAR_STATS_2: DOWN

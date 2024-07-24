@@ -6,7 +6,7 @@
 
 #include <stdint.h> // for state machine variables
 
-typedef enum __attribute__((packed)) ButtonSm_EventId
+typedef enum ButtonSm_EventId
 {
     ButtonSm_EventId_DO = 0, // The `do` event is special. State event handlers do not consume this event (ancestors all get it too) unless a transition occurs.
 } ButtonSm_EventId;
@@ -16,7 +16,7 @@ enum
     ButtonSm_EventIdCount = 1
 };
 
-typedef enum __attribute__((packed)) ButtonSm_StateId
+typedef enum ButtonSm_StateId
 {
     ButtonSm_StateId_ROOT = 0,
     ButtonSm_StateId_PRESSED_DEBOUNCE = 1,
@@ -42,6 +42,7 @@ typedef struct ButtonSm ButtonSm;
 typedef struct ButtonSm_Vars
 {
     // you need to add your loop time to this variable in your main loop.
+    // max time is 65535 ms.
     uint16_t timer_ms;
     
     // set to 1 when button is detected as active.
@@ -58,6 +59,9 @@ typedef struct ButtonSm_Vars
     uint8_t output_press: 1;
     uint8_t output_long: 1;
     uint8_t output_repeat: 1;
+    
+    // not used by state machine, but this is a convenient place to store the pin number
+    uint8_t pin;
 } ButtonSm_Vars;
 
 

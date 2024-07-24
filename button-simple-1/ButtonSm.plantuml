@@ -1,67 +1,67 @@
 @startuml ButtonSm
 
+' /////////////////////////// Styles ////////////////////////////////
+' Define some colors for the states. Totally optional.
+skinparam state {
+    ' pressed style:
+    BackgroundColor<<press_style>> #c7f1ff
+}
+
 ' //////////////////////// STATE ORGANIZATION ///////////////////////
 ' Note: StateSmith treats state names and events as case insensitive.
 ' More info: https://github.com/StateSmith/StateSmith/wiki/PlantUML
 
-' note "Implements a simple `lock out` style debouncer.\nDetects: release, press, long, repeat" as N1
-
 state RELEASED_DEBOUNCE
 state RELEASED_STABLE {
-    note "You could clear release event\nin exit handler if you wanted." as N2
+    note "Wait for press" as N1
 }
-state PRESSED_DEBOUNCE
-state PRESSED_STABLE {
+state PRESSED_DEBOUNCE <<press_style>>
+state PRESSED_STABLE <<press_style>> {
     [*] -> CONFIRM_LONG
     state CONFIRM_LONG
     state PRESSED_LONG
-    state PRESSED_REPEAT
-    ' note right of PRESSED_LONG
-    '     Long press is still "active"
-    '     while in repeat state so we
-    '     clear the `output_long` flag
-    '     in the parent exit handler.
-    ' end note
-
-    note "You could clear press events\nin exit handler if you wanted." as N3
+    state PRESSED_REPEAT {
+        note "We consider long press to still\nbe active in this state." as N2
+    }
 }
 
+[*] -> RELEASED_DEBOUNCE
 
 
 ' ///////////////////////// STATE HANDLERS /////////////////////////
 ' Syntax: https://github.com/StateSmith/StateSmith/wiki/Behaviors
 
-' step 1: add states
-' step 2: add transitions
-' step 3: add code
-
-[*] -> RELEASED_DEBOUNCE
-
+' Wait for debounce time and then go to stable state.
 RELEASED_DEBOUNCE: enter / timer_ms = 0;
 RELEASED_DEBOUNCE: enter / output_press = false;
 RELEASED_DEBOUNCE -> RELEASED_STABLE: [timer_ms > 50]
 
-' RELEASED_STABLE
-' Just wait for press
-RELEASED_STABLE --> PRESSED_DEBOUNCE: [input_active]
+' Button is released. Wait for button press.
+RELEASED_STABLE -down-> PRESSED_DEBOUNCE: [input_active]
 
+' Wait for debounce time and then go to stable state.
 PRESSED_DEBOUNCE: enter / timer_ms = 0;
 PRESSED_DEBOUNCE: enter / output_press = true;
 PRESSED_DEBOUNCE: enter / output_press_event = true;
-PRESSED_DEBOUNCE --> PRESSED_STABLE: [timer_ms > 50]
+PRESSED_DEBOUNCE -left-> PRESSED_STABLE: [timer_ms > 50]
 
-PRESSED_STABLE --> RELEASED_DEBOUNCE: [! input_active] / output_release_event = true;
+' Button is pressed. Wait for button release.
+PRESSED_STABLE -up-> RELEASED_DEBOUNCE: [! input_active] / output_release_event = true;
 PRESSED_STABLE: exit / output_long = false;
 PRESSED_STABLE: exit / output_repeat = false;
 
+' Button is still pressed. Wait for long press time.
 CONFIRM_LONG: enter / timer_ms = 0;
 CONFIRM_LONG --> PRESSED_LONG: [timer_ms > 500]
 
+' Button has been pressed for a long time.
+' Transition to repeat state if button remains pressed long enough.
 PRESSED_LONG: enter / timer_ms = 0;
 PRESSED_LONG: enter / output_long = true;
 PRESSED_LONG: enter / output_long_event = true;
 PRESSED_LONG --> PRESSED_REPEAT: [timer_ms > 350]
 
+' Keep setting the button repeat event every 250 ms.
 PRESSED_REPEAT: enter / timer_ms = 0;
 PRESSED_REPEAT: enter / output_repeat = true;
 PRESSED_REPEAT: enter / output_repeat_event = true;
@@ -75,12 +75,13 @@ PRESSED_REPEAT --> PRESSED_REPEAT: [timer_ms > 250]
 /'! $CONFIG : toml
 SmRunnerSettings.transpilerId = "C99"
 
-RenderConfig.C.HFileIncludes = """
-    #include <stdint.h> // for state machine variables
-    """
 RenderConfig.C.CFileExtension = ".cpp"
+RenderConfig.C.HFileIncludes = """
+    #include <stdint.h> // for fixed width integer state machine variables below
+    """
 RenderConfig.AutoExpandedVars = """
     // you need to add your loop time to this variable in your main loop.
+    // max time is 65535 ms.
     uint16_t timer_ms;
 
     // set to 1 when button is detected as active.
@@ -97,8 +98,13 @@ RenderConfig.AutoExpandedVars = """
     uint8_t output_press: 1;
     uint8_t output_long: 1;
     uint8_t output_repeat: 1;
+
+    // not used by state machine, but this is a convenient place to store the pin number
+    uint8_t pin;
     """
 
-RenderConfig.C.CEnumDeclarer = "typedef enum __attribute__((packed)) {enumName}" # smaller enumerations for gcc
+# Uncomment the below line to potentially save a byte or two of RAM per state machine
+# by telling GCC to use the smallest enumeration integer type possible.
+# RenderConfig.C.CEnumDeclarer = "typedef enum __attribute__((packed)) {enumName}"
 '/
 @enduml

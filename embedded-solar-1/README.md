@@ -4,6 +4,8 @@ Assumes that you have gone through StateSmith [tutorial 3 already](https://githu
 # Intro
 This project & tutorial will guide you through the process of easily creating a simple nested/hierarchical menu state machine.
 
+Although the simulation uses C++/Arduino, the same concepts can be applied to any language.
+
 It specifically helps you with creating neat and organized PlantUML diagrams.
 
 ![](docs/sim.png)

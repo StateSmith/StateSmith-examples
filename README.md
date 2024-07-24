@@ -13,7 +13,7 @@ Not all projects are listed below. Feel free to explore this directory. A number
 # StateSmith
 ## 🌟 Features
 * [trigger-map](./trigger-map/README.md) - short hands for events/triggers.
-* [parent-alias-1](./parent-alias-1/README.md) - useful strategy for commanding a specific state.
+* [parent-alias-1](./parent-alias-1/README.md) - useful strategy for commanding a specific state. `ss.cli`
 * [multiple state machines in a single diagram](./buttons-lights-1/README.md) - connect state machines together through variables & events.
 * [sm-design-describer-1](./sm-design-describer-1/README.md) good for git diffs, understanding
 
@@ -36,56 +36,64 @@ Not recommended for beginners.
 
 ## 🔀 Concurrency
 * [rtos-event-queue-c](./rtos-event-queue-c/README.md)
-* [csharp-space-menu-1](csharp-space-menu-1/README.md)
+* [csharp-space-menu-1](csharp-space-menu-1/README.md) - Advanced menu system with C#. Concurrency. Deep nesting, entry/exit points, parent alias and more.
 
 ## 👾 Video Game
 * [mario-sm-1](./mario-sm-1/README.md)
-* [mario-sm-2](./mario-sm-2/README.md) - Uses `ss.cli`. Adds invincible star state and history.
+* [mario-sm-2](./mario-sm-2/README.md) - Adds invincible star state and history. `ss.cli`
 
 ## 🗄️ Web/Database
 * [history-storage-1](./history-storage-1/README.md) Resumes a state machine from a clean start and some storage (file/database/...).
 
 ## 📱 Menu / User Interface
-* [csharp-space-menu-1](csharp-space-menu-1/README.md)
-* TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
-
-## 🌱 PlantUML
-* [embedded-solar-1](https://github.com/StateSmith/StateSmith-examples/blob/main/embedded-solar-1/README.md) - uses `ss.cli`
-* [mario-sm-2](./mario-sm-2/README.md) - uses `ss.cli`
-* [parent-alias-1](./parent-alias-1/README.md) - uses `ss.cli`
-* [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md) - uses `ss.cli`
-* [plantuml-basic-1](./plantuml-basic-1/README.md) - uses .csx files.
-* [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md) - uses .csx files.
+* [embedded-solar-1](./embedded-solar-1/README.md) - Shows how to make a nested menu state machine with PlantUML. `ss.cli`
+* [csharp-space-menu-1](csharp-space-menu-1/README.md) - Advanced menu system with C#. Concurrency. Deep nesting, entry/exit points, parent alias and more.
+* todo - migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
 ## 🕹️ Buttons/Input
+* [button-simple-1](./button-simple-1/README.md) - Cross platform design. Easy to generate for any desired language. A simple button state machine that can be easily customized to your needs. `ss.cli`
 * [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
-* TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
+* todo - migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
 ## ⏚ Embedded
-* [embedded-solar-1](https://github.com/StateSmith/StateSmith-examples/blob/main/embedded-solar-1/README.md) - uses `ss.cli`
-* also most of C examples
+* [embedded-solar-1](./embedded-solar-1/README.md) - `ss.cli`
+* [button-simple-1](./button-simple-1/README.md) - `ss.cli`
+* [rtos-event-queue-c](./rtos-event-queue-c/README.md)
+* todo - migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
+
+## 🌱 PlantUML
+* [embedded-solar-1](./embedded-solar-1/README.md) - `ss.cli`
+* [mario-sm-2](./mario-sm-2/README.md) - `ss.cli`
+* [button-simple-1](./button-simple-1/README.md) - A simple button state machine that can be easily customized to your needs. `ss.cli`
+* [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md) - `ss.cli`
+* [parent-alias-1](./parent-alias-1/README.md) - `ss.cli`
+* [plantuml-basic-1](./plantuml-basic-1/README.md)
+* [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 
 <br>
 
 # By Language
 
 ## C
-* [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md) - easy connection between user code and fsm. No expansions needed. Uses `ss.cli`.
-* [c-include-sm-basic-2-drawio](./c-include-sm-basic-2-drawio/README.md) - easy connection between user code and fsm. No expansions needed. Uses `ss.cli`.
+* [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md) - easy connection between user code and fsm. No expansions needed. `ss.cli`
+* [c-include-sm-basic-2-drawio](./c-include-sm-basic-2-drawio/README.md) - easy connection between user code and fsm. No expansions needed. `ss.cli`
 * [rtos-event-queue-c](./rtos-event-queue-c/README.md)
 * [example-drawio-1 repo](https://github.com/StateSmith/example-drawio-1)
 * [logging-simple-1](./logging-simple-1/README.md)
 * [logging-simple-script-2](./logging-simple-script-2/README.md)
 
 ## C#
-* [csharp-space-menu-1](csharp-space-menu-1/README.md)
+* [csharp-space-menu-1](csharp-space-menu-1/README.md) - Advanced menu system with C#. Concurrency. Deep nesting, entry/exit points, parent alias and more.
 
 ## JavaScript
+* [mario-sm-2](./mario-sm-2/README.md) - Adds invincible star state and history. `ss.cli`
 * [mario-sm-1](./mario-sm-1/README.md)
 * [history-storage-1](./history-storage-1/README.md)
 
 ## C++ / Arduino
+* [button-simple-1](./button-simple-1/README.md) - `ss.cli`
+* [embedded-solar-1](./embedded-solar-1/README.md) - `ss.cli`
 * [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).

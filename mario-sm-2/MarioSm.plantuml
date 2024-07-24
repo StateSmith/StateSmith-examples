@@ -43,7 +43,7 @@ REGULAR --> INVINCIBLE: STAR
 
 INVINCIBLE: enter / starMario();
 INVINCIBLE: enter / startStarTimer();
-INVINCIBLE --> REGULAR: do [isStarExpired()]
+INVINCIBLE --> REGULAR: [isStarExpired()]
 
 SMALL: enter / smallMario();
 SMALL --> SUPER: MUSHROOM

@@ -1,7 +1,7 @@
 # Alternate
-If you don't provide any direction hints, PlantUML will generally do a decent job if you use long arrows `-->` instead of short `->` arrows.
+If you don't provide any direction hints, PlantUML will generally do a decent job if you use vertical arrows `-->` instead of horizontal `->` arrows.
 
-The result is not nearly as nice, but still fairly legible.
+The result is not nearly as nice, but still fairly legible. And it is quick to implement :)
 
 ![](alternate.png)
 

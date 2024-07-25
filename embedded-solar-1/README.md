@@ -9,6 +9,7 @@ Although the simulation uses C++/Arduino, the same concepts can be applied to an
 It specifically helps you with creating neat and organized PlantUML diagrams.
 
 ![](docs/sim.png)
+
 <!-- 
 ## Menu UI Layout
 ```
@@ -52,6 +53,12 @@ Follow along at [tutorial.md](./tutorial.md).
 # Simulation
 https://wokwi.com/projects/404121058111410177
 
+# TIPS
+If your design is a lot larger than this, you may need to make certain arrows longer so that PlantUML has space to layout the drawing. It always seems to want to make the smallest diagram possible.
+
+See [larger.md](./docs/larger.md) for an example of this.
+
+
 # Taking It Further
 This just shows the basics. There are many things we could do to take it further.
 
@@ -60,3 +67,24 @@ This just shows the basics. There are many things we could do to take it further
 * have main menu timeout to idle screen after 30 seconds
 
 I'll cover more advanced menu designs in the future. When you start wanting to edit settings from a nested menu, it often makes sense to have a separate "Editor" state machine that works along side the main UI state machine.
+
+<br>
+
+# Any hackers out there?
+It would be super-bonkers cool if someone made a small tool that would take input text like:
+
+```
+MAIN_MENU
+	SOLAR_STATS
+		SOLAR_STATS_1
+		SOLAR_STATS_2
+		SOLAR_STATS_3
+	BATTERY_STATS
+		BATTERY_STATS_1
+		BATTERY_STATS_2
+		BATTERY_STATS_3
+```
+
+and then generate the majority of the PlantUML code for you.
+
+Maybe an online tool that you paste the text into and it gives you the PlantUML code back?

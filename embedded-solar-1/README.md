@@ -42,7 +42,11 @@ MAIN MENU 2/2
 -->
 
 # Finished Design
-With just a bit of additional hints provided to PlantUML, we can get it to create a beautiful diagram. Without the type hints, it can still do decent job ([see here](./docs/alternate.md)).
+With just a bit of additional hints provided to PlantUML, we can get it to create a beautiful diagram.
+
+Without the type hints, it can still do a decent job ([see here](./docs/alternate.md)).
+
+> NOTE! You should generally avoid using type hints unless you need to. It's often better to let PlantUML figure it out on its own. Just use `-->` for transitions and see how it looks.
 
 ![](docs/finished-design.png)
 
@@ -60,3 +64,25 @@ This just shows the basics. There are many things we could do to take it further
 * have main menu timeout to idle screen after 30 seconds
 
 I'll cover more advanced menu designs in the future. When you start wanting to edit settings from a nested menu, it often makes sense to have a separate "Editor" state machine that works along side the main UI state machine.
+
+
+<br>
+
+# Any hackers out there?
+It would be super amazing if someone made a small tool that would take input text like:
+
+```
+MAIN_MENU
+	SOLAR_STATS
+		SOLAR_STATS_1
+		SOLAR_STATS_2
+		SOLAR_STATS_3
+	BATTERY_STATS
+		BATTERY_STATS_1
+		BATTERY_STATS_2
+		BATTERY_STATS_3
+```
+
+and then generate the majority of the PlantUML code we need. Just keep it simple and use `-->` for transitions.
+
+Maybe an online tool that you paste the text into and it gives you the PlantUML code back?

@@ -7,65 +7,108 @@
 state SPLASH
 state HOME
 
+
+
+' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! GEN START !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
 state MAIN_MENU {
-    [*] -> MAIN_MENU_1
-    state MAIN_MENU_1
-    state MAIN_MENU_2
+    [*] -> CURRENT_TIME
+    state CURRENT_TIME
+    state MAIN_MENU__SOLAR_STATS
+    state MAIN_MENU__BATTERY_STATS
+
+    state SOLAR_STATS {
+        [*] -> SOLAR_STATS_1
+        state SOLAR_STATS_1
+        state SOLAR_STATS__SOLAR_STATS_2
+        state SOLAR_STATS_3
+
+        state SOLAR_STATS_2 {
+            [*] -> SS2_VOLTAGE
+            state SS2_VOLTAGE
+            state SS2_CURRENT
+        }
+    }
+    state BATTERY_STATS {
+        [*] -> BATTERY_STATS_1
+        state BATTERY_STATS_1
+        state BATTERY_STATS_2
+        state BATTERY_STATS_3
+    }
 }
 
-state SOLAR_STATS {
-    [*] -> SOLAR_STATS_1
-    state SOLAR_STATS_1
-    state SOLAR_STATS_2
-    state SOLAR_STATS_3
-}
+' MAIN_MENU
+CURRENT_TIME --> MAIN_MENU__SOLAR_STATS : DOWN
+MAIN_MENU__SOLAR_STATS --> MAIN_MENU__BATTERY_STATS : DOWN
+MAIN_MENU__BATTERY_STATS --> MAIN_MENU__SOLAR_STATS : UP
+MAIN_MENU__SOLAR_STATS --> CURRENT_TIME : UP
 
-state BATTERY_STATS {
-    [*] -> BATTERY_STATS_1
-    state BATTERY_STATS_1
-    state BATTERY_STATS_2
-    state BATTERY_STATS_3
-}
+' SOLAR_STATS
+MAIN_MENU__SOLAR_STATS -> SOLAR_STATS : RIGHT
+SOLAR_STATS -> MAIN_MENU__SOLAR_STATS : LEFT
+SOLAR_STATS_1 --> SOLAR_STATS__SOLAR_STATS_2 : DOWN
+SOLAR_STATS__SOLAR_STATS_2 --> SOLAR_STATS_3 : DOWN
+SOLAR_STATS_3 --> SOLAR_STATS__SOLAR_STATS_2 : UP
+SOLAR_STATS__SOLAR_STATS_2 --> SOLAR_STATS_1 : UP
+
+' SOLAR_STATS_2
+SOLAR_STATS__SOLAR_STATS_2 -> SOLAR_STATS_2 : RIGHT
+SOLAR_STATS_2 -> SOLAR_STATS__SOLAR_STATS_2 : LEFT
+SS2_VOLTAGE --> SS2_CURRENT : DOWN
+SS2_CURRENT --> SS2_VOLTAGE : UP
+
+' BATTERY_STATS
+MAIN_MENU__BATTERY_STATS -> BATTERY_STATS : RIGHT
+BATTERY_STATS -> MAIN_MENU__BATTERY_STATS : LEFT
+BATTERY_STATS_1 --> BATTERY_STATS_2 : DOWN
+BATTERY_STATS_2 --> BATTERY_STATS_3 : DOWN
+BATTERY_STATS_3 --> BATTERY_STATS_2 : UP
+BATTERY_STATS_2 --> BATTERY_STATS_1 : UP
+
+
+'EVENT HANDLERS
+CURRENT_TIME: enter / show_CURRENT_TIME();
+MAIN_MENU__SOLAR_STATS: enter / show_MAIN_MENU__SOLAR_STATS();
+SOLAR_STATS_1: enter / show_SOLAR_STATS_1();
+SOLAR_STATS__SOLAR_STATS_2: enter / show_SOLAR_STATS__SOLAR_STATS_2();
+SS2_VOLTAGE: enter / show_SS2_VOLTAGE();
+SS2_CURRENT: enter / show_SS2_CURRENT();
+SOLAR_STATS_3: enter / show_SOLAR_STATS_3();
+MAIN_MENU__BATTERY_STATS: enter / show_MAIN_MENU__BATTERY_STATS();
+BATTERY_STATS_1: enter / show_BATTERY_STATS_1();
+BATTERY_STATS_2: enter / show_BATTERY_STATS_2();
+BATTERY_STATS_3: enter / show_BATTERY_STATS_3();
+
+
+'MENU POSITION HANDLERS
+CURRENT_TIME: enter / menu_at_top();
+MAIN_MENU__SOLAR_STATS: enter / menu_in_middle();
+MAIN_MENU__BATTERY_STATS: enter / menu_at_bottom();
+SOLAR_STATS_1: enter / menu_at_top();
+SOLAR_STATS__SOLAR_STATS_2: enter / menu_in_middle();
+SOLAR_STATS_3: enter / menu_at_bottom();
+SS2_VOLTAGE: enter / menu_at_top();
+SS2_CURRENT: enter / menu_at_bottom();
+BATTERY_STATS_1: enter / menu_at_top();
+BATTERY_STATS_2: enter / menu_in_middle();
+BATTERY_STATS_3: enter / menu_at_bottom();
+
+
+
+' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ GEN END ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 [*] -> SPLASH
-
-' ///////////////////////// STATE HANDLERS /////////////////////////
-' Syntax: https://github.com/StateSmith/StateSmith/wiki/Behaviors
 
 SPLASH -right-> HOME: RIGHT
 
 HOME -right-> MAIN_MENU: RIGHT
 MAIN_MENU -left-> HOME: LEFT
 
-MAIN_MENU_1 -down-> MAIN_MENU_2: DOWN
-MAIN_MENU_2 -up-> MAIN_MENU_1: UP
-
-MAIN_MENU_1 -right-> SOLAR_STATS: RIGHT
-SOLAR_STATS -left-> MAIN_MENU_1: LEFT
-
-MAIN_MENU_2 -right-> BATTERY_STATS: RIGHT
-BATTERY_STATS -left-> MAIN_MENU_2: LEFT
-
-SOLAR_STATS_1 -down-> SOLAR_STATS_2: DOWN
-SOLAR_STATS_2 -down-> SOLAR_STATS_3: DOWN
-SOLAR_STATS_3 -up-> SOLAR_STATS_2: UP
-SOLAR_STATS_2 -up-> SOLAR_STATS_1: UP
-
-BATTERY_STATS_1 -down-> BATTERY_STATS_2: DOWN
-BATTERY_STATS_2 -down-> BATTERY_STATS_3: DOWN
-BATTERY_STATS_3 -up-> BATTERY_STATS_2: UP
-BATTERY_STATS_2 -up-> BATTERY_STATS_1: UP
 
 SPLASH: enter / show_splash();
 HOME: enter / show_home();
-MAIN_MENU_1: enter / show_main_menu1();
-MAIN_MENU_2: enter / show_main_menu2();
-SOLAR_STATS_1: enter / show_solar_stats1();
-SOLAR_STATS_2: enter / show_solar_stats2();
-SOLAR_STATS_3: enter / show_solar_stats3();
-BATTERY_STATS_1: enter / show_battery_stats1();
-BATTERY_STATS_2: enter / show_battery_stats2();
-BATTERY_STATS_3: enter / show_battery_stats3();
 
 
 ' //////////////////////// StateSmith config ////////////////////////

@@ -232,65 +232,111 @@ state MAIN_MENU {
 
         state "$initial_state" as MAIN_MENU.(InitialState)
 
-        MAIN_MENU_1
+        CURRENT_TIME
 
-        MAIN_MENU_1 : MAIN_MENU_1
+        CURRENT_TIME : CURRENT_TIME
 
-        MAIN_MENU_1 : enter / #123; show_main_menu1()#59; #125;
+        CURRENT_TIME : enter / #123; show_CURRENT_TIME()#59; #125;
 
-        MAIN_MENU_2
+        CURRENT_TIME : enter / #123; menu_at_top()#59; #125;
 
-        MAIN_MENU_2 : MAIN_MENU_2
+        MAIN_MENU__SOLAR_STATS
 
-        MAIN_MENU_2 : enter / #123; show_main_menu2()#59; #125;
+        MAIN_MENU__SOLAR_STATS : MAIN_MENU__SOLAR_STATS
 
-}
+        MAIN_MENU__SOLAR_STATS : enter / #123; show_MAIN_MENU__SOLAR_STATS()#59; #125;
 
-state SOLAR_STATS {
+        MAIN_MENU__SOLAR_STATS : enter / #123; menu_in_middle()#59; #125;
 
-        state "$initial_state" as SOLAR_STATS.(InitialState)
+        MAIN_MENU__BATTERY_STATS
 
-        SOLAR_STATS_1
+        MAIN_MENU__BATTERY_STATS : MAIN_MENU__BATTERY_STATS
 
-        SOLAR_STATS_1 : SOLAR_STATS_1
+        MAIN_MENU__BATTERY_STATS : enter / #123; show_MAIN_MENU__BATTERY_STATS()#59; #125;
 
-        SOLAR_STATS_1 : enter / #123; show_solar_stats1()#59; #125;
+        MAIN_MENU__BATTERY_STATS : enter / #123; menu_at_bottom()#59; #125;
 
-        SOLAR_STATS_2
+        state SOLAR_STATS {
 
-        SOLAR_STATS_2 : SOLAR_STATS_2
+                state "$initial_state" as SOLAR_STATS.(InitialState)
 
-        SOLAR_STATS_2 : enter / #123; show_solar_stats2()#59; #125;
+                SOLAR_STATS_1
 
-        SOLAR_STATS_3
+                SOLAR_STATS_1 : SOLAR_STATS_1
 
-        SOLAR_STATS_3 : SOLAR_STATS_3
+                SOLAR_STATS_1 : enter / #123; show_SOLAR_STATS_1()#59; #125;
 
-        SOLAR_STATS_3 : enter / #123; show_solar_stats3()#59; #125;
+                SOLAR_STATS_1 : enter / #123; menu_at_top()#59; #125;
 
-}
+                SOLAR_STATS__SOLAR_STATS_2
 
-state BATTERY_STATS {
+                SOLAR_STATS__SOLAR_STATS_2 : SOLAR_STATS__SOLAR_STATS_2
 
-        state "$initial_state" as BATTERY_STATS.(InitialState)
+                SOLAR_STATS__SOLAR_STATS_2 : enter / #123; show_SOLAR_STATS__SOLAR_STATS_2()#59; #125;
 
-        BATTERY_STATS_1
+                SOLAR_STATS__SOLAR_STATS_2 : enter / #123; menu_in_middle()#59; #125;
 
-        BATTERY_STATS_1 : BATTERY_STATS_1
+                SOLAR_STATS_3
 
-        BATTERY_STATS_1 : enter / #123; show_battery_stats1()#59; #125;
+                SOLAR_STATS_3 : SOLAR_STATS_3
 
-        BATTERY_STATS_2
+                SOLAR_STATS_3 : enter / #123; show_SOLAR_STATS_3()#59; #125;
 
-        BATTERY_STATS_2 : BATTERY_STATS_2
+                SOLAR_STATS_3 : enter / #123; menu_at_bottom()#59; #125;
 
-        BATTERY_STATS_2 : enter / #123; show_battery_stats2()#59; #125;
+                state SOLAR_STATS_2 {
 
-        BATTERY_STATS_3
+                        state "$initial_state" as SOLAR_STATS_2.(InitialState)
 
-        BATTERY_STATS_3 : BATTERY_STATS_3
+                        SS2_VOLTAGE
 
-        BATTERY_STATS_3 : enter / #123; show_battery_stats3()#59; #125;
+                        SS2_VOLTAGE : SS2_VOLTAGE
+
+                        SS2_VOLTAGE : enter / #123; show_SS2_VOLTAGE()#59; #125;
+
+                        SS2_VOLTAGE : enter / #123; menu_at_top()#59; #125;
+
+                        SS2_CURRENT
+
+                        SS2_CURRENT : SS2_CURRENT
+
+                        SS2_CURRENT : enter / #123; show_SS2_CURRENT()#59; #125;
+
+                        SS2_CURRENT : enter / #123; menu_at_bottom()#59; #125;
+
+                }
+
+        }
+
+        state BATTERY_STATS {
+
+                state "$initial_state" as BATTERY_STATS.(InitialState)
+
+                BATTERY_STATS_1
+
+                BATTERY_STATS_1 : BATTERY_STATS_1
+
+                BATTERY_STATS_1 : enter / #123; show_BATTERY_STATS_1()#59; #125;
+
+                BATTERY_STATS_1 : enter / #123; menu_at_top()#59; #125;
+
+                BATTERY_STATS_2
+
+                BATTERY_STATS_2 : BATTERY_STATS_2
+
+                BATTERY_STATS_2 : enter / #123; show_BATTERY_STATS_2()#59; #125;
+
+                BATTERY_STATS_2 : enter / #123; menu_in_middle()#59; #125;
+
+                BATTERY_STATS_3
+
+                BATTERY_STATS_3 : BATTERY_STATS_3
+
+                BATTERY_STATS_3 : enter / #123; show_BATTERY_STATS_3()#59; #125;
+
+                BATTERY_STATS_3 : enter / #123; menu_at_bottom()#59; #125;
+
+        }
 
 }
 
@@ -302,29 +348,43 @@ HOME --> MAIN_MENU : RIGHT
 
 MAIN_MENU --> HOME : LEFT
 
-MAIN_MENU.(InitialState) --> MAIN_MENU_1
+MAIN_MENU.(InitialState) --> CURRENT_TIME
 
-MAIN_MENU_1 --> MAIN_MENU_2 : DOWN
+CURRENT_TIME --> MAIN_MENU__SOLAR_STATS : DOWN
 
-MAIN_MENU_1 --> SOLAR_STATS : RIGHT
+MAIN_MENU__SOLAR_STATS --> MAIN_MENU__BATTERY_STATS : DOWN
 
-MAIN_MENU_2 --> MAIN_MENU_1 : UP
+MAIN_MENU__SOLAR_STATS --> CURRENT_TIME : UP
 
-MAIN_MENU_2 --> BATTERY_STATS : RIGHT
+MAIN_MENU__SOLAR_STATS --> SOLAR_STATS : RIGHT
 
-SOLAR_STATS --> MAIN_MENU_1 : LEFT
+MAIN_MENU__BATTERY_STATS --> MAIN_MENU__SOLAR_STATS : UP
+
+MAIN_MENU__BATTERY_STATS --> BATTERY_STATS : RIGHT
+
+SOLAR_STATS --> MAIN_MENU__SOLAR_STATS : LEFT
 
 SOLAR_STATS.(InitialState) --> SOLAR_STATS_1
 
-SOLAR_STATS_1 --> SOLAR_STATS_2 : DOWN
+SOLAR_STATS_1 --> SOLAR_STATS__SOLAR_STATS_2 : DOWN
 
-SOLAR_STATS_2 --> SOLAR_STATS_3 : DOWN
+SOLAR_STATS__SOLAR_STATS_2 --> SOLAR_STATS_3 : DOWN
 
-SOLAR_STATS_2 --> SOLAR_STATS_1 : UP
+SOLAR_STATS__SOLAR_STATS_2 --> SOLAR_STATS_1 : UP
 
-SOLAR_STATS_3 --> SOLAR_STATS_2 : UP
+SOLAR_STATS__SOLAR_STATS_2 --> SOLAR_STATS_2 : RIGHT
 
-BATTERY_STATS --> MAIN_MENU_2 : LEFT
+SOLAR_STATS_3 --> SOLAR_STATS__SOLAR_STATS_2 : UP
+
+SOLAR_STATS_2 --> SOLAR_STATS__SOLAR_STATS_2 : LEFT
+
+SOLAR_STATS_2.(InitialState) --> SS2_VOLTAGE
+
+SS2_VOLTAGE --> SS2_CURRENT : DOWN
+
+SS2_CURRENT --> SS2_VOLTAGE : UP
+
+BATTERY_STATS --> MAIN_MENU__BATTERY_STATS : LEFT
 
 BATTERY_STATS.(InitialState) --> BATTERY_STATS_1
 
@@ -394,23 +454,27 @@ evaluateGuard = null;
     static StateId = 
     {
         ROOT : 0,
-        BATTERY_STATS : 1,
-        BATTERY_STATS_1 : 2,
-        BATTERY_STATS_2 : 3,
-        BATTERY_STATS_3 : 4,
-        HOME : 5,
-        MAIN_MENU : 6,
-        MAIN_MENU_1 : 7,
-        MAIN_MENU_2 : 8,
-        SOLAR_STATS : 9,
-        SOLAR_STATS_1 : 10,
-        SOLAR_STATS_2 : 11,
-        SOLAR_STATS_3 : 12,
-        SPLASH : 13,
+        HOME : 1,
+        MAIN_MENU : 2,
+        BATTERY_STATS : 3,
+        BATTERY_STATS_1 : 4,
+        BATTERY_STATS_2 : 5,
+        BATTERY_STATS_3 : 6,
+        CURRENT_TIME : 7,
+        MAIN_MENU__BATTERY_STATS : 8,
+        MAIN_MENU__SOLAR_STATS : 9,
+        SOLAR_STATS : 10,
+        SOLAR_STATS__SOLAR_STATS_2 : 11,
+        SOLAR_STATS_1 : 12,
+        SOLAR_STATS_2 : 13,
+        SS2_CURRENT : 14,
+        SS2_VOLTAGE : 15,
+        SOLAR_STATS_3 : 16,
+        SPLASH : 17,
     }
     static { Object.freeze(this.StateId); }
     
-    static StateIdCount = 14;
+    static StateIdCount = 18;
     static { Object.freeze(this.StateIdCount); }
     
     // Used internally by state machine. Feel free to inspect, but don't modify.
@@ -440,12 +504,12 @@ evaluateGuard = null;
             // ROOT.<InitialState> is a pseudo state and cannot have an `enter` trigger.
             
             // ROOT.<InitialState> behavior
-            // uml: / { this.tracer?.edgeTransition("edge20"); } TransitionTo(SPLASH)
+            // uml: / { this.tracer?.edgeTransition("edge27"); } TransitionTo(SPLASH)
             {
                 // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
-                // Step 2: Transition action: `this.tracer?.edgeTransition("edge20");`.
-                this.tracer?.edgeTransition("edge20");
+                // Step 2: Transition action: `this.tracer?.edgeTransition("edge27");`.
+                this.tracer?.edgeTransition("edge27");
                 
                 // Step 3: Enter/move towards transition target `SPLASH`.
                 this.#SPLASH_enter();
@@ -494,277 +558,6 @@ evaluateGuard = null;
     
     #ROOT_exit()
     {
-    }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state BATTERY_STATS
-    ////////////////////////////////////////////////////////////////////////////////
-    
-    #BATTERY_STATS_enter()
-    {
-        // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#BATTERY_STATS_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.LEFT] = this.#BATTERY_STATS_left;
-        
-        // BATTERY_STATS behavior
-        // uml: enter / { this.tracer?.enterState('BATTERY_STATS'); }
-        {
-            // Step 1: execute action `this.tracer?.enterState('BATTERY_STATS');`
-            this.tracer?.enterState('BATTERY_STATS');
-        } // end of behavior for BATTERY_STATS
-    }
-    
-    #BATTERY_STATS_exit()
-    {
-        // BATTERY_STATS behavior
-        // uml: exit / { this.tracer?.exitState('BATTERY_STATS'); }
-        {
-            // Step 1: execute action `this.tracer?.exitState('BATTERY_STATS');`
-            this.tracer?.exitState('BATTERY_STATS');
-        } // end of behavior for BATTERY_STATS
-        
-        // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#ROOT_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.LEFT] = null;  // no ancestor listens to this event
-    }
-    
-    #BATTERY_STATS_left()
-    {
-        // No ancestor state handles `left` event.
-        
-        // BATTERY_STATS behavior
-        // uml: LEFT / { this.tracer?.edgeTransition("edge14"); } TransitionTo(MAIN_MENU_2)
-        {
-            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-            this.#exitUpToStateHandler(this.#ROOT_exit);
-            
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge14");`.
-            this.tracer?.edgeTransition("edge14");
-            
-            // Step 3: Enter/move towards transition target `MAIN_MENU_2`.
-            this.#MAIN_MENU_enter();
-            this.#MAIN_MENU_2_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.MAIN_MENU_2;
-            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
-            return;
-        } // end of behavior for BATTERY_STATS
-    }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state BATTERY_STATS_1
-    ////////////////////////////////////////////////////////////////////////////////
-    
-    #BATTERY_STATS_1_enter()
-    {
-        // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#BATTERY_STATS_1_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#BATTERY_STATS_1_down;
-        
-        // BATTERY_STATS_1 behavior
-        // uml: enter / { this.tracer?.enterState('BATTERY_STATS_1'); }
-        {
-            // Step 1: execute action `this.tracer?.enterState('BATTERY_STATS_1');`
-            this.tracer?.enterState('BATTERY_STATS_1');
-        } // end of behavior for BATTERY_STATS_1
-        
-        // BATTERY_STATS_1 behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats1();"); }
-        {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats1();");`
-            this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats1();");
-        } // end of behavior for BATTERY_STATS_1
-    }
-    
-    #BATTERY_STATS_1_exit()
-    {
-        // BATTERY_STATS_1 behavior
-        // uml: exit / { this.tracer?.exitState('BATTERY_STATS_1'); }
-        {
-            // Step 1: execute action `this.tracer?.exitState('BATTERY_STATS_1');`
-            this.tracer?.exitState('BATTERY_STATS_1');
-        } // end of behavior for BATTERY_STATS_1
-        
-        // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#BATTERY_STATS_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
-    }
-    
-    #BATTERY_STATS_1_down()
-    {
-        // No ancestor state handles `down` event.
-        
-        // BATTERY_STATS_1 behavior
-        // uml: DOWN / { this.tracer?.edgeTransition("edge16"); } TransitionTo(BATTERY_STATS_2)
-        {
-            // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition).
-            this.#BATTERY_STATS_1_exit();
-            
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge16");`.
-            this.tracer?.edgeTransition("edge16");
-            
-            // Step 3: Enter/move towards transition target `BATTERY_STATS_2`.
-            this.#BATTERY_STATS_2_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.BATTERY_STATS_2;
-            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
-            return;
-        } // end of behavior for BATTERY_STATS_1
-    }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state BATTERY_STATS_2
-    ////////////////////////////////////////////////////////////////////////////////
-    
-    #BATTERY_STATS_2_enter()
-    {
-        // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#BATTERY_STATS_2_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#BATTERY_STATS_2_down;
-        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#BATTERY_STATS_2_up;
-        
-        // BATTERY_STATS_2 behavior
-        // uml: enter / { this.tracer?.enterState('BATTERY_STATS_2'); }
-        {
-            // Step 1: execute action `this.tracer?.enterState('BATTERY_STATS_2');`
-            this.tracer?.enterState('BATTERY_STATS_2');
-        } // end of behavior for BATTERY_STATS_2
-        
-        // BATTERY_STATS_2 behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats2();"); }
-        {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats2();");`
-            this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats2();");
-        } // end of behavior for BATTERY_STATS_2
-    }
-    
-    #BATTERY_STATS_2_exit()
-    {
-        // BATTERY_STATS_2 behavior
-        // uml: exit / { this.tracer?.exitState('BATTERY_STATS_2'); }
-        {
-            // Step 1: execute action `this.tracer?.exitState('BATTERY_STATS_2');`
-            this.tracer?.exitState('BATTERY_STATS_2');
-        } // end of behavior for BATTERY_STATS_2
-        
-        // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#BATTERY_STATS_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
-        this.#currentEventHandlers[SolarUiSm.EventId.UP] = null;  // no ancestor listens to this event
-    }
-    
-    #BATTERY_STATS_2_down()
-    {
-        // No ancestor state handles `down` event.
-        
-        // BATTERY_STATS_2 behavior
-        // uml: DOWN / { this.tracer?.edgeTransition("edge17"); } TransitionTo(BATTERY_STATS_3)
-        {
-            // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition).
-            this.#BATTERY_STATS_2_exit();
-            
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge17");`.
-            this.tracer?.edgeTransition("edge17");
-            
-            // Step 3: Enter/move towards transition target `BATTERY_STATS_3`.
-            this.#BATTERY_STATS_3_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.BATTERY_STATS_3;
-            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
-            return;
-        } // end of behavior for BATTERY_STATS_2
-    }
-    
-    #BATTERY_STATS_2_up()
-    {
-        // No ancestor state handles `up` event.
-        
-        // BATTERY_STATS_2 behavior
-        // uml: UP / { this.tracer?.edgeTransition("edge18"); } TransitionTo(BATTERY_STATS_1)
-        {
-            // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition).
-            this.#BATTERY_STATS_2_exit();
-            
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge18");`.
-            this.tracer?.edgeTransition("edge18");
-            
-            // Step 3: Enter/move towards transition target `BATTERY_STATS_1`.
-            this.#BATTERY_STATS_1_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.BATTERY_STATS_1;
-            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
-            return;
-        } // end of behavior for BATTERY_STATS_2
-    }
-    
-    
-    ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state BATTERY_STATS_3
-    ////////////////////////////////////////////////////////////////////////////////
-    
-    #BATTERY_STATS_3_enter()
-    {
-        // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#BATTERY_STATS_3_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#BATTERY_STATS_3_up;
-        
-        // BATTERY_STATS_3 behavior
-        // uml: enter / { this.tracer?.enterState('BATTERY_STATS_3'); }
-        {
-            // Step 1: execute action `this.tracer?.enterState('BATTERY_STATS_3');`
-            this.tracer?.enterState('BATTERY_STATS_3');
-        } // end of behavior for BATTERY_STATS_3
-        
-        // BATTERY_STATS_3 behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats3();"); }
-        {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats3();");`
-            this.tracer?.log("⚡ FSM would execute action: " + "show_battery_stats3();");
-        } // end of behavior for BATTERY_STATS_3
-    }
-    
-    #BATTERY_STATS_3_exit()
-    {
-        // BATTERY_STATS_3 behavior
-        // uml: exit / { this.tracer?.exitState('BATTERY_STATS_3'); }
-        {
-            // Step 1: execute action `this.tracer?.exitState('BATTERY_STATS_3');`
-            this.tracer?.exitState('BATTERY_STATS_3');
-        } // end of behavior for BATTERY_STATS_3
-        
-        // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#BATTERY_STATS_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.UP] = null;  // no ancestor listens to this event
-    }
-    
-    #BATTERY_STATS_3_up()
-    {
-        // No ancestor state handles `up` event.
-        
-        // BATTERY_STATS_3 behavior
-        // uml: UP / { this.tracer?.edgeTransition("edge19"); } TransitionTo(BATTERY_STATS_2)
-        {
-            // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition).
-            this.#BATTERY_STATS_3_exit();
-            
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge19");`.
-            this.tracer?.edgeTransition("edge19");
-            
-            // Step 3: Enter/move towards transition target `BATTERY_STATS_2`.
-            this.#BATTERY_STATS_2_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.BATTERY_STATS_2;
-            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
-            return;
-        } // end of behavior for BATTERY_STATS_3
     }
     
     
@@ -824,18 +617,18 @@ evaluateGuard = null;
             this.#MAIN_MENU_enter();
             
             // MAIN_MENU.<InitialState> behavior
-            // uml: / { this.tracer?.edgeTransition("edge3"); } TransitionTo(MAIN_MENU_1)
+            // uml: / { this.tracer?.edgeTransition("edge3"); } TransitionTo(CURRENT_TIME)
             {
                 // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
                 // Step 2: Transition action: `this.tracer?.edgeTransition("edge3");`.
                 this.tracer?.edgeTransition("edge3");
                 
-                // Step 3: Enter/move towards transition target `MAIN_MENU_1`.
-                this.#MAIN_MENU_1_enter();
+                // Step 3: Enter/move towards transition target `CURRENT_TIME`.
+                this.#CURRENT_TIME_enter();
                 
                 // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-                this.stateId = SolarUiSm.StateId.MAIN_MENU_1;
+                this.stateId = SolarUiSm.StateId.CURRENT_TIME;
                 // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
                 return;
             } // end of behavior for MAIN_MENU.<InitialState>
@@ -900,139 +693,408 @@ evaluateGuard = null;
     
     
     ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state MAIN_MENU_1
+    // event handlers for state BATTERY_STATS
     ////////////////////////////////////////////////////////////////////////////////
     
-    #MAIN_MENU_1_enter()
+    #BATTERY_STATS_enter()
     {
         // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#MAIN_MENU_1_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#MAIN_MENU_1_down;
-        this.#currentEventHandlers[SolarUiSm.EventId.RIGHT] = this.#MAIN_MENU_1_right;
+        this.#currentStateExitHandler = this.#BATTERY_STATS_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.LEFT] = this.#BATTERY_STATS_left;
         
-        // MAIN_MENU_1 behavior
-        // uml: enter / { this.tracer?.enterState('MAIN_MENU_1'); }
+        // BATTERY_STATS behavior
+        // uml: enter / { this.tracer?.enterState('BATTERY_STATS'); }
         {
-            // Step 1: execute action `this.tracer?.enterState('MAIN_MENU_1');`
-            this.tracer?.enterState('MAIN_MENU_1');
-        } // end of behavior for MAIN_MENU_1
-        
-        // MAIN_MENU_1 behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_main_menu1();"); }
-        {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_main_menu1();");`
-            this.tracer?.log("⚡ FSM would execute action: " + "show_main_menu1();");
-        } // end of behavior for MAIN_MENU_1
+            // Step 1: execute action `this.tracer?.enterState('BATTERY_STATS');`
+            this.tracer?.enterState('BATTERY_STATS');
+        } // end of behavior for BATTERY_STATS
     }
     
-    #MAIN_MENU_1_exit()
+    #BATTERY_STATS_exit()
     {
-        // MAIN_MENU_1 behavior
-        // uml: exit / { this.tracer?.exitState('MAIN_MENU_1'); }
+        // BATTERY_STATS behavior
+        // uml: exit / { this.tracer?.exitState('BATTERY_STATS'); }
         {
-            // Step 1: execute action `this.tracer?.exitState('MAIN_MENU_1');`
-            this.tracer?.exitState('MAIN_MENU_1');
-        } // end of behavior for MAIN_MENU_1
+            // Step 1: execute action `this.tracer?.exitState('BATTERY_STATS');`
+            this.tracer?.exitState('BATTERY_STATS');
+        } // end of behavior for BATTERY_STATS
+        
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#MAIN_MENU_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.LEFT] = this.#MAIN_MENU_left;  // the next ancestor that handles this event is MAIN_MENU
+    }
+    
+    #BATTERY_STATS_left()
+    {
+        // Setup handler for next ancestor that listens to `left` event.
+        this.#ancestorEventHandler = this.#MAIN_MENU_left;
+        
+        // BATTERY_STATS behavior
+        // uml: LEFT / { this.tracer?.edgeTransition("edge21"); } TransitionTo(MAIN_MENU__BATTERY_STATS)
+        {
+            // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition).
+            this.#exitUpToStateHandler(this.#MAIN_MENU_exit);
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge21");`.
+            this.tracer?.edgeTransition("edge21");
+            
+            // Step 3: Enter/move towards transition target `MAIN_MENU__BATTERY_STATS`.
+            this.#MAIN_MENU__BATTERY_STATS_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.MAIN_MENU__BATTERY_STATS;
+            this.#ancestorEventHandler = null;
+            return;
+        } // end of behavior for BATTERY_STATS
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state BATTERY_STATS_1
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #BATTERY_STATS_1_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#BATTERY_STATS_1_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#BATTERY_STATS_1_down;
+        
+        // BATTERY_STATS_1 behavior
+        // uml: enter / { this.tracer?.enterState('BATTERY_STATS_1'); }
+        {
+            // Step 1: execute action `this.tracer?.enterState('BATTERY_STATS_1');`
+            this.tracer?.enterState('BATTERY_STATS_1');
+        } // end of behavior for BATTERY_STATS_1
+        
+        // BATTERY_STATS_1 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_1();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_1();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_1();");
+        } // end of behavior for BATTERY_STATS_1
+        
+        // BATTERY_STATS_1 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();");
+        } // end of behavior for BATTERY_STATS_1
+    }
+    
+    #BATTERY_STATS_1_exit()
+    {
+        // BATTERY_STATS_1 behavior
+        // uml: exit / { this.tracer?.exitState('BATTERY_STATS_1'); }
+        {
+            // Step 1: execute action `this.tracer?.exitState('BATTERY_STATS_1');`
+            this.tracer?.exitState('BATTERY_STATS_1');
+        } // end of behavior for BATTERY_STATS_1
+        
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#BATTERY_STATS_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
+    }
+    
+    #BATTERY_STATS_1_down()
+    {
+        // No ancestor state handles `down` event.
+        
+        // BATTERY_STATS_1 behavior
+        // uml: DOWN / { this.tracer?.edgeTransition("edge23"); } TransitionTo(BATTERY_STATS_2)
+        {
+            // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition).
+            this.#BATTERY_STATS_1_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge23");`.
+            this.tracer?.edgeTransition("edge23");
+            
+            // Step 3: Enter/move towards transition target `BATTERY_STATS_2`.
+            this.#BATTERY_STATS_2_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.BATTERY_STATS_2;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for BATTERY_STATS_1
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state BATTERY_STATS_2
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #BATTERY_STATS_2_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#BATTERY_STATS_2_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#BATTERY_STATS_2_down;
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#BATTERY_STATS_2_up;
+        
+        // BATTERY_STATS_2 behavior
+        // uml: enter / { this.tracer?.enterState('BATTERY_STATS_2'); }
+        {
+            // Step 1: execute action `this.tracer?.enterState('BATTERY_STATS_2');`
+            this.tracer?.enterState('BATTERY_STATS_2');
+        } // end of behavior for BATTERY_STATS_2
+        
+        // BATTERY_STATS_2 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_2();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_2();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_2();");
+        } // end of behavior for BATTERY_STATS_2
+        
+        // BATTERY_STATS_2 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();");
+        } // end of behavior for BATTERY_STATS_2
+    }
+    
+    #BATTERY_STATS_2_exit()
+    {
+        // BATTERY_STATS_2 behavior
+        // uml: exit / { this.tracer?.exitState('BATTERY_STATS_2'); }
+        {
+            // Step 1: execute action `this.tracer?.exitState('BATTERY_STATS_2');`
+            this.tracer?.exitState('BATTERY_STATS_2');
+        } // end of behavior for BATTERY_STATS_2
+        
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#BATTERY_STATS_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = null;  // no ancestor listens to this event
+    }
+    
+    #BATTERY_STATS_2_down()
+    {
+        // No ancestor state handles `down` event.
+        
+        // BATTERY_STATS_2 behavior
+        // uml: DOWN / { this.tracer?.edgeTransition("edge24"); } TransitionTo(BATTERY_STATS_3)
+        {
+            // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition).
+            this.#BATTERY_STATS_2_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge24");`.
+            this.tracer?.edgeTransition("edge24");
+            
+            // Step 3: Enter/move towards transition target `BATTERY_STATS_3`.
+            this.#BATTERY_STATS_3_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.BATTERY_STATS_3;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for BATTERY_STATS_2
+    }
+    
+    #BATTERY_STATS_2_up()
+    {
+        // No ancestor state handles `up` event.
+        
+        // BATTERY_STATS_2 behavior
+        // uml: UP / { this.tracer?.edgeTransition("edge25"); } TransitionTo(BATTERY_STATS_1)
+        {
+            // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition).
+            this.#BATTERY_STATS_2_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge25");`.
+            this.tracer?.edgeTransition("edge25");
+            
+            // Step 3: Enter/move towards transition target `BATTERY_STATS_1`.
+            this.#BATTERY_STATS_1_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.BATTERY_STATS_1;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for BATTERY_STATS_2
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state BATTERY_STATS_3
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #BATTERY_STATS_3_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#BATTERY_STATS_3_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#BATTERY_STATS_3_up;
+        
+        // BATTERY_STATS_3 behavior
+        // uml: enter / { this.tracer?.enterState('BATTERY_STATS_3'); }
+        {
+            // Step 1: execute action `this.tracer?.enterState('BATTERY_STATS_3');`
+            this.tracer?.enterState('BATTERY_STATS_3');
+        } // end of behavior for BATTERY_STATS_3
+        
+        // BATTERY_STATS_3 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_3();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_3();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_BATTERY_STATS_3();");
+        } // end of behavior for BATTERY_STATS_3
+        
+        // BATTERY_STATS_3 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();");
+        } // end of behavior for BATTERY_STATS_3
+    }
+    
+    #BATTERY_STATS_3_exit()
+    {
+        // BATTERY_STATS_3 behavior
+        // uml: exit / { this.tracer?.exitState('BATTERY_STATS_3'); }
+        {
+            // Step 1: execute action `this.tracer?.exitState('BATTERY_STATS_3');`
+            this.tracer?.exitState('BATTERY_STATS_3');
+        } // end of behavior for BATTERY_STATS_3
+        
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#BATTERY_STATS_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = null;  // no ancestor listens to this event
+    }
+    
+    #BATTERY_STATS_3_up()
+    {
+        // No ancestor state handles `up` event.
+        
+        // BATTERY_STATS_3 behavior
+        // uml: UP / { this.tracer?.edgeTransition("edge26"); } TransitionTo(BATTERY_STATS_2)
+        {
+            // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition).
+            this.#BATTERY_STATS_3_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge26");`.
+            this.tracer?.edgeTransition("edge26");
+            
+            // Step 3: Enter/move towards transition target `BATTERY_STATS_2`.
+            this.#BATTERY_STATS_2_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.BATTERY_STATS_2;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for BATTERY_STATS_3
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state CURRENT_TIME
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #CURRENT_TIME_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#CURRENT_TIME_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#CURRENT_TIME_down;
+        
+        // CURRENT_TIME behavior
+        // uml: enter / { this.tracer?.enterState('CURRENT_TIME'); }
+        {
+            // Step 1: execute action `this.tracer?.enterState('CURRENT_TIME');`
+            this.tracer?.enterState('CURRENT_TIME');
+        } // end of behavior for CURRENT_TIME
+        
+        // CURRENT_TIME behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_CURRENT_TIME();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_CURRENT_TIME();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_CURRENT_TIME();");
+        } // end of behavior for CURRENT_TIME
+        
+        // CURRENT_TIME behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();");
+        } // end of behavior for CURRENT_TIME
+    }
+    
+    #CURRENT_TIME_exit()
+    {
+        // CURRENT_TIME behavior
+        // uml: exit / { this.tracer?.exitState('CURRENT_TIME'); }
+        {
+            // Step 1: execute action `this.tracer?.exitState('CURRENT_TIME');`
+            this.tracer?.exitState('CURRENT_TIME');
+        } // end of behavior for CURRENT_TIME
         
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#MAIN_MENU_exit;
         this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
-        this.#currentEventHandlers[SolarUiSm.EventId.RIGHT] = null;  // no ancestor listens to this event
     }
     
-    #MAIN_MENU_1_down()
+    #CURRENT_TIME_down()
     {
         // No ancestor state handles `down` event.
         
-        // MAIN_MENU_1 behavior
-        // uml: DOWN / { this.tracer?.edgeTransition("edge4"); } TransitionTo(MAIN_MENU_2)
+        // CURRENT_TIME behavior
+        // uml: DOWN / { this.tracer?.edgeTransition("edge4"); } TransitionTo(MAIN_MENU__SOLAR_STATS)
         {
             // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition).
-            this.#MAIN_MENU_1_exit();
+            this.#CURRENT_TIME_exit();
             
             // Step 2: Transition action: `this.tracer?.edgeTransition("edge4");`.
             this.tracer?.edgeTransition("edge4");
             
-            // Step 3: Enter/move towards transition target `MAIN_MENU_2`.
-            this.#MAIN_MENU_2_enter();
+            // Step 3: Enter/move towards transition target `MAIN_MENU__SOLAR_STATS`.
+            this.#MAIN_MENU__SOLAR_STATS_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.MAIN_MENU_2;
+            this.stateId = SolarUiSm.StateId.MAIN_MENU__SOLAR_STATS;
             // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
             return;
-        } // end of behavior for MAIN_MENU_1
-    }
-    
-    #MAIN_MENU_1_right()
-    {
-        // No ancestor state handles `right` event.
-        
-        // MAIN_MENU_1 behavior
-        // uml: RIGHT / { this.tracer?.edgeTransition("edge5"); } TransitionTo(SOLAR_STATS)
-        {
-            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-            this.#exitUpToStateHandler(this.#ROOT_exit);
-            
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge5");`.
-            this.tracer?.edgeTransition("edge5");
-            
-            // Step 3: Enter/move towards transition target `SOLAR_STATS`.
-            this.#SOLAR_STATS_enter();
-            
-            // SOLAR_STATS.<InitialState> behavior
-            // uml: / { this.tracer?.edgeTransition("edge9"); } TransitionTo(SOLAR_STATS_1)
-            {
-                // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
-                
-                // Step 2: Transition action: `this.tracer?.edgeTransition("edge9");`.
-                this.tracer?.edgeTransition("edge9");
-                
-                // Step 3: Enter/move towards transition target `SOLAR_STATS_1`.
-                this.#SOLAR_STATS_1_enter();
-                
-                // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-                this.stateId = SolarUiSm.StateId.SOLAR_STATS_1;
-                // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
-                return;
-            } // end of behavior for SOLAR_STATS.<InitialState>
-        } // end of behavior for MAIN_MENU_1
+        } // end of behavior for CURRENT_TIME
     }
     
     
     ////////////////////////////////////////////////////////////////////////////////
-    // event handlers for state MAIN_MENU_2
+    // event handlers for state MAIN_MENU__BATTERY_STATS
     ////////////////////////////////////////////////////////////////////////////////
     
-    #MAIN_MENU_2_enter()
+    #MAIN_MENU__BATTERY_STATS_enter()
     {
         // setup trigger/event handlers
-        this.#currentStateExitHandler = this.#MAIN_MENU_2_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.RIGHT] = this.#MAIN_MENU_2_right;
-        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#MAIN_MENU_2_up;
+        this.#currentStateExitHandler = this.#MAIN_MENU__BATTERY_STATS_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.RIGHT] = this.#MAIN_MENU__BATTERY_STATS_right;
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#MAIN_MENU__BATTERY_STATS_up;
         
-        // MAIN_MENU_2 behavior
-        // uml: enter / { this.tracer?.enterState('MAIN_MENU_2'); }
+        // MAIN_MENU__BATTERY_STATS behavior
+        // uml: enter / { this.tracer?.enterState('MAIN_MENU__BATTERY_STATS'); }
         {
-            // Step 1: execute action `this.tracer?.enterState('MAIN_MENU_2');`
-            this.tracer?.enterState('MAIN_MENU_2');
-        } // end of behavior for MAIN_MENU_2
+            // Step 1: execute action `this.tracer?.enterState('MAIN_MENU__BATTERY_STATS');`
+            this.tracer?.enterState('MAIN_MENU__BATTERY_STATS');
+        } // end of behavior for MAIN_MENU__BATTERY_STATS
         
-        // MAIN_MENU_2 behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_main_menu2();"); }
+        // MAIN_MENU__BATTERY_STATS behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_MAIN_MENU__BATTERY_STATS();"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_main_menu2();");`
-            this.tracer?.log("⚡ FSM would execute action: " + "show_main_menu2();");
-        } // end of behavior for MAIN_MENU_2
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_MAIN_MENU__BATTERY_STATS();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_MAIN_MENU__BATTERY_STATS();");
+        } // end of behavior for MAIN_MENU__BATTERY_STATS
+        
+        // MAIN_MENU__BATTERY_STATS behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();");
+        } // end of behavior for MAIN_MENU__BATTERY_STATS
     }
     
-    #MAIN_MENU_2_exit()
+    #MAIN_MENU__BATTERY_STATS_exit()
     {
-        // MAIN_MENU_2 behavior
-        // uml: exit / { this.tracer?.exitState('MAIN_MENU_2'); }
+        // MAIN_MENU__BATTERY_STATS behavior
+        // uml: exit / { this.tracer?.exitState('MAIN_MENU__BATTERY_STATS'); }
         {
-            // Step 1: execute action `this.tracer?.exitState('MAIN_MENU_2');`
-            this.tracer?.exitState('MAIN_MENU_2');
-        } // end of behavior for MAIN_MENU_2
+            // Step 1: execute action `this.tracer?.exitState('MAIN_MENU__BATTERY_STATS');`
+            this.tracer?.exitState('MAIN_MENU__BATTERY_STATS');
+        } // end of behavior for MAIN_MENU__BATTERY_STATS
         
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#MAIN_MENU_exit;
@@ -1040,29 +1102,29 @@ evaluateGuard = null;
         this.#currentEventHandlers[SolarUiSm.EventId.UP] = null;  // no ancestor listens to this event
     }
     
-    #MAIN_MENU_2_right()
+    #MAIN_MENU__BATTERY_STATS_right()
     {
         // No ancestor state handles `right` event.
         
-        // MAIN_MENU_2 behavior
-        // uml: RIGHT / { this.tracer?.edgeTransition("edge7"); } TransitionTo(BATTERY_STATS)
+        // MAIN_MENU__BATTERY_STATS behavior
+        // uml: RIGHT / { this.tracer?.edgeTransition("edge9"); } TransitionTo(BATTERY_STATS)
         {
-            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-            this.#exitUpToStateHandler(this.#ROOT_exit);
+            // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition).
+            this.#MAIN_MENU__BATTERY_STATS_exit();
             
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge7");`.
-            this.tracer?.edgeTransition("edge7");
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge9");`.
+            this.tracer?.edgeTransition("edge9");
             
             // Step 3: Enter/move towards transition target `BATTERY_STATS`.
             this.#BATTERY_STATS_enter();
             
             // BATTERY_STATS.<InitialState> behavior
-            // uml: / { this.tracer?.edgeTransition("edge15"); } TransitionTo(BATTERY_STATS_1)
+            // uml: / { this.tracer?.edgeTransition("edge22"); } TransitionTo(BATTERY_STATS_1)
             {
                 // Step 1: Exit states until we reach `BATTERY_STATS` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
                 
-                // Step 2: Transition action: `this.tracer?.edgeTransition("edge15");`.
-                this.tracer?.edgeTransition("edge15");
+                // Step 2: Transition action: `this.tracer?.edgeTransition("edge22");`.
+                this.tracer?.edgeTransition("edge22");
                 
                 // Step 3: Enter/move towards transition target `BATTERY_STATS_1`.
                 this.#BATTERY_STATS_1_enter();
@@ -1072,30 +1134,162 @@ evaluateGuard = null;
                 // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
                 return;
             } // end of behavior for BATTERY_STATS.<InitialState>
-        } // end of behavior for MAIN_MENU_2
+        } // end of behavior for MAIN_MENU__BATTERY_STATS
     }
     
-    #MAIN_MENU_2_up()
+    #MAIN_MENU__BATTERY_STATS_up()
     {
         // No ancestor state handles `up` event.
         
-        // MAIN_MENU_2 behavior
-        // uml: UP / { this.tracer?.edgeTransition("edge6"); } TransitionTo(MAIN_MENU_1)
+        // MAIN_MENU__BATTERY_STATS behavior
+        // uml: UP / { this.tracer?.edgeTransition("edge8"); } TransitionTo(MAIN_MENU__SOLAR_STATS)
         {
             // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition).
-            this.#MAIN_MENU_2_exit();
+            this.#MAIN_MENU__BATTERY_STATS_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge8");`.
+            this.tracer?.edgeTransition("edge8");
+            
+            // Step 3: Enter/move towards transition target `MAIN_MENU__SOLAR_STATS`.
+            this.#MAIN_MENU__SOLAR_STATS_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.MAIN_MENU__SOLAR_STATS;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for MAIN_MENU__BATTERY_STATS
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state MAIN_MENU__SOLAR_STATS
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #MAIN_MENU__SOLAR_STATS_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#MAIN_MENU__SOLAR_STATS_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#MAIN_MENU__SOLAR_STATS_down;
+        this.#currentEventHandlers[SolarUiSm.EventId.RIGHT] = this.#MAIN_MENU__SOLAR_STATS_right;
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#MAIN_MENU__SOLAR_STATS_up;
+        
+        // MAIN_MENU__SOLAR_STATS behavior
+        // uml: enter / { this.tracer?.enterState('MAIN_MENU__SOLAR_STATS'); }
+        {
+            // Step 1: execute action `this.tracer?.enterState('MAIN_MENU__SOLAR_STATS');`
+            this.tracer?.enterState('MAIN_MENU__SOLAR_STATS');
+        } // end of behavior for MAIN_MENU__SOLAR_STATS
+        
+        // MAIN_MENU__SOLAR_STATS behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_MAIN_MENU__SOLAR_STATS();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_MAIN_MENU__SOLAR_STATS();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_MAIN_MENU__SOLAR_STATS();");
+        } // end of behavior for MAIN_MENU__SOLAR_STATS
+        
+        // MAIN_MENU__SOLAR_STATS behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();");
+        } // end of behavior for MAIN_MENU__SOLAR_STATS
+    }
+    
+    #MAIN_MENU__SOLAR_STATS_exit()
+    {
+        // MAIN_MENU__SOLAR_STATS behavior
+        // uml: exit / { this.tracer?.exitState('MAIN_MENU__SOLAR_STATS'); }
+        {
+            // Step 1: execute action `this.tracer?.exitState('MAIN_MENU__SOLAR_STATS');`
+            this.tracer?.exitState('MAIN_MENU__SOLAR_STATS');
+        } // end of behavior for MAIN_MENU__SOLAR_STATS
+        
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#MAIN_MENU_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
+        this.#currentEventHandlers[SolarUiSm.EventId.RIGHT] = null;  // no ancestor listens to this event
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = null;  // no ancestor listens to this event
+    }
+    
+    #MAIN_MENU__SOLAR_STATS_down()
+    {
+        // No ancestor state handles `down` event.
+        
+        // MAIN_MENU__SOLAR_STATS behavior
+        // uml: DOWN / { this.tracer?.edgeTransition("edge5"); } TransitionTo(MAIN_MENU__BATTERY_STATS)
+        {
+            // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition).
+            this.#MAIN_MENU__SOLAR_STATS_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge5");`.
+            this.tracer?.edgeTransition("edge5");
+            
+            // Step 3: Enter/move towards transition target `MAIN_MENU__BATTERY_STATS`.
+            this.#MAIN_MENU__BATTERY_STATS_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.MAIN_MENU__BATTERY_STATS;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for MAIN_MENU__SOLAR_STATS
+    }
+    
+    #MAIN_MENU__SOLAR_STATS_right()
+    {
+        // No ancestor state handles `right` event.
+        
+        // MAIN_MENU__SOLAR_STATS behavior
+        // uml: RIGHT / { this.tracer?.edgeTransition("edge7"); } TransitionTo(SOLAR_STATS)
+        {
+            // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition).
+            this.#MAIN_MENU__SOLAR_STATS_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge7");`.
+            this.tracer?.edgeTransition("edge7");
+            
+            // Step 3: Enter/move towards transition target `SOLAR_STATS`.
+            this.#SOLAR_STATS_enter();
+            
+            // SOLAR_STATS.<InitialState> behavior
+            // uml: / { this.tracer?.edgeTransition("edge11"); } TransitionTo(SOLAR_STATS_1)
+            {
+                // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
+                
+                // Step 2: Transition action: `this.tracer?.edgeTransition("edge11");`.
+                this.tracer?.edgeTransition("edge11");
+                
+                // Step 3: Enter/move towards transition target `SOLAR_STATS_1`.
+                this.#SOLAR_STATS_1_enter();
+                
+                // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+                this.stateId = SolarUiSm.StateId.SOLAR_STATS_1;
+                // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+                return;
+            } // end of behavior for SOLAR_STATS.<InitialState>
+        } // end of behavior for MAIN_MENU__SOLAR_STATS
+    }
+    
+    #MAIN_MENU__SOLAR_STATS_up()
+    {
+        // No ancestor state handles `up` event.
+        
+        // MAIN_MENU__SOLAR_STATS behavior
+        // uml: UP / { this.tracer?.edgeTransition("edge6"); } TransitionTo(CURRENT_TIME)
+        {
+            // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition).
+            this.#MAIN_MENU__SOLAR_STATS_exit();
             
             // Step 2: Transition action: `this.tracer?.edgeTransition("edge6");`.
             this.tracer?.edgeTransition("edge6");
             
-            // Step 3: Enter/move towards transition target `MAIN_MENU_1`.
-            this.#MAIN_MENU_1_enter();
+            // Step 3: Enter/move towards transition target `CURRENT_TIME`.
+            this.#CURRENT_TIME_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.MAIN_MENU_1;
+            this.stateId = SolarUiSm.StateId.CURRENT_TIME;
             // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
             return;
-        } // end of behavior for MAIN_MENU_2
+        } // end of behavior for MAIN_MENU__SOLAR_STATS
     }
     
     
@@ -1127,32 +1321,164 @@ evaluateGuard = null;
         } // end of behavior for SOLAR_STATS
         
         // adjust function pointers for this state's exit
-        this.#currentStateExitHandler = this.#ROOT_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.LEFT] = null;  // no ancestor listens to this event
+        this.#currentStateExitHandler = this.#MAIN_MENU_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.LEFT] = this.#MAIN_MENU_left;  // the next ancestor that handles this event is MAIN_MENU
     }
     
     #SOLAR_STATS_left()
     {
-        // No ancestor state handles `left` event.
+        // Setup handler for next ancestor that listens to `left` event.
+        this.#ancestorEventHandler = this.#MAIN_MENU_left;
         
         // SOLAR_STATS behavior
-        // uml: LEFT / { this.tracer?.edgeTransition("edge8"); } TransitionTo(MAIN_MENU_1)
+        // uml: LEFT / { this.tracer?.edgeTransition("edge10"); } TransitionTo(MAIN_MENU__SOLAR_STATS)
         {
-            // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-            this.#exitUpToStateHandler(this.#ROOT_exit);
+            // Step 1: Exit states until we reach `MAIN_MENU` state (Least Common Ancestor for transition).
+            this.#exitUpToStateHandler(this.#MAIN_MENU_exit);
             
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge8");`.
-            this.tracer?.edgeTransition("edge8");
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge10");`.
+            this.tracer?.edgeTransition("edge10");
             
-            // Step 3: Enter/move towards transition target `MAIN_MENU_1`.
-            this.#MAIN_MENU_enter();
-            this.#MAIN_MENU_1_enter();
+            // Step 3: Enter/move towards transition target `MAIN_MENU__SOLAR_STATS`.
+            this.#MAIN_MENU__SOLAR_STATS_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.MAIN_MENU_1;
-            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            this.stateId = SolarUiSm.StateId.MAIN_MENU__SOLAR_STATS;
+            this.#ancestorEventHandler = null;
             return;
         } // end of behavior for SOLAR_STATS
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state SOLAR_STATS__SOLAR_STATS_2
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #SOLAR_STATS__SOLAR_STATS_2_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#SOLAR_STATS__SOLAR_STATS_2_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#SOLAR_STATS__SOLAR_STATS_2_down;
+        this.#currentEventHandlers[SolarUiSm.EventId.RIGHT] = this.#SOLAR_STATS__SOLAR_STATS_2_right;
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#SOLAR_STATS__SOLAR_STATS_2_up;
+        
+        // SOLAR_STATS__SOLAR_STATS_2 behavior
+        // uml: enter / { this.tracer?.enterState('SOLAR_STATS__SOLAR_STATS_2'); }
+        {
+            // Step 1: execute action `this.tracer?.enterState('SOLAR_STATS__SOLAR_STATS_2');`
+            this.tracer?.enterState('SOLAR_STATS__SOLAR_STATS_2');
+        } // end of behavior for SOLAR_STATS__SOLAR_STATS_2
+        
+        // SOLAR_STATS__SOLAR_STATS_2 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS__SOLAR_STATS_2();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS__SOLAR_STATS_2();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS__SOLAR_STATS_2();");
+        } // end of behavior for SOLAR_STATS__SOLAR_STATS_2
+        
+        // SOLAR_STATS__SOLAR_STATS_2 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_in_middle();");
+        } // end of behavior for SOLAR_STATS__SOLAR_STATS_2
+    }
+    
+    #SOLAR_STATS__SOLAR_STATS_2_exit()
+    {
+        // SOLAR_STATS__SOLAR_STATS_2 behavior
+        // uml: exit / { this.tracer?.exitState('SOLAR_STATS__SOLAR_STATS_2'); }
+        {
+            // Step 1: execute action `this.tracer?.exitState('SOLAR_STATS__SOLAR_STATS_2');`
+            this.tracer?.exitState('SOLAR_STATS__SOLAR_STATS_2');
+        } // end of behavior for SOLAR_STATS__SOLAR_STATS_2
+        
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#SOLAR_STATS_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
+        this.#currentEventHandlers[SolarUiSm.EventId.RIGHT] = null;  // no ancestor listens to this event
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = null;  // no ancestor listens to this event
+    }
+    
+    #SOLAR_STATS__SOLAR_STATS_2_down()
+    {
+        // No ancestor state handles `down` event.
+        
+        // SOLAR_STATS__SOLAR_STATS_2 behavior
+        // uml: DOWN / { this.tracer?.edgeTransition("edge13"); } TransitionTo(SOLAR_STATS_3)
+        {
+            // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition).
+            this.#SOLAR_STATS__SOLAR_STATS_2_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge13");`.
+            this.tracer?.edgeTransition("edge13");
+            
+            // Step 3: Enter/move towards transition target `SOLAR_STATS_3`.
+            this.#SOLAR_STATS_3_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.SOLAR_STATS_3;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for SOLAR_STATS__SOLAR_STATS_2
+    }
+    
+    #SOLAR_STATS__SOLAR_STATS_2_right()
+    {
+        // No ancestor state handles `right` event.
+        
+        // SOLAR_STATS__SOLAR_STATS_2 behavior
+        // uml: RIGHT / { this.tracer?.edgeTransition("edge15"); } TransitionTo(SOLAR_STATS_2)
+        {
+            // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition).
+            this.#SOLAR_STATS__SOLAR_STATS_2_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge15");`.
+            this.tracer?.edgeTransition("edge15");
+            
+            // Step 3: Enter/move towards transition target `SOLAR_STATS_2`.
+            this.#SOLAR_STATS_2_enter();
+            
+            // SOLAR_STATS_2.<InitialState> behavior
+            // uml: / { this.tracer?.edgeTransition("edge18"); } TransitionTo(SS2_VOLTAGE)
+            {
+                // Step 1: Exit states until we reach `SOLAR_STATS_2` state (Least Common Ancestor for transition). Already at LCA, no exiting required.
+                
+                // Step 2: Transition action: `this.tracer?.edgeTransition("edge18");`.
+                this.tracer?.edgeTransition("edge18");
+                
+                // Step 3: Enter/move towards transition target `SS2_VOLTAGE`.
+                this.#SS2_VOLTAGE_enter();
+                
+                // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+                this.stateId = SolarUiSm.StateId.SS2_VOLTAGE;
+                // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+                return;
+            } // end of behavior for SOLAR_STATS_2.<InitialState>
+        } // end of behavior for SOLAR_STATS__SOLAR_STATS_2
+    }
+    
+    #SOLAR_STATS__SOLAR_STATS_2_up()
+    {
+        // No ancestor state handles `up` event.
+        
+        // SOLAR_STATS__SOLAR_STATS_2 behavior
+        // uml: UP / { this.tracer?.edgeTransition("edge14"); } TransitionTo(SOLAR_STATS_1)
+        {
+            // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition).
+            this.#SOLAR_STATS__SOLAR_STATS_2_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge14");`.
+            this.tracer?.edgeTransition("edge14");
+            
+            // Step 3: Enter/move towards transition target `SOLAR_STATS_1`.
+            this.#SOLAR_STATS_1_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.SOLAR_STATS_1;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for SOLAR_STATS__SOLAR_STATS_2
     }
     
     
@@ -1174,10 +1500,17 @@ evaluateGuard = null;
         } // end of behavior for SOLAR_STATS_1
         
         // SOLAR_STATS_1 behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats1();"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS_1();"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats1();");`
-            this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats1();");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS_1();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS_1();");
+        } // end of behavior for SOLAR_STATS_1
+        
+        // SOLAR_STATS_1 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();");
         } // end of behavior for SOLAR_STATS_1
     }
     
@@ -1200,19 +1533,19 @@ evaluateGuard = null;
         // No ancestor state handles `down` event.
         
         // SOLAR_STATS_1 behavior
-        // uml: DOWN / { this.tracer?.edgeTransition("edge10"); } TransitionTo(SOLAR_STATS_2)
+        // uml: DOWN / { this.tracer?.edgeTransition("edge12"); } TransitionTo(SOLAR_STATS__SOLAR_STATS_2)
         {
             // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition).
             this.#SOLAR_STATS_1_exit();
             
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge10");`.
-            this.tracer?.edgeTransition("edge10");
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge12");`.
+            this.tracer?.edgeTransition("edge12");
             
-            // Step 3: Enter/move towards transition target `SOLAR_STATS_2`.
-            this.#SOLAR_STATS_2_enter();
+            // Step 3: Enter/move towards transition target `SOLAR_STATS__SOLAR_STATS_2`.
+            this.#SOLAR_STATS__SOLAR_STATS_2_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.SOLAR_STATS_2;
+            this.stateId = SolarUiSm.StateId.SOLAR_STATS__SOLAR_STATS_2;
             // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
             return;
         } // end of behavior for SOLAR_STATS_1
@@ -1227,21 +1560,13 @@ evaluateGuard = null;
     {
         // setup trigger/event handlers
         this.#currentStateExitHandler = this.#SOLAR_STATS_2_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#SOLAR_STATS_2_down;
-        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#SOLAR_STATS_2_up;
+        this.#currentEventHandlers[SolarUiSm.EventId.LEFT] = this.#SOLAR_STATS_2_left;
         
         // SOLAR_STATS_2 behavior
         // uml: enter / { this.tracer?.enterState('SOLAR_STATS_2'); }
         {
             // Step 1: execute action `this.tracer?.enterState('SOLAR_STATS_2');`
             this.tracer?.enterState('SOLAR_STATS_2');
-        } // end of behavior for SOLAR_STATS_2
-        
-        // SOLAR_STATS_2 behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats2();"); }
-        {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats2();");`
-            this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats2();");
         } // end of behavior for SOLAR_STATS_2
     }
     
@@ -1256,54 +1581,171 @@ evaluateGuard = null;
         
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#SOLAR_STATS_exit;
-        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
+        this.#currentEventHandlers[SolarUiSm.EventId.LEFT] = this.#SOLAR_STATS_left;  // the next ancestor that handles this event is SOLAR_STATS
+    }
+    
+    #SOLAR_STATS_2_left()
+    {
+        // Setup handler for next ancestor that listens to `left` event.
+        this.#ancestorEventHandler = this.#SOLAR_STATS_left;
+        
+        // SOLAR_STATS_2 behavior
+        // uml: LEFT / { this.tracer?.edgeTransition("edge17"); } TransitionTo(SOLAR_STATS__SOLAR_STATS_2)
+        {
+            // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition).
+            this.#exitUpToStateHandler(this.#SOLAR_STATS_exit);
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge17");`.
+            this.tracer?.edgeTransition("edge17");
+            
+            // Step 3: Enter/move towards transition target `SOLAR_STATS__SOLAR_STATS_2`.
+            this.#SOLAR_STATS__SOLAR_STATS_2_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.SOLAR_STATS__SOLAR_STATS_2;
+            this.#ancestorEventHandler = null;
+            return;
+        } // end of behavior for SOLAR_STATS_2
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state SS2_CURRENT
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #SS2_CURRENT_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#SS2_CURRENT_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.UP] = this.#SS2_CURRENT_up;
+        
+        // SS2_CURRENT behavior
+        // uml: enter / { this.tracer?.enterState('SS2_CURRENT'); }
+        {
+            // Step 1: execute action `this.tracer?.enterState('SS2_CURRENT');`
+            this.tracer?.enterState('SS2_CURRENT');
+        } // end of behavior for SS2_CURRENT
+        
+        // SS2_CURRENT behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_SS2_CURRENT();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_SS2_CURRENT();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_SS2_CURRENT();");
+        } // end of behavior for SS2_CURRENT
+        
+        // SS2_CURRENT behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();");
+        } // end of behavior for SS2_CURRENT
+    }
+    
+    #SS2_CURRENT_exit()
+    {
+        // SS2_CURRENT behavior
+        // uml: exit / { this.tracer?.exitState('SS2_CURRENT'); }
+        {
+            // Step 1: execute action `this.tracer?.exitState('SS2_CURRENT');`
+            this.tracer?.exitState('SS2_CURRENT');
+        } // end of behavior for SS2_CURRENT
+        
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#SOLAR_STATS_2_exit;
         this.#currentEventHandlers[SolarUiSm.EventId.UP] = null;  // no ancestor listens to this event
     }
     
-    #SOLAR_STATS_2_down()
-    {
-        // No ancestor state handles `down` event.
-        
-        // SOLAR_STATS_2 behavior
-        // uml: DOWN / { this.tracer?.edgeTransition("edge11"); } TransitionTo(SOLAR_STATS_3)
-        {
-            // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition).
-            this.#SOLAR_STATS_2_exit();
-            
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge11");`.
-            this.tracer?.edgeTransition("edge11");
-            
-            // Step 3: Enter/move towards transition target `SOLAR_STATS_3`.
-            this.#SOLAR_STATS_3_enter();
-            
-            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.SOLAR_STATS_3;
-            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
-            return;
-        } // end of behavior for SOLAR_STATS_2
-    }
-    
-    #SOLAR_STATS_2_up()
+    #SS2_CURRENT_up()
     {
         // No ancestor state handles `up` event.
         
-        // SOLAR_STATS_2 behavior
-        // uml: UP / { this.tracer?.edgeTransition("edge12"); } TransitionTo(SOLAR_STATS_1)
+        // SS2_CURRENT behavior
+        // uml: UP / { this.tracer?.edgeTransition("edge20"); } TransitionTo(SS2_VOLTAGE)
         {
-            // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition).
-            this.#SOLAR_STATS_2_exit();
+            // Step 1: Exit states until we reach `SOLAR_STATS_2` state (Least Common Ancestor for transition).
+            this.#SS2_CURRENT_exit();
             
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge12");`.
-            this.tracer?.edgeTransition("edge12");
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge20");`.
+            this.tracer?.edgeTransition("edge20");
             
-            // Step 3: Enter/move towards transition target `SOLAR_STATS_1`.
-            this.#SOLAR_STATS_1_enter();
+            // Step 3: Enter/move towards transition target `SS2_VOLTAGE`.
+            this.#SS2_VOLTAGE_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.SOLAR_STATS_1;
+            this.stateId = SolarUiSm.StateId.SS2_VOLTAGE;
             // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
             return;
-        } // end of behavior for SOLAR_STATS_2
+        } // end of behavior for SS2_CURRENT
+    }
+    
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    // event handlers for state SS2_VOLTAGE
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    #SS2_VOLTAGE_enter()
+    {
+        // setup trigger/event handlers
+        this.#currentStateExitHandler = this.#SS2_VOLTAGE_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = this.#SS2_VOLTAGE_down;
+        
+        // SS2_VOLTAGE behavior
+        // uml: enter / { this.tracer?.enterState('SS2_VOLTAGE'); }
+        {
+            // Step 1: execute action `this.tracer?.enterState('SS2_VOLTAGE');`
+            this.tracer?.enterState('SS2_VOLTAGE');
+        } // end of behavior for SS2_VOLTAGE
+        
+        // SS2_VOLTAGE behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_SS2_VOLTAGE();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_SS2_VOLTAGE();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_SS2_VOLTAGE();");
+        } // end of behavior for SS2_VOLTAGE
+        
+        // SS2_VOLTAGE behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_at_top();");
+        } // end of behavior for SS2_VOLTAGE
+    }
+    
+    #SS2_VOLTAGE_exit()
+    {
+        // SS2_VOLTAGE behavior
+        // uml: exit / { this.tracer?.exitState('SS2_VOLTAGE'); }
+        {
+            // Step 1: execute action `this.tracer?.exitState('SS2_VOLTAGE');`
+            this.tracer?.exitState('SS2_VOLTAGE');
+        } // end of behavior for SS2_VOLTAGE
+        
+        // adjust function pointers for this state's exit
+        this.#currentStateExitHandler = this.#SOLAR_STATS_2_exit;
+        this.#currentEventHandlers[SolarUiSm.EventId.DOWN] = null;  // no ancestor listens to this event
+    }
+    
+    #SS2_VOLTAGE_down()
+    {
+        // No ancestor state handles `down` event.
+        
+        // SS2_VOLTAGE behavior
+        // uml: DOWN / { this.tracer?.edgeTransition("edge19"); } TransitionTo(SS2_CURRENT)
+        {
+            // Step 1: Exit states until we reach `SOLAR_STATS_2` state (Least Common Ancestor for transition).
+            this.#SS2_VOLTAGE_exit();
+            
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge19");`.
+            this.tracer?.edgeTransition("edge19");
+            
+            // Step 3: Enter/move towards transition target `SS2_CURRENT`.
+            this.#SS2_CURRENT_enter();
+            
+            // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+            this.stateId = SolarUiSm.StateId.SS2_CURRENT;
+            // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
+            return;
+        } // end of behavior for SS2_VOLTAGE
     }
     
     
@@ -1325,10 +1767,17 @@ evaluateGuard = null;
         } // end of behavior for SOLAR_STATS_3
         
         // SOLAR_STATS_3 behavior
-        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats3();"); }
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS_3();"); }
         {
-            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats3();");`
-            this.tracer?.log("⚡ FSM would execute action: " + "show_solar_stats3();");
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS_3();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "show_SOLAR_STATS_3();");
+        } // end of behavior for SOLAR_STATS_3
+        
+        // SOLAR_STATS_3 behavior
+        // uml: enter / { this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();"); }
+        {
+            // Step 1: execute action `this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();");`
+            this.tracer?.log("⚡ FSM would execute action: " + "menu_at_bottom();");
         } // end of behavior for SOLAR_STATS_3
     }
     
@@ -1351,19 +1800,19 @@ evaluateGuard = null;
         // No ancestor state handles `up` event.
         
         // SOLAR_STATS_3 behavior
-        // uml: UP / { this.tracer?.edgeTransition("edge13"); } TransitionTo(SOLAR_STATS_2)
+        // uml: UP / { this.tracer?.edgeTransition("edge16"); } TransitionTo(SOLAR_STATS__SOLAR_STATS_2)
         {
             // Step 1: Exit states until we reach `SOLAR_STATS` state (Least Common Ancestor for transition).
             this.#SOLAR_STATS_3_exit();
             
-            // Step 2: Transition action: `this.tracer?.edgeTransition("edge13");`.
-            this.tracer?.edgeTransition("edge13");
+            // Step 2: Transition action: `this.tracer?.edgeTransition("edge16");`.
+            this.tracer?.edgeTransition("edge16");
             
-            // Step 3: Enter/move towards transition target `SOLAR_STATS_2`.
-            this.#SOLAR_STATS_2_enter();
+            // Step 3: Enter/move towards transition target `SOLAR_STATS__SOLAR_STATS_2`.
+            this.#SOLAR_STATS__SOLAR_STATS_2_enter();
             
             // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
-            this.stateId = SolarUiSm.StateId.SOLAR_STATS_2;
+            this.stateId = SolarUiSm.StateId.SOLAR_STATS__SOLAR_STATS_2;
             // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
             return;
         } // end of behavior for SOLAR_STATS_3
@@ -1438,17 +1887,21 @@ evaluateGuard = null;
         switch (id)
         {
             case SolarUiSm.StateId.ROOT: return "ROOT";
+            case SolarUiSm.StateId.HOME: return "HOME";
+            case SolarUiSm.StateId.MAIN_MENU: return "MAIN_MENU";
             case SolarUiSm.StateId.BATTERY_STATS: return "BATTERY_STATS";
             case SolarUiSm.StateId.BATTERY_STATS_1: return "BATTERY_STATS_1";
             case SolarUiSm.StateId.BATTERY_STATS_2: return "BATTERY_STATS_2";
             case SolarUiSm.StateId.BATTERY_STATS_3: return "BATTERY_STATS_3";
-            case SolarUiSm.StateId.HOME: return "HOME";
-            case SolarUiSm.StateId.MAIN_MENU: return "MAIN_MENU";
-            case SolarUiSm.StateId.MAIN_MENU_1: return "MAIN_MENU_1";
-            case SolarUiSm.StateId.MAIN_MENU_2: return "MAIN_MENU_2";
+            case SolarUiSm.StateId.CURRENT_TIME: return "CURRENT_TIME";
+            case SolarUiSm.StateId.MAIN_MENU__BATTERY_STATS: return "MAIN_MENU__BATTERY_STATS";
+            case SolarUiSm.StateId.MAIN_MENU__SOLAR_STATS: return "MAIN_MENU__SOLAR_STATS";
             case SolarUiSm.StateId.SOLAR_STATS: return "SOLAR_STATS";
+            case SolarUiSm.StateId.SOLAR_STATS__SOLAR_STATS_2: return "SOLAR_STATS__SOLAR_STATS_2";
             case SolarUiSm.StateId.SOLAR_STATS_1: return "SOLAR_STATS_1";
             case SolarUiSm.StateId.SOLAR_STATS_2: return "SOLAR_STATS_2";
+            case SolarUiSm.StateId.SS2_CURRENT: return "SS2_CURRENT";
+            case SolarUiSm.StateId.SS2_VOLTAGE: return "SS2_VOLTAGE";
             case SolarUiSm.StateId.SOLAR_STATS_3: return "SOLAR_STATS_3";
             case SolarUiSm.StateId.SPLASH: return "SPLASH";
             default: return "?";

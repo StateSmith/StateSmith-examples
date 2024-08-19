@@ -10,3 +10,5 @@ water-cannon-1/src/.$WaterCannonSm.drawio.dtmp
 *.o
 
 water-cannon-1/gtest-tests/test_program1
+
+*.bkp

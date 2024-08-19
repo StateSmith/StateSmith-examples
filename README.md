@@ -40,7 +40,8 @@ Not recommended for beginners.
 
 ## 👾 Video Game
 * [mario-sm-1](./mario-sm-1/README.md)
-* [mario-sm-2](./mario-sm-2/README.md) - Adds invincible star state and history. `ss.cli`
+* [mario-sm-2](./mario-sm-2/README.md) - Adds invincible star state and history. `ss.cli` `plantuml`
+* [mario-sm-3](./mario-sm-3/README.md) - Adds invincible star state, history, thwomp. Uses new 0.12.0+ lib features. `ss.cli` `drawio` `new`
 
 ## 🗄️ Web/Database
 * [history-storage-1](./history-storage-1/README.md) Resumes a state machine from a clean start and some storage (file/database/...).

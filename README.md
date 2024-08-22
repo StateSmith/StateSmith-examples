@@ -39,9 +39,9 @@ Not recommended for beginners.
 * [csharp-space-menu-1](csharp-space-menu-1/README.md) - Advanced menu system with C#. Concurrency. Deep nesting, entry/exit points, parent alias and more.
 
 ## 👾 Video Game
-* [mario-sm-1](./mario-sm-1/README.md)
-* [mario-sm-2](./mario-sm-2/README.md) - Adds invincible star state and history. `ss.cli` `plantuml`
 * [mario-sm-3](./mario-sm-3/README.md) - Adds invincible star state, history, thwomp. Uses new 0.12.0+ lib features. `ss.cli` `drawio` `new`
+* [mario-sm-2](./mario-sm-2/README.md) - Adds invincible star state and history. `ss.cli` `plantuml`
+* [mario-sm-1](./mario-sm-1/README.md)
 
 ## 🗄️ Web/Database
 * [history-storage-1](./history-storage-1/README.md) Resumes a state machine from a clean start and some storage (file/database/...).
@@ -52,8 +52,8 @@ Not recommended for beginners.
 * todo - migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
 ## 🕹️ Buttons/Input
-* [button-simple-1](./button-simple-1/README.md) - Cross platform design. Easy to generate for any desired language. A simple button state machine that can be easily customized to your needs. `ss.cli`
-* [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
+* [button-simple-1](./button-simple-1/README.md) - Cross platform design. Easy to generate for any desired language. A simple button state machine that can be easily customized to your needs. `ss.cli` `plantuml`
+* [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation. `drawio` `csx`
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 * todo - migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
@@ -88,6 +88,7 @@ Not recommended for beginners.
 * [csharp-space-menu-1](csharp-space-menu-1/README.md) - Advanced menu system with C#. Concurrency. Deep nesting, entry/exit points, parent alias and more.
 
 ## JavaScript
+* [mario-sm-3](./mario-sm-3/README.md) - Adds invincible star state, history, thwomp. Uses new 0.12.0+ lib features. `ss.cli` `drawio` `new`
 * [mario-sm-2](./mario-sm-2/README.md) - Adds invincible star state and history. `ss.cli`
 * [mario-sm-1](./mario-sm-1/README.md)
 * [history-storage-1](./history-storage-1/README.md)
@@ -95,7 +96,7 @@ Not recommended for beginners.
 ## C++ / Arduino
 * [button-simple-1](./button-simple-1/README.md) - `ss.cli`
 * [embedded-solar-1](./embedded-solar-1/README.md) - `ss.cli`
-* [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation.
+* [buttons-lights-1](./buttons-lights-1/README.md) - Multiple button state machines sending events to a light state machine. Arduino simulation. `drawio` `csx`
 * [plantuml-arduino-buttons](./plantuml-arduino-buttons/README.md)
 * TODO: migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 

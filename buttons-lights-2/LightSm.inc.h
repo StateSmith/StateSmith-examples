@@ -2,9 +2,9 @@
 // Algorithm: Balanced1. See https://github.com/StateSmith/StateSmith/wiki/Algorithms
 
     
-#include "LightSm.hpp"
-#include "Light.hpp"
+// This file is actually a c fragment file meant to be included by LightController.c only.
 
+#include "LightSm.h"
 #include <stdbool.h> // required for `consume_event` flag
 #include <string.h> // for memset
 
@@ -21,6 +21,14 @@ static void OFF_enter(LightSm* sm);
 static void OFF_exit(LightSm* sm);
 
 static void OFF_inc(LightSm* sm);
+
+static void ON_GROUP_enter(LightSm* sm);
+
+static void ON_GROUP_exit(LightSm* sm);
+
+static void ON_GROUP_dim_long(LightSm* sm);
+
+static void ON_GROUP_inc_long(LightSm* sm);
 
 static void ON1_enter(LightSm* sm);
 
@@ -135,10 +143,10 @@ static void OFF_enter(LightSm* sm)
     sm->current_event_handlers[LightSm_EventId_INC] = OFF_inc;
     
     // OFF behavior
-    // uml: enter / { Light_off(); }
+    // uml: enter / { light_off(); }
     {
-        // Step 1: execute action `Light_off();`
-        Light_off();
+        // Step 1: execute action `light_off();`
+        light_off();
     } // end of behavior for OFF
 }
 
@@ -162,6 +170,7 @@ static void OFF_inc(LightSm* sm)
         // Step 2: Transition action: ``.
         
         // Step 3: Enter/move towards transition target `ON1`.
+        ON_GROUP_enter(sm);
         ON1_enter(sm);
         
         // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
@@ -169,6 +178,71 @@ static void OFF_inc(LightSm* sm)
         // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
         return;
     } // end of behavior for OFF
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// event handlers for state ON_GROUP
+////////////////////////////////////////////////////////////////////////////////
+
+static void ON_GROUP_enter(LightSm* sm)
+{
+    // setup trigger/event handlers
+    sm->current_state_exit_handler = ON_GROUP_exit;
+    sm->current_event_handlers[LightSm_EventId_DIM_LONG] = ON_GROUP_dim_long;
+    sm->current_event_handlers[LightSm_EventId_INC_LONG] = ON_GROUP_inc_long;
+}
+
+static void ON_GROUP_exit(LightSm* sm)
+{
+    // adjust function pointers for this state's exit
+    sm->current_state_exit_handler = ROOT_exit;
+    sm->current_event_handlers[LightSm_EventId_DIM_LONG] = NULL;  // no ancestor listens to this event
+    sm->current_event_handlers[LightSm_EventId_INC_LONG] = NULL;  // no ancestor listens to this event
+}
+
+static void ON_GROUP_dim_long(LightSm* sm)
+{
+    // No ancestor state handles `dim_long` event.
+    
+    // ON_GROUP behavior
+    // uml: DIM_LONG TransitionTo(OFF)
+    {
+        // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
+        exit_up_to_state_handler(sm, ROOT_exit);
+        
+        // Step 2: Transition action: ``.
+        
+        // Step 3: Enter/move towards transition target `OFF`.
+        OFF_enter(sm);
+        
+        // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+        sm->state_id = LightSm_StateId_OFF;
+        // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
+        return;
+    } // end of behavior for ON_GROUP
+}
+
+static void ON_GROUP_inc_long(LightSm* sm)
+{
+    // No ancestor state handles `inc_long` event.
+    
+    // ON_GROUP behavior
+    // uml: INC_LONG TransitionTo(ON3)
+    {
+        // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
+        exit_up_to_state_handler(sm, ON_GROUP_exit);
+        
+        // Step 2: Transition action: ``.
+        
+        // Step 3: Enter/move towards transition target `ON3`.
+        ON3_enter(sm);
+        
+        // Step 4: complete transition. Ends event dispatch. No other behaviors are checked.
+        sm->state_id = LightSm_StateId_ON3;
+        // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
+        return;
+    } // end of behavior for ON_GROUP
 }
 
 
@@ -184,17 +258,17 @@ static void ON1_enter(LightSm* sm)
     sm->current_event_handlers[LightSm_EventId_INC] = ON1_inc;
     
     // ON1 behavior
-    // uml: enter / { Light_1(); }
+    // uml: enter / { light_1(); }
     {
-        // Step 1: execute action `Light_1();`
-        Light_1();
+        // Step 1: execute action `light_1();`
+        light_1();
     } // end of behavior for ON1
 }
 
 static void ON1_exit(LightSm* sm)
 {
     // adjust function pointers for this state's exit
-    sm->current_state_exit_handler = ROOT_exit;
+    sm->current_state_exit_handler = ON_GROUP_exit;
     sm->current_event_handlers[LightSm_EventId_DIM] = NULL;  // no ancestor listens to this event
     sm->current_event_handlers[LightSm_EventId_INC] = NULL;  // no ancestor listens to this event
 }
@@ -207,7 +281,7 @@ static void ON1_dim(LightSm* sm)
     // uml: DIM TransitionTo(OFF)
     {
         // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
-        ON1_exit(sm);
+        exit_up_to_state_handler(sm, ROOT_exit);
         
         // Step 2: Transition action: ``.
         
@@ -228,7 +302,7 @@ static void ON1_inc(LightSm* sm)
     // ON1 behavior
     // uml: INC TransitionTo(ON2)
     {
-        // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
+        // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
         ON1_exit(sm);
         
         // Step 2: Transition action: ``.
@@ -256,17 +330,17 @@ static void ON2_enter(LightSm* sm)
     sm->current_event_handlers[LightSm_EventId_INC] = ON2_inc;
     
     // ON2 behavior
-    // uml: enter / { Light_2(); }
+    // uml: enter / { light_2(); }
     {
-        // Step 1: execute action `Light_2();`
-        Light_2();
+        // Step 1: execute action `light_2();`
+        light_2();
     } // end of behavior for ON2
 }
 
 static void ON2_exit(LightSm* sm)
 {
     // adjust function pointers for this state's exit
-    sm->current_state_exit_handler = ROOT_exit;
+    sm->current_state_exit_handler = ON_GROUP_exit;
     sm->current_event_handlers[LightSm_EventId_DIM] = NULL;  // no ancestor listens to this event
     sm->current_event_handlers[LightSm_EventId_INC] = NULL;  // no ancestor listens to this event
 }
@@ -278,7 +352,7 @@ static void ON2_dim(LightSm* sm)
     // ON2 behavior
     // uml: DIM TransitionTo(ON1)
     {
-        // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
+        // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
         ON2_exit(sm);
         
         // Step 2: Transition action: ``.
@@ -300,7 +374,7 @@ static void ON2_inc(LightSm* sm)
     // ON2 behavior
     // uml: INC TransitionTo(ON3)
     {
-        // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
+        // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
         ON2_exit(sm);
         
         // Step 2: Transition action: ``.
@@ -327,17 +401,17 @@ static void ON3_enter(LightSm* sm)
     sm->current_event_handlers[LightSm_EventId_DIM] = ON3_dim;
     
     // ON3 behavior
-    // uml: enter / { Light_3(); }
+    // uml: enter / { light_3(); }
     {
-        // Step 1: execute action `Light_3();`
-        Light_3();
+        // Step 1: execute action `light_3();`
+        light_3();
     } // end of behavior for ON3
 }
 
 static void ON3_exit(LightSm* sm)
 {
     // adjust function pointers for this state's exit
-    sm->current_state_exit_handler = ROOT_exit;
+    sm->current_state_exit_handler = ON_GROUP_exit;
     sm->current_event_handlers[LightSm_EventId_DIM] = NULL;  // no ancestor listens to this event
 }
 
@@ -348,7 +422,7 @@ static void ON3_dim(LightSm* sm)
     // ON3 behavior
     // uml: DIM TransitionTo(ON2)
     {
-        // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
+        // Step 1: Exit states until we reach `ON_GROUP` state (Least Common Ancestor for transition).
         ON3_exit(sm);
         
         // Step 2: Transition action: ``.
@@ -370,6 +444,7 @@ char const * LightSm_state_id_to_string(LightSm_StateId id)
     {
         case LightSm_StateId_ROOT: return "ROOT";
         case LightSm_StateId_OFF: return "OFF";
+        case LightSm_StateId_ON_GROUP: return "ON_GROUP";
         case LightSm_StateId_ON1: return "ON1";
         case LightSm_StateId_ON2: return "ON2";
         case LightSm_StateId_ON3: return "ON3";
@@ -383,7 +458,9 @@ char const * LightSm_event_id_to_string(LightSm_EventId id)
     switch (id)
     {
         case LightSm_EventId_DIM: return "DIM";
+        case LightSm_EventId_DIM_LONG: return "DIM_LONG";
         case LightSm_EventId_INC: return "INC";
+        case LightSm_EventId_INC_LONG: return "INC_LONG";
         default: return "?";
     }
 }

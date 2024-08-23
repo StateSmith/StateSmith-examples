@@ -5,30 +5,32 @@
 #pragma once
 #include <stdint.h>
 
-    
 typedef enum LightSm_EventId
 {
     LightSm_EventId_DIM = 0,
-    LightSm_EventId_INC = 1,
+    LightSm_EventId_DIM_LONG = 1,
+    LightSm_EventId_INC = 2,
+    LightSm_EventId_INC_LONG = 3,
 } LightSm_EventId;
 
 enum
 {
-    LightSm_EventIdCount = 2
+    LightSm_EventIdCount = 4
 };
 
 typedef enum LightSm_StateId
 {
     LightSm_StateId_ROOT = 0,
     LightSm_StateId_OFF = 1,
-    LightSm_StateId_ON1 = 2,
-    LightSm_StateId_ON2 = 3,
-    LightSm_StateId_ON3 = 4,
+    LightSm_StateId_ON_GROUP = 2,
+    LightSm_StateId_ON1 = 3,
+    LightSm_StateId_ON2 = 4,
+    LightSm_StateId_ON3 = 5,
 } LightSm_StateId;
 
 enum
 {
-    LightSm_StateIdCount = 5
+    LightSm_StateIdCount = 6
 };
 
 

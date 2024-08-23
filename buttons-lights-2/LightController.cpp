@@ -1,10 +1,14 @@
-#include "LightController.hpp"
+#include "LightController.h"
 #include <Arduino.h>
-#include "ButtonSm.hpp"
-#include "LightSm.hpp"
-#include "Light.hpp"
+#include "ButtonSm.h"
+#include "LightSm.h"
+
 
 ///////////////////////////////////////////// CONSTANTS /////////////////////////////////////////////
+
+#define LED_BLUE    7
+#define LED_YELLOW  6
+#define LED_RED     5
 
 static const int BUTTON_DIM = 11;
 static const int BUTTON_INC = 10;
@@ -28,7 +32,9 @@ static LightSm light_sm;
 
 void LightController_setup()
 {
-    Light_setup();
+    pinMode(LED_BLUE, OUTPUT);
+    pinMode(LED_YELLOW, OUTPUT);
+    pinMode(LED_RED, OUTPUT);
 
     pinMode(BUTTON_DIM, INPUT_PULLUP);
     pinMode(BUTTON_INC, INPUT_PULLUP);
@@ -89,10 +95,43 @@ static void handle_inc_button_events(void)
         button_inc.vars.output_press_event = 0;
     }
 
-    // if (button_inc.vars.output_long_event)
-    // {
-    //     Serial.println("handling event INC_LONG");
-    //     LightSm_dispatch_event(&light_sm, LightSm_EventId_INC_LONG);
-    //     button_inc.vars.output_long_event = 0;
-    // }
+    if (button_inc.vars.output_long_event)
+    {
+        Serial.println("handling event INC_LONG");
+        LightSm_dispatch_event(&light_sm, LightSm_EventId_INC_LONG);
+        button_inc.vars.output_long_event = 0;
+    }
 }
+
+
+///////////////////////////////////////////// CODE FOR FSM /////////////////////////////////////////////
+
+static void light_off()
+{
+    digitalWrite(LED_BLUE, LOW);
+    digitalWrite(LED_YELLOW, LOW);
+    digitalWrite(LED_RED, LOW);
+}
+
+static void light_1()
+{
+    digitalWrite(LED_BLUE, HIGH);
+    digitalWrite(LED_YELLOW, LOW);
+    digitalWrite(LED_RED, LOW);
+}
+
+static void light_2()
+{
+    digitalWrite(LED_BLUE, HIGH);
+    digitalWrite(LED_YELLOW, HIGH);
+    digitalWrite(LED_RED, LOW);
+}
+
+static void light_3()
+{
+    digitalWrite(LED_BLUE, HIGH);
+    digitalWrite(LED_YELLOW, HIGH);
+    digitalWrite(LED_RED, HIGH);
+}
+
+#include "LightSm.inc.h"

@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "LightController.hpp"
+#include "LightController.h"
 
 // Millisecond time when loop() was ran last.
 // This is used to calculate the elapsed time between loops.

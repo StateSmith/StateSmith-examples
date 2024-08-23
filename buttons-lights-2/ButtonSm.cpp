@@ -212,8 +212,8 @@ static void PRESSED_do(ButtonSm* sm)
     // No ancestor state handles `do` event.
     
     // PRESSED behavior
-    // uml: do [! input_active] / { output_release_event = true; } TransitionTo(RELEASE_DEBOUNCE)
-    if (! sm->vars.input_active)
+    // uml: do [!input_active] / { output_release_event = true; } TransitionTo(RELEASE_DEBOUNCE)
+    if (!sm->vars.input_active)
     {
         // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
         exit_up_to_state_handler(sm, ROOT_exit);

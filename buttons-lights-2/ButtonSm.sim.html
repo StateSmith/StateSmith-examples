@@ -256,7 +256,7 @@ ROOT.(InitialState) --> RELEASE_DEBOUNCE
 
 RELEASE_DEBOUNCE --> RELEASED : do [timer_ms > 50]
 
-PRESSED --> RELEASE_DEBOUNCE : do [! input_active] / #123; output_release_event = true#59; #125;
+PRESSED --> RELEASE_DEBOUNCE : do [!input_active] / #123; output_release_event = true#59; #125;
 
 CONFIRMING_LONG --> LONG_PRESS : do [timer_ms > 500]
 
@@ -528,8 +528,8 @@ evaluateGuard = null;
         // No ancestor state handles `do` event.
         
         // PRESSED behavior
-        // uml: do [this.tracer?.log("🛡️ User evaluating guard: " + "! input_active") || this.evaluateGuard("PRESSED","do [! input_active] / { output_release_event = true; } TransitionTo(RELEASE_DEBOUNCE)")] / { this.tracer?.log("⚡ FSM would execute action: " + "output_release_event = true;");this.tracer?.edgeTransition("edge2"); } TransitionTo(RELEASE_DEBOUNCE)
-        if (this.tracer?.log("🛡️ User evaluating guard: " + "! input_active") || this.evaluateGuard("PRESSED","do [! input_active] / { output_release_event = true; } TransitionTo(RELEASE_DEBOUNCE)"))
+        // uml: do [this.tracer?.log("🛡️ User evaluating guard: " + "!input_active") || this.evaluateGuard("PRESSED","do [!input_active] / { output_release_event = true; } TransitionTo(RELEASE_DEBOUNCE)")] / { this.tracer?.log("⚡ FSM would execute action: " + "output_release_event = true;");this.tracer?.edgeTransition("edge2"); } TransitionTo(RELEASE_DEBOUNCE)
+        if (this.tracer?.log("🛡️ User evaluating guard: " + "!input_active") || this.evaluateGuard("PRESSED","do [!input_active] / { output_release_event = true; } TransitionTo(RELEASE_DEBOUNCE)"))
         {
             // Step 1: Exit states until we reach `ROOT` state (Least Common Ancestor for transition).
             this.#exitUpToStateHandler(this.#ROOT_exit);

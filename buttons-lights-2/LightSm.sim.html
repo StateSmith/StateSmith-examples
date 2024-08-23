@@ -244,6 +244,8 @@ state ON_GROUP {
 
         ON3 : enter / #123; light_3()#59; #125;
 
+        ON3 : INC_LONG / #123;  #125;
+
 }
 
 ROOT.(InitialState) --> OFF
@@ -745,6 +747,7 @@ evaluateGuard = null;
         // setup trigger/event handlers
         this.#currentStateExitHandler = this.#ON3_exit;
         this.#currentEventHandlers[LightSm.EventId.DIM] = this.#ON3_dim;
+        this.#currentEventHandlers[LightSm.EventId.INC_LONG] = this.#ON3_inc_long;
         
         // ON3 behavior
         // uml: enter / { this.tracer?.enterState('ON3'); }
@@ -773,6 +776,7 @@ evaluateGuard = null;
         // adjust function pointers for this state's exit
         this.#currentStateExitHandler = this.#ON_GROUP_exit;
         this.#currentEventHandlers[LightSm.EventId.DIM] = null;  // no ancestor listens to this event
+        this.#currentEventHandlers[LightSm.EventId.INC_LONG] = this.#ON_GROUP_inc_long;  // the next ancestor that handles this event is ON_GROUP
     }
     
     #ON3_dim()
@@ -795,6 +799,20 @@ evaluateGuard = null;
             this.stateId = LightSm.StateId.ON2;
             // No ancestor handles event. Can skip nulling `ancestorEventHandler`.
             return;
+        } // end of behavior for ON3
+    }
+    
+    #ON3_inc_long()
+    {
+        // Setup handler for next ancestor that listens to `inc_long` event.
+        this.#ancestorEventHandler = this.#ON_GROUP_inc_long;
+        
+        // ON3 behavior
+        // uml: INC_LONG
+        {
+            // Step 1: execute action ``
+            // Step 2: determine if ancestor gets to handle event next.
+            this.#ancestorEventHandler = null;  // consume event
         } // end of behavior for ON3
     }
     

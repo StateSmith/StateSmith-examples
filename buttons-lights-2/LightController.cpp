@@ -10,8 +10,8 @@
 #define LED_YELLOW  6
 #define LED_RED     5
 
-static const int BUTTON_DIM = 11;
-static const int BUTTON_INC = 10;
+#define BUTTON_DIM  11
+#define BUTTON_INC  10
 
 
 ///////////////////////////////////////////// PROTOTYPES /////////////////////////////////////////////
@@ -26,9 +26,9 @@ static void run_button(ButtonSm * button, bool input_active, uint32_t elapsed_ti
 static ButtonSm button_dim;
 static ButtonSm button_inc;
 static LightSm light_sm;
+static LightSm_StateId last_state_id = LightSm_StateId_ROOT; // so we can detect state changes
 
-
-///////////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////
+////////////////////////////////////////// PUBLIC FUNCTIONS //////////////////////////////////////////
 
 void LightController_setup()
 {
@@ -57,6 +57,13 @@ void LightController_update(uint32_t elapsed_time_ms)
 
     handle_dim_button_events();
     handle_inc_button_events();
+
+    if (last_state_id != light_sm.state_id)
+    {
+        last_state_id = light_sm.state_id;
+        Serial.print(F("Light controller state changed to: "));
+        Serial.println(LightSm_state_id_to_string(light_sm.state_id));
+    }
 }
 
 
@@ -73,14 +80,14 @@ static void handle_dim_button_events(void)
 {
     if (button_dim.vars.output_press_event)
     {
-        Serial.println("handling event DIM");
+        Serial.println(F("Handling event DIM"));
         LightSm_dispatch_event(&light_sm, LightSm_EventId_DIM);
         button_dim.vars.output_press_event = 0;
     }
 
     if (button_dim.vars.output_long_event)
     {
-        Serial.println("handling event DIM_LONG");
+        Serial.println(F("Handling event DIM_LONG"));
         LightSm_dispatch_event(&light_sm, LightSm_EventId_DIM_LONG);
         button_dim.vars.output_long_event = 0;
     }
@@ -90,21 +97,29 @@ static void handle_inc_button_events(void)
 {
     if (button_inc.vars.output_press_event)
     {
-        Serial.println("handling event INC");
+        Serial.println(F("Handling event INC"));
         LightSm_dispatch_event(&light_sm, LightSm_EventId_INC);
         button_inc.vars.output_press_event = 0;
     }
 
     if (button_inc.vars.output_long_event)
     {
-        Serial.println("handling event INC_LONG");
+        Serial.println(F("Handling event INC_LONG"));
         LightSm_dispatch_event(&light_sm, LightSm_EventId_INC_LONG);
         button_inc.vars.output_long_event = 0;
     }
 }
 
 
-///////////////////////////////////////////// CODE FOR FSM /////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////// STATE MACHINE SECTION ////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Use this section to define things you want to provide for the state machine.
+// Declare variables, functions, etc. that you want to use in the state machine.
+// The beauty of this is that you are using regular C code and can do anything you want.
+// You don't need to learn special StateSmith expansions or anything like that.
 
 static void light_off()
 {
@@ -133,5 +148,11 @@ static void light_3()
     digitalWrite(LED_YELLOW, HIGH);
     digitalWrite(LED_RED, HIGH);
 }
+
+
+//------------------------------------------------------------------------------
+// !!!!!!!!!!!!!!!!!! STATE MACHINE INCLUDE HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//------------------------------------------------------------------------------
+// This would typically happen at the bottom of the file.
 
 #include "LightSm.inc.h"

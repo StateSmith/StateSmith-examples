@@ -52,6 +52,8 @@ static void ON3_exit(LightSm* sm);
 
 static void ON3_dim(LightSm* sm);
 
+static void ON3_inc_long(LightSm* sm);
+
 
 // State machine constructor. Must be called before start or dispatch event functions. Not thread safe.
 void LightSm_ctor(LightSm* sm)
@@ -399,6 +401,7 @@ static void ON3_enter(LightSm* sm)
     // setup trigger/event handlers
     sm->current_state_exit_handler = ON3_exit;
     sm->current_event_handlers[LightSm_EventId_DIM] = ON3_dim;
+    sm->current_event_handlers[LightSm_EventId_INC_LONG] = ON3_inc_long;
     
     // ON3 behavior
     // uml: enter / { light_3(); }
@@ -413,6 +416,7 @@ static void ON3_exit(LightSm* sm)
     // adjust function pointers for this state's exit
     sm->current_state_exit_handler = ON_GROUP_exit;
     sm->current_event_handlers[LightSm_EventId_DIM] = NULL;  // no ancestor listens to this event
+    sm->current_event_handlers[LightSm_EventId_INC_LONG] = ON_GROUP_inc_long;  // the next ancestor that handles this event is ON_GROUP
 }
 
 static void ON3_dim(LightSm* sm)
@@ -434,6 +438,20 @@ static void ON3_dim(LightSm* sm)
         sm->state_id = LightSm_StateId_ON2;
         // No ancestor handles event. Can skip nulling `ancestor_event_handler`.
         return;
+    } // end of behavior for ON3
+}
+
+static void ON3_inc_long(LightSm* sm)
+{
+    // Setup handler for next ancestor that listens to `inc_long` event.
+    sm->ancestor_event_handler = ON_GROUP_inc_long;
+    
+    // ON3 behavior
+    // uml: INC_LONG
+    {
+        // Step 1: execute action ``
+        // Step 2: determine if ancestor gets to handle event next.
+        sm->ancestor_event_handler = NULL;  // consume event
     } // end of behavior for ON3
 }
 

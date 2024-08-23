@@ -17,6 +17,9 @@ Because it is a common convention to use `.inc` files for files that are include
 
 It also makes it clear that this file is not meant to be compiled on its own and allows simple build rules like `gcc *.c` to work.
 
+# Note for Arduino
+Arduino IDE doesn't like `.inc` files. You can use `.inc.h` instead. See [here for details](https://github.com/StateSmith/StateSmith/issues/361).
+
 # This might seem strange at first...
 but take a look at [LightController.c](LightController.c). It's pretty straightforward.
 

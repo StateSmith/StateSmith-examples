@@ -7,7 +7,7 @@ This tutorial will show you how to:
 You can see the completed tutorial in [../c-include-sm-basic-2-plantuml](../c-include-sm-basic-2-plantuml/).
 
 # Note for Arduino
-Arduino IDE doesn't like .inc files. See [here for workaround](https://github.com/StateSmith/StateSmith/issues/361).
+Arduino IDE doesn't like `.inc` files. You can use `.inc.h` instead. See [here for details](https://github.com/StateSmith/StateSmith/issues/361).
 
 # Pre-requisites
 * Basic [StateSmith install](https://github.com/StateSmith/StateSmith/wiki/StateSmith-install-requirements).

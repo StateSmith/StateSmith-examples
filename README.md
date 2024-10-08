@@ -8,6 +8,10 @@ You can generally learn lots from these older examples even if you aren't setup 
 
 Not all projects are listed below. Feel free to explore this directory. A number of the projects in here are straight up experimental. See each project's readme.
 
+## How to Use .csx Files?
+See [tutorial 2](https://github.com/StateSmith/tutorial-2/)
+
+
 <br>
 
 # StateSmith
@@ -17,7 +21,7 @@ Not all projects are listed below. Feel free to explore this directory. A number
 * [multiple state machines in a single diagram](./buttons-lights-1/README.md) - connect state machines together through variables & events.
 * [sm-design-describer-1](./sm-design-describer-1/README.md) good for git diffs, understanding
 
-## ✨ Advanced Features
+## ✨ Advanced Features (require .csx)
 Not recommended for beginners.
 * [multi-lang-1](./multi-lang-1/README.md). Generate state machines for multiple programming languages from a single diagram.
 * [modding-logging](./modding-logging/README.md)

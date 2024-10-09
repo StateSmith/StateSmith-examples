@@ -7,6 +7,7 @@ This example uses new StateSmith `draw.io` features.
 - video game example that responds to events and also timeouts.
 - uses history to go back to previous state after star wears off.
 - you can embed images/gifs in the drawio design.
+
 ![](docs/design.gif)
 
 # Run code gen

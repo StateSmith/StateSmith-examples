@@ -1,5 +1,5 @@
 # Assumptions
-Assumes that you have gone through basic StateSmith tutorials already.
+Assumes that you have gone through basic StateSmith tutorials already and know how to use .csx files (see Tutorial 2 if you don't).
 
 # User Custom Logging
 This is an advanced and powerful example. If you just want basic logging, see the other simple logging example.

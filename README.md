@@ -1,5 +1,5 @@
 # Hello!
-Make sure you've already gone through a tutorial already as these example projects aren't tutorials. They generally highlight a few interesting features.
+Make sure you've already gone [through a tutorial](https://github.com/StateSmith/StateSmith/wiki/Learning-Resources) already as these example projects aren't tutorials. They generally highlight a few interesting features.
 
 ## New vs Old
 Most of these examples use the older (but still good) .csx method of running StateSmith. You can search for `ss.cli` for newer examples. More will come.

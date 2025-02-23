@@ -1,0 +1,76 @@
+@startuml
+
+scale 1.2
+
+abstract class LightSm {
+    + start()
+    + dispatchEvent(event)
+    + count: uint16_t
+    + <b>virtual</b> turnOff()
+    + <b>virtual</b> turnBlue()
+    + <b>virtual</b> turnYellow()
+    + <b>virtual</b> turnRed()
+    + <b>virtual</b> printCount()
+}
+
+class LightController {
+    + init()
+    + commandOff()
+    + commandIncrease()
+    + commandDim()
+    - count: uint16_t
+    - start()
+    - dispatchEvent(event)
+    - turnOff()
+    - turnBlue()
+    - turnYellow()
+    - turnRed()
+    - printCount()
+}
+
+class Test.TestLightSm {
+    + count: uint16_t
+    + start()
+    + dispatchEvent(event)
+    + turnOff()
+    + turnBlue()
+    + turnYellow()
+    + turnRed()
+    + printCount()
+}
+
+class "main.cpp" as main {
+    ' light_controller: LightController
+}
+
+class "test.cpp" as Test.test {
+    ' light_controller: TestLightSm
+}
+
+LightSm "extends privately" <|--- LightController
+LightSm "extends publicly" <|--- TestLightSm
+main -> LightController
+test -> TestLightSm
+
+note right of LightSm
+    Abstract class. Generated state machine.
+    This acts like the **"BRAIN"** of the light controller.
+    Calls methods like `turnOff()`, `turnBlue()`, ...
+    Methods and variables are **declared** in the class
+    via the `RenderConfig.Cpp.ClassCode` TOML config.
+end note
+
+note bottom of LightController
+    Provides concrete methods for the state machine.
+    This is like the **"BODY"** of the light controller.
+    Privately inherits from LightSm to hide state machine
+    specific methods like `dispatchEvent()` from main.cpp.
+end note
+
+note bottom of TestLightSm
+    Used to test the state machine.
+    Logs calls to these methods. This allows
+    test.cpp to verify the state machine's behavior.
+end note
+
+@enduml

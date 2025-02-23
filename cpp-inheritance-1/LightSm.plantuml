@@ -1,0 +1,58 @@
+@startuml LightSm
+scale 1.25
+
+' //////////////////////// STATE ORGANIZATION ///////////////////////
+' Note: StateSmith treats state names and events as case insensitive.
+' More info: https://github.com/StateSmith/StateSmith/wiki/PlantUML
+
+state OFF
+state ON_GROUP {
+    state ON1
+    state ON2
+    state ON_HOT
+}
+
+[*] -> OFF
+
+' ///////////////////////// STATE HANDLERS /////////////////////////
+' Syntax: https://github.com/StateSmith/StateSmith/wiki/Behaviors
+
+OFF: enter / turnOff();
+OFF --> ON1: INC
+
+ON_GROUP --> OFF : OFF
+
+ON1: enter / turnBlue();
+ON1 --> ON2: INC
+ON1 --> OFF: DIM
+
+ON2: enter / turnYellow();
+ON2: enter / count = 0;
+ON2: 1. INC / count++;
+ON2: 2. INC / printCount();
+ON2 --> ON_HOT: INC [count >= 3]
+ON2 --> ON1: DIM
+
+ON_HOT: enter / turnRed();
+ON_HOT --> ON2: DIM
+
+
+' //////////////////////// StateSmith config ////////////////////////
+' The below special comment block sets the StateSmith configuration.
+' More info: https://github.com/StateSmith/StateSmith/issues/335
+
+/'! $CONFIG : toml
+
+[RenderConfig.Cpp]
+HFileExtension = ".h"
+NameSpace = "Light"
+BaseClassCode = "public LightSmBase"
+HFileIncludes = """
+    #include "LightSmBase.h" // user include. required for base class.
+    """
+# More Cpp settings are available. See docs.
+
+[SmRunnerSettings]
+transpilerId = "Cpp"
+'/
+@enduml

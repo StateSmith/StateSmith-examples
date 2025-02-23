@@ -1,0 +1,87 @@
+@startuml
+
+scale 1.2
+
+abstract class LightSmBase {
+    + count: uint16_t
+    + <b>virtual</b> turnOff()
+    + <b>virtual</b> turnBlue()
+    + <b>virtual</b> turnYellow()
+    + <b>virtual</b> turnRed()
+    + <b>virtual</b> printCount()
+}
+
+abstract class LightSm {
+    + start()
+    + dispatchEvent(event)
+}
+
+class LightController {
+    - count: uint16_t
+    + init()
+    + commandOff()
+    + commandIncrease()
+    + commandDim()
+    - start()
+    - dispatchEvent(event)
+    - turnOff()
+    - turnBlue()
+    - turnYellow()
+    - turnRed()
+    - printCount()
+}
+
+class Test.TestLightSm {
+    + count: uint16_t
+    + start()
+    + dispatchEvent(event)
+    + turnOff()
+    + turnBlue()
+    + turnYellow()
+    + turnRed()
+    + printCount()
+}
+
+class "main.cpp" as main {
+    ' light_controller: LightController
+}
+
+class "test.cpp" as Test.test {
+    ' light_controller: TestLightSm
+}
+
+LightSmBase "extends publicly" <|-- LightSm
+LightSm "extends privately" <|--- LightController
+LightSm "extends publicly" <|--- TestLightSm
+main -> LightController
+test -> TestLightSm
+
+note right of LightSmBase
+    Abstract class.
+    **Declares** members for the state machine.
+    Has a default constructor because the
+    generated state machine class currently
+    can't explicitly call a base class constructor.
+    StateSmith issue #443.
+end note
+
+note right of LightSm
+    Abstract class. Generated state machine.
+    This acts like the **"BRAIN"** of the light controller.
+    Calls methods like `turnOff()`, `turnBlue()`, ...
+end note
+
+note bottom of LightController
+    Provides concrete methods for the state machine.
+    This is like the **"BODY"** of the light controller.
+    Privately inherits from LightSm to hide state machine
+    specific methods like `dispatchEvent()` from main.cpp.
+end note
+
+note bottom of TestLightSm
+    Used to test the state machine.
+    Logs calls to these methods. This allows
+    test.cpp to verify the state machine's behavior.
+end note
+
+@enduml

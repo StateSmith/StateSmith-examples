@@ -70,7 +70,7 @@ Not recommended for beginners.
 * todo - migrate [laser tag example](https://www.youtube.com/watch?v=9czSDothuzM) [simulation](https://wokwi.com/projects/351165738904453719).
 
 ## 🌱 PlantUML
-* [embedded-solar-1](./embedded-solar-1/README.md) - `ss.cli`
+* [embedded-solar-1](./embedded-solar-1/README.md) - Shows how to make a nested menu state machine with PlantUML. `ss.cli`
 * [mario-sm-2](./mario-sm-2/README.md) - `ss.cli`
 * [button-simple-1](./button-simple-1/README.md) - A simple button state machine that can be easily customized to your needs. `ss.cli`
 * [c-include-sm-basic-2-plantuml-tutorial](./c-include-sm-basic-2-plantuml-tutorial/README.md) - `ss.cli`

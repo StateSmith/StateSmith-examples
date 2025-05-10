@@ -7,7 +7,6 @@
 state OFF
 state ON
 
-
 ' ///////////////////////// STATE HANDLERS /////////////////////////
 ' Syntax: https://github.com/StateSmith/StateSmith/wiki/Behaviors
 
@@ -18,6 +17,7 @@ OFF: enter / bulb.set(false);
 OFF --> ON : TOGGLE
 
 ' ON
+ON: enter / bulb.count++;
 ON: enter / bulb.set(true);
 ON --> OFF : TOGGLE
 

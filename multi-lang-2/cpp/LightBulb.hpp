@@ -16,6 +16,7 @@ public:
         else
         {
             std::cout << YELLOW << "Light is: ON\n" << RESET;
+            std::cout << YELLOW << "Count: " << count << "\n" << RESET;
         }
     }
 

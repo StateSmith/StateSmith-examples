@@ -140,6 +140,13 @@ void LightSm::ON_enter()
     this->stateId = StateId::ON;
     
     // ON behavior
+    // uml: enter / { bulb.count++; }
+    {
+        // Step 1: execute action `bulb.count++;`
+        this->vars.bulb.count++;
+    } // end of behavior for ON
+    
+    // ON behavior
     // uml: enter / { bulb.set(true); }
     {
         // Step 1: execute action `bulb.set(true);`

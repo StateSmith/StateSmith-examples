@@ -151,6 +151,13 @@ class LightSm():
         self.stateId = LightSm.StateId.ON
         
         # ON behavior
+        # uml: enter / { bulb.count += 1 }
+        if True:
+            # Step 1: execute action `bulb.count += 1`
+            self.vars.bulb.count += 1
+        # end of behavior for ON
+        
+        # ON behavior
         # uml: enter / { bulb.set(True) }
         if True:
             # Step 1: execute action `bulb.set(True)`

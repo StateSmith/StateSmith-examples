@@ -112,10 +112,10 @@ class LightSm():
         self.stateId = LightSm.StateId.OFF
         
         # OFF behavior
-        # uml: enter / { bulb.Set(False) }
+        # uml: enter / { bulb.set(False) }
         if True:
-            # Step 1: execute action `bulb.Set(False)`
-            self.vars.bulb.Set(False)
+            # Step 1: execute action `bulb.set(False)`
+            self.vars.bulb.set(False)
         # end of behavior for OFF
     
     
@@ -151,10 +151,10 @@ class LightSm():
         self.stateId = LightSm.StateId.ON
         
         # ON behavior
-        # uml: enter / { bulb.Set(True) }
+        # uml: enter / { bulb.set(True) }
         if True:
-            # Step 1: execute action `bulb.Set(True)`
-            self.vars.bulb.Set(True)
+            # Step 1: execute action `bulb.set(True)`
+            self.vars.bulb.set(True)
         # end of behavior for ON
     
     

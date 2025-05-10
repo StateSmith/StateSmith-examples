@@ -14,11 +14,11 @@ state ON
 [*] -> OFF
 
 ' OFF
-OFF: enter / bulb.Set(false);
+OFF: enter / bulb.set(false);
 OFF --> ON : TOGGLE
 
 ' ON
-ON: enter / bulb.Set(true);
+ON: enter / bulb.set(true);
 ON --> OFF : TOGGLE
 
 @enduml

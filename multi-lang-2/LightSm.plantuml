@@ -1,0 +1,24 @@
+@startuml
+
+' //////////////////////// STATE ORGANIZATION ///////////////////////
+' Note: StateSmith treats state names and events as case insensitive.
+' More info: https://github.com/StateSmith/StateSmith/wiki/PlantUML
+
+state OFF
+state ON
+
+
+' ///////////////////////// STATE HANDLERS /////////////////////////
+' Syntax: https://github.com/StateSmith/StateSmith/wiki/Behaviors
+
+[*] -> OFF
+
+' OFF
+OFF: enter / bulb.Set(false);
+OFF --> ON : TOGGLE
+
+' ON
+ON: enter / bulb.Set(true);
+ON --> OFF : TOGGLE
+
+@enduml

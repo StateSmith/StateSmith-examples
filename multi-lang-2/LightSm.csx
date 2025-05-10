@@ -35,11 +35,7 @@ class CppGen
             #include "LightBulb.hpp"
             """;
         
-        // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-3
-        public class MyExpansions : UserExpansionScriptBase
-        {
-            // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-4 for timing expansions
-        }
+        // You can also add "Expansions" here. See https://github.com/StateSmith/tutorial-2/tree/main/lesson-3
     }
 }
 
@@ -74,6 +70,8 @@ class PyGen
 
     private static string PythonifyDiagramCode(string str)
     {
+        // This is rather simplistic string replacements.
+        // You could also parse the code if you needed something more sophisticated.
         str = str.Replace(";", "");
         str = str.Replace("++", " += 1");
         str = str.Replace("/*", "#");
@@ -95,9 +93,6 @@ class PyGen
             from LightBulb import LightBulb
             """;
         
-        // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-3
-        public class MyExpansions : UserExpansionScriptBase
-        {
-        }
+        // You can also add "Expansions" here. See https://github.com/StateSmith/tutorial-2/tree/main/lesson-3
     }
 }

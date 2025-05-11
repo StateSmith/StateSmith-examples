@@ -9,7 +9,7 @@ You can generally learn lots from these older examples even if you aren't setup 
 Not all projects are listed below. Feel free to explore this directory. A number of the projects in here are straight up experimental. See each project's readme.
 
 ## How to Use .csx Files?
-In 2024, I only recommend using .csx files if you need very advanced features of StateSmith like custom modding the state machine graph just before code gen.
+Since 2024, I only recommend using .csx files if you need very advanced features of StateSmith like custom modding the state machine graph just before code gen.
 
 See [tutorial 2](https://github.com/StateSmith/tutorial-2/)
 

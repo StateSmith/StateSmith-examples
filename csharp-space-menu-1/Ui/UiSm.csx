@@ -2,7 +2,7 @@
 #r "nuget: StateSmith, 0.9.2-alpha"
 
 // This is a C# script file. Very useful for running StateSmith.
-// https://github.com/StateSmith/StateSmith/wiki/Using-c%23-script-files-(.CSX)-instead-of-solutions-and-projects
+// https://github.com/StateSmith/StateSmith/wiki/vscode-csx
 
 using StateSmith.Input.Expansions;
 using StateSmith.Output.UserConfig;

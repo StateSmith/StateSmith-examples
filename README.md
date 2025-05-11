@@ -25,7 +25,8 @@ See [tutorial 2](https://github.com/StateSmith/tutorial-2/)
 
 ## ✨ Advanced Features (require .csx)
 Not recommended for beginners.
-* [multi-lang-1](./multi-lang-1/README.md). Generate state machines for multiple programming languages from a single diagram.
+* [multi-lang-2](./multi-lang-2/README.md). Single diagram generates code for Python and C++. Custom user pipeline transformations.
+* [multi-lang-1](./multi-lang-1/README.md). Kinda meta. Inheritance of render configs. Inheritance and composition for expansions.
 * [modding-logging](./modding-logging/README.md)
 * [custom-triggers](./custom-triggers/README.md)
 * [user-post-process](./user-post-process/README.md)

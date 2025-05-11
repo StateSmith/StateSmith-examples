@@ -1,4 +1,4 @@
-# Multi-Language-2 Python & C++
+# Multi-Language-2: Python & C++
 > This is a more advanced topic. Not too difficult, but you should already understand the basics of StateSmith first. Specifically [tutorial 2](https://github.com/StateSmith/tutorial-2) which covers using .csx files. You will also probably want [.csx intellisense](https://github.com/StateSmith/StateSmith/wiki/vscode-csx) setup for this.
 
 Let's use a single diagram to generate code for two very different languages: Python and C++.

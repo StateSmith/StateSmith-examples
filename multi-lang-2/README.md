@@ -46,8 +46,6 @@ transformationPipeline.Insert(0, new TransformationStep(action: (stateMachine) =
 
 string PythonifyDiagramCode(string str)
 {
-    // This is rather simplistic string replacements.
-    // You could also parse the code if you needed something more sophisticated.
     str = str.Replace(";", "");
     str = str.Replace("++", " += 1");
     str = str.Replace("/*", "#");

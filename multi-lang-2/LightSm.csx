@@ -14,12 +14,14 @@ CppGen.Generate();
 PyGen.Generate();
 
 
+////////////////////////////////////// C++ CODE GEN //////////////////////////////////////
 class CppGen
 {
     public static void Generate()
     {
         SmRunner runner = new(diagramPath: DiagramPath, new RenderConfig(), transpilerId: TranspilerId.Cpp);
         runner.Settings.outputDirectory = "cpp";
+        runner.Settings.simulation.enableGeneration = true;
         runner.Run();
     }
 
@@ -40,13 +42,16 @@ class CppGen
 }
 
 
-
+////////////////////////////////////// PYTHON CODE GEN //////////////////////////////////////
 class PyGen
 {
     public static void Generate()
     {
-        SmRunner runner = new(diagramPath: DiagramPath, new PythonRenderConfig(), transpilerId: TranspilerId.Python);
+        SmRunner runner = new(diagramPath: DiagramPath, new RenderConfig(), transpilerId: TranspilerId.Python);
         runner.Settings.outputDirectory = "py";
+        runner.Settings.simulation.enableGeneration = true;
+        // Note! Simulator doesn't yet support custom transformations https://github.com/StateSmith/StateSmith/issues/463
+        
         PythonifyDiagramBehaviors(runner);
         runner.Run();
     }
@@ -83,7 +88,7 @@ class PyGen
 
     // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-2/ (basics)
     // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-5/ (language specific options)
-    public class PythonRenderConfig : IRenderConfigPython
+    public class RenderConfig : IRenderConfigPython
     {
         string IRenderConfig.AutoExpandedVars => """
             self.bulb = LightBulb()

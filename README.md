@@ -16,7 +16,7 @@ See [tutorial 2](https://github.com/StateSmith/tutorial-2/)
 
 <br>
 
-# StateSmith
+# StateSmith Examples
 ## 🌟 Features
 * [trigger-map](./trigger-map/README.md) - short hands for events/triggers.
 * [parent-alias-1](./parent-alias-1/README.md) - useful strategy for commanding a specific state. `ss.cli`

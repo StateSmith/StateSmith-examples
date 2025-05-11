@@ -1,6 +1,6 @@
 # Multi-Language-1 Example
 
-Assumes that you have gone through basic StateSmith tutorials already. This one is generally more advanced. You will probably want [.csx intellisense](https://github.com/StateSmith/StateSmith/wiki/Using-c%23-script-files-(.CSX)-instead-of-solutions-and-projects#setup-vscode-for-debugging-c-script-files-and-intellisense) setup for this.
+Assumes that you have gone through basic StateSmith tutorials already. This one is generally more advanced. You will probably want [.csx intellisense](https://github.com/StateSmith/StateSmith/wiki/vscode-csx) setup for this.
 
 The interesting code is in the .csx file [LightSm.csx](LightSm.csx).
 

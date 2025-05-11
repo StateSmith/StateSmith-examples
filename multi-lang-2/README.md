@@ -62,3 +62,4 @@ string PythonifyDiagramCode(string str)
 
 # Tips
 * using composition instead of inheritance can help here. We use a `bulb` variable instead of inheriting from a base class. If you want to use inheritance, you can use `this->` everywhere in your diagram and easily translate that to `self.` for python.
+* when choosing your "primary" diagram language, it is often best to use the most "picky" or detail oriented language. Makes translations a lot easier when you just need to remove info/syntax than to try and infer it.

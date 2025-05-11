@@ -14,7 +14,10 @@ CppGen.Generate();
 PyGen.Generate();
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// C++ CODE GEN //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 class CppGen
 {
     public static void Generate()
@@ -25,24 +28,22 @@ class CppGen
         runner.Run();
     }
 
-    // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-2/ (basics)
-    // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-5/ (language specific options)
     public class RenderConfig : IRenderConfigCpp
     {
         string IRenderConfig.AutoExpandedVars => """
             LightBulb bulb;
             """;
-
         string IRenderConfigCpp.HFileIncludes => """
             #include "LightBulb.hpp"
             """;
-        
-        // You can also add "Expansions" here. See https://github.com/StateSmith/tutorial-2/tree/main/lesson-3
     }
 }
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////// PYTHON CODE GEN //////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 class PyGen
 {
     public static void Generate()
@@ -56,15 +57,27 @@ class PyGen
         runner.Run();
     }
     
-    static void PythonifyDiagramBehaviors(SmRunner runner)
+    public class RenderConfig : IRenderConfigPython
     {
+        string IRenderConfig.AutoExpandedVars => """
+            self.bulb = LightBulb()
+            """;
+        string IRenderConfigPython.Imports => """
+            from LightBulb import LightBulb
+            """;
+    }
+
+    static void PythonifyDiagramBehaviors(SmRunner stateMachineRunner)
+    {
+        List<TransformationStep> transformationPipeline = stateMachineRunner.SmTransformer.transformationPipeline;
+
         // NOTE!!! This runs before any other transformations (insert at index 0) so we can be confident that the code we are modifying is in the original form
-        // from the diagram and not something that was added by a transformation (like history vertices).
-        runner.SmTransformer.transformationPipeline.Insert(0, new TransformationStep(action: (sm) =>
+        // from the diagram and not something that was added by a transformation for something like history vertices.
+        transformationPipeline.Insert(0, new TransformationStep(action: (stateMachine) =>
         {
-            sm.VisitRecursively((node) =>
+            stateMachine.VisitRecursively((stateMachineVertex) =>
             {
-                foreach (var behavior in node.Behaviors)
+                foreach (var behavior in stateMachineVertex.Behaviors)
                 {
                     behavior.actionCode = PythonifyDiagramCode(behavior.actionCode);
                     behavior.guardCode = PythonifyDiagramCode(behavior.guardCode);
@@ -84,20 +97,5 @@ class PyGen
         str = str.Replace("true", "True");
         str = str.Replace("false", "False");
         return str;
-    }
-
-    // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-2/ (basics)
-    // See https://github.com/StateSmith/tutorial-2/tree/main/lesson-5/ (language specific options)
-    public class RenderConfig : IRenderConfigPython
-    {
-        string IRenderConfig.AutoExpandedVars => """
-            self.bulb = LightBulb()
-            """;
-
-        string IRenderConfigPython.Imports => """
-            from LightBulb import LightBulb
-            """;
-        
-        // You can also add "Expansions" here. See https://github.com/StateSmith/tutorial-2/tree/main/lesson-3
     }
 }

@@ -1,7 +1,10 @@
 # Note
 This project is still perfectly valid, but uses the more advanced (and original) .csx approach.
 
+There's still good info in here (like the video below).
+
 You can achieve the same thing using the more [modern toml settings](https://github.com/StateSmith/StateSmith/blob/main/docs/settings.md#smrunnersettingssmdesigndescriber) and ss.cli.
+
 
 # Assumptions
 Assumes that you have gone through basic StateSmith tutorials already.

@@ -16,8 +16,7 @@ static char read_char_blocking(void);
 
 //////////////////////// FUNCTIONS ////////////////////////
 
-// extern "C" required for ESP-IDF and wokwi/arduino
-extern "C" void app_main() {
+void app_main(void) {
     printf("\n\nUSAGE: Type 'n'<ENTER> for `NEXT` event, 'r'<ENTER> for `RESET` event.\n");
     printf("Experiment with sending multiple events in a row like 'nnrrnn'<ENTER>.\n");
     printf("Type 'n'<ENTER> to start.\n\n");
@@ -62,7 +61,7 @@ static void input_iterate(void) {
 // This function could be written to be non-blocking, but we want some simple blocking for this example.
 static char read_char_blocking(void) {
     while (true) {
-        char c = fgetc(stdin);
+        int c = fgetc(stdin);
         if (c != EOF) {
             return c;
         }

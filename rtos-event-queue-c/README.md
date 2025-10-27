@@ -7,8 +7,6 @@ The interesting part of this example is that the control task achieves two goals
 2. Dispatch `DO` events to the state machine at a fixed interval without an additional task.
 
 # Wokwi Interactive Demo
-> ⚠️ As of 2025-08-06, there is a wokwi issue that prevents modifying the demo code below. You can still run the demo as-is. I've reported the issue which appears to be specific to ESP-IDF wokwi projects.
-
 See https://wokwi.com/projects/371538917092107265
 
 ![](docs/wokwi.png)

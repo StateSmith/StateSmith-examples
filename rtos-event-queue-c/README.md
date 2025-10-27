@@ -7,6 +7,7 @@ The interesting part of this example is that the control task achieves two goals
 2. Dispatch `DO` events to the state machine at a fixed interval without an additional task.
 
 # Wokwi Interactive Demo
+> ⚠️ I believe wokwi broke old esp32 projects. Maybe a config setting change?
 See https://wokwi.com/projects/371538917092107265
 
 ![](docs/wokwi.png)
